@@ -710,9 +710,18 @@ body {
   gap: 8px;
   padding: 12px;
   border-radius: var(--radius-small);
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+  cursor: pointer;
 }
 
-.resume-bottom-item .icon { height: 28px; }
+.resume-bottom-item .icon { 
+  height: 28px; 
+}
+
+.resume-bottom-item:hover {
+  background-color: --surface-container; 
+  transform: scale(1.1); 
+}
 
 
 
