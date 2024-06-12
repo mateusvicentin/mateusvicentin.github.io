@@ -496,9 +496,13 @@ body {
   background-color: var(--surface);
   color: var(--on-surface-variant);
   --state-layer-bg: var(--on-surface-variant);
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Adiciona transição suave */
+  cursor: pointer; /* Adiciona cursor de clique */
 }
 
-.chip .material-symbols-outlined { font-size: 1.8rem;}
+.chip:hover {
+  transform: scale(0.95); /* Aumenta o item em 10% */
+}
 
 
 /**
@@ -720,7 +724,7 @@ body {
 
 .resume-bottom-item:hover {
   background-color: --surface-container; 
-  transform: scale(1.1); 
+  transform: scale(0.95); 
 }
 
 
