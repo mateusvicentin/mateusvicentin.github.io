@@ -363,7 +363,7 @@ body {
 .state-layer {
   position: absolute;
   inset: 0;
-  background-color: var(--primary-dark);
+  background-color: var(--state-layer-bg);
   transition: var(--motion-duration-short-1) var(--motion-easing-linear);
   opacity: 0;
 }
