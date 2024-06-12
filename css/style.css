@@ -516,6 +516,8 @@ body {
   display: grid;
   gap: 16px;
   --state-layer-bg: var(--on-surface);
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+  cursor: pointer; 
 }
 
 .card-banner { border-radius: var(--radius-medium); }
@@ -523,6 +525,16 @@ body {
 .card-content {
   display: grid;
   gap: 4px;
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+  cursor: pointer; 
+}
+
+.card-content:hover {
+  transform: scale(0.95); 
+}
+
+.card:hover {
+  transform: scale(0.95); 
 }
 
 .card-subtitle { color: var(--on-surface-variant); }
