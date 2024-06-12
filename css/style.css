@@ -29,7 +29,7 @@
   --surface-container-low-light: hsl(278, 44%, 96%);
   --surface-container-light: hsl(276, 38%, 95%);
   --surface-bright-light: hsl(293, 100%, 98%);
-  --primary-light: hsl(231, 66%, 55%);
+  --primary-light: hsl(0, 87%, 57%);
   --on-primary-light: hsl(0, 0%, 100%);
   --outline-light: hsl(270, 4%, 47%);
   --outline-variant-light: hsl(270, 11%, 79%);
@@ -43,7 +43,7 @@
   --surface-container-low-dark: hsl(264, 8%, 12%);
   --surface-container-dark: hsl(257, 10%, 14%);
   --surface-bright-dark: hsl(270, 5%, 23%);
-  --primary-dark: hsl(231, 66%, 55%);
+  --primary-dark: hsl(0, 87%, 57%);
   --on-primary-dark: hsl(0, 0%, 100%);
   --outline-dark: hsl(264, 5%, 58%);
   --outline-variant-dark: hsl(264, 7%, 29%);
@@ -363,7 +363,7 @@ body {
 .state-layer {
   position: absolute;
   inset: 0;
-  background-color: var(--state-layer-bg);
+  background-color: var(--primary-dark);
   transition: var(--motion-duration-short-1) var(--motion-easing-linear);
   opacity: 0;
 }
@@ -498,7 +498,7 @@ body {
   --state-layer-bg: var(--on-surface-variant);
 }
 
-.chip .material-symbols-outlined { font-size: 1.8rem; }
+.chip .material-symbols-outlined { font-size: 1.8rem;}
 
 
 /**
