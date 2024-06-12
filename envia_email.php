@@ -9,14 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: $name <$email>";
     $message_body = "Assunto: $subject\n\n$message";
 
-    // Envia o email
+
     if (mail($to, $subject, $message_body, $headers)) {
         echo "Obrigado por entrar em contato, $name. Sua mensagem foi enviada com sucesso!";
     } else {
         echo "Desculpe, ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.";
     }
 } else {
-    header("Location: /index.html"); 
     exit();
 }
 ?>
