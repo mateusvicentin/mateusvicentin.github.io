@@ -50,6 +50,14 @@
         <a href="#contato">Contato</a>
         <a href="./assets/docs/curriculo-mateus-vicentin.pdf" download class="highlight">Currículo</a>
       </nav>
+      <button class="icon-btn theme-btn" data-theme-btn aria-label="Alternar tema">
+        <span class="material-symbols-outlined dark">dark_mode</span>
+        <span class="material-symbols-outlined light">light_mode</span>
+        <div class="state-layer"></div>
+      </button>
+      <button class="icon-btn lang-btn" id="langToggle" aria-label="Mudar idioma">
+        <span class="material-symbols-outlined">translate</span>
+      </button>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
         <span class="material-symbols-outlined">menu</span>
       </button>
@@ -59,11 +67,6 @@
         <a href="#contato">Contato</a>
         <a href="./assets/docs/curriculo-mateus-vicentin.pdf" download>Currículo</a>
       </nav>
-      <button class="icon-btn theme-btn" data-theme-btn aria-label="Alternar tema">
-        <span class="material-symbols-outlined dark">dark_mode</span>
-        <span class="material-symbols-outlined light">light_mode</span>
-        <div class="state-layer"></div>
-      </button>
     </div>
   </header>
 
@@ -189,7 +192,6 @@
       type();
       loadProjects();
 
-      // Fechar menu mobile ao clicar em link
       document.querySelectorAll('#navMobile a').forEach(link => {
         link.addEventListener('click', () => {
           document.getElementById('navMobile').classList.add('hidden');
@@ -197,7 +199,6 @@
       });
     });
 
-    // Typing animation
     const typingElement = document.getElementById("typing");
     const phrases = [" Engenheiro de Dados ", " Analista de Infraestrutura "];
     let part = 0, i = 0, isDeleting = false;
@@ -218,7 +219,6 @@
       setTimeout(type, speed);
     }
 
-    // Carregar projetos GitHub
     const GITHUB_USERNAME = "mateusvicentin";
     async function loadProjects() {
       const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`);
@@ -251,10 +251,56 @@
       });
     }
 
-    // Toggle mobile nav
     document.getElementById("menuToggle").addEventListener("click", () => {
       document.getElementById("navMobile").classList.toggle("hidden");
     });
+
+    const translations = {
+      pt: {
+        about: "Sobre Mim",
+        aboutText: "Engenheiro de dados com experiência em arquiteturas distribuídas, pipelines ETL/ELT, cloud, DevOps e automação com Python. Minha missão é transformar dados brutos em valor para negócios, combinando performance com escalabilidade.",
+        tech: "Tecnologias",
+        projects: "Projetos Destacados",
+        contact: "Vamos conversar?",
+        contactText: "Estou disponível para colaborações, freelas ou oportunidades em engenharia de dados. Você pode me encontrar no LinkedIn, GitHub ou enviar um e-mail.",
+        viewProjects: "Ver Projetos",
+        downloadCV: "Baixar Currículo",
+        footer: "© 2024 Mateus Vicentin. Todos os direitos reservados."
+      },
+      en: {
+        about: "About Me",
+        aboutText: "Data engineer with experience in distributed architectures, ETL/ELT pipelines, cloud, DevOps, and Python automation. My mission is to transform raw data into business value, combining performance with scalability.",
+        tech: "Technologies",
+        projects: "Featured Projects",
+        contact: "Let's talk?",
+        contactText: "I'm available for collaborations, freelance work, or data engineering opportunities. You can reach me on LinkedIn, GitHub or via email.",
+        viewProjects: "View Projects",
+        downloadCV: "Download CV",
+        footer: "© 2024 Mateus Vicentin. All rights reserved."
+      }
+    };
+
+    let currentLang = "pt";
+    document.getElementById("langToggle").addEventListener("click", () => {
+      currentLang = currentLang === "pt" ? "en" : "pt";
+      applyTranslations();
+    });
+
+    function applyTranslations() {
+      const t = translations[currentLang];
+      document.querySelector('[href="#about"]').textContent = currentLang === "pt" ? "Sobre" : "About";
+      document.querySelector('[href="#projects"]').textContent = currentLang === "pt" ? "Projetos" : "Projects";
+      document.querySelector('[href="#contato"]').textContent = currentLang === "pt" ? "Contato" : "Contact";
+      document.querySelectorAll(".section-title")[0].textContent = t.about;
+      document.querySelector("#about p").textContent = t.aboutText;
+      document.querySelectorAll(".section-title")[1].textContent = t.tech;
+      document.querySelectorAll(".section-title")[2].textContent = t.projects;
+      document.querySelectorAll(".section-title")[3].textContent = t.contact;
+      document.querySelector("#contato p").textContent = t.contactText;
+      document.querySelectorAll(".btn .label-large")[0].textContent = t.viewProjects;
+      document.querySelectorAll(".btn .label-large")[1].textContent = t.downloadCV;
+      document.querySelector("footer p").textContent = t.footer;
+    }
   </script>
 </body>
 </html>
