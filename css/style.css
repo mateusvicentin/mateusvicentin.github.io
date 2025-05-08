@@ -189,6 +189,10 @@ html[data-theme="light"] {
 
   .display-small {
     font-size: 1.8rem;
+    text-align: center;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
 
   .btn-wrapper {
@@ -216,6 +220,9 @@ html[data-theme="light"] {
 
   .display-small {
     font-size: 1.5rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
 
   .profile-pic {
@@ -252,6 +259,7 @@ html[data-theme="light"] {
 [data-theme="dark"] .theme-btn .dark { display: block; }
 [data-theme="light"] .theme-btn .dark { display: none; }
 [data-theme="light"] .theme-btn .light { display: block; }
+
 
 
 .hero-flex {
