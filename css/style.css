@@ -65,7 +65,9 @@ html[data-theme="light"] {
 
 
 .section-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
   font-weight: 700;
   color: var(--on-background);
   margin-bottom: 1.5rem;
@@ -367,6 +369,8 @@ html[data-theme="light"] {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: none;
+  border: 1px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.15);
 }
 
 .card-header {
@@ -390,11 +394,23 @@ html[data-theme="light"] {
 }
 
 .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: rgba(46, 204, 113, 0.1);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.tag:hover {
   background-color: var(--primary);
   color: var(--on-primary);
-  font-size: 0.75rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  transform: scale(1.05);
 }
 
 /* Skills */
@@ -409,37 +425,66 @@ html[data-theme="light"] {
 /* Contato */
 .social-links {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 .social-btn {
-  background: var(--primary);
-  color: var(--on-primary);
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  border-radius: 16px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.social-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.05));
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
 }
 
 .social-btn:hover {
-  transform: scale(1.1);
-  box-shadow: none;
+  transform: scale(1.1) rotate(3deg);
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
+}
+
+.social-btn:hover::before {
+  opacity: 1;
+}
+
+
+.social-btn i {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2.2;
 }
 
 .icon-svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
 
 .social-btn:hover .icon-svg {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
+
 
 /* Rodapé */
 .footer {
@@ -553,3 +598,28 @@ html[data-theme="light"] {
   color: var(--on-background);
   font-weight: 600;
 }
+
+.github-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1; /* força visibilidade */
+  z-index: 10; /* força sobreposição */
+}
+
+.card {
+  position: relative;
+}
+
+.github-icon:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+
+
