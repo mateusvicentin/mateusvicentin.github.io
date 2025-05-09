@@ -7,8 +7,6 @@
   <meta name="robots" content="index, follow" />
   <title>Mateus Vicentin | Engenheiro de Dados</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2"></script>
-  <div id="tsparticles" class="particles-background"></div>
   <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,6 +22,8 @@
 
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2"></script>
+  <div id="tsparticles" class="particles-background"></div>
   <!-- AOS JS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
@@ -110,7 +110,7 @@
     </section>
 
     <!-- Sobre -->
-    <section id="about" class="section about" data-aos="fade-right">>
+    <section id="about" class="section about" data-aos="fade-right">
       <div class="container">
         <h2 class="section-title">Sobre Mim</h2>
         <p class="body-medium">
@@ -172,14 +172,14 @@
         </p>
         <div class="social-links">
           <a href="https://github.com/mateusvicentin" target="_blank" class="social-btn" title="GitHub">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="icon-svg" />
+            <i data-lucide="github"></i>
           </a>
           <a href="https://linkedin.com/in/mateusvicentin" target="_blank" class="social-btn" title="LinkedIn">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" class="icon-svg" />
+            <i data-lucide="linkedin"></i>
           </a>
           <a href="mailto:mateus@example.com" class="social-btn" title="E-mail">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail" class="icon-svg" />
-          </a>
+            <i data-lucide="mail"></i>
+        </a>
         </div>
       </div>
     </section>
@@ -378,26 +378,26 @@ function renderProjects() {
     if (repo.language) tags.push(`<span class="tag">${repo.language}</span>`);
     ['Python', 'Docker', 'MongoDB', 'Spark', 'Apache', 'FastAPI'].forEach(k => {
       if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
-        tags.push(`<span class="tag">${k}</span>`);
+        tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
       }
     });
 
     const title = repo.description || repo.name.replace(/-/g, ' ');
     container.innerHTML += `
       <article class="card">
-        <div class="card-header" data-aos="flip-left">
-          <span class="material-symbols-outlined">folder</span>
-          <div class="tech-tags">${tags.join('')}</div>
-        </div>
-        <div class="card-content">
-          <h3 class="title-large">${title}</h3>
-          <a href="${repo.html_url}" target="_blank" class="btn btn-outline">
-            <span class="label-large">Ver no GitHub</span>
-            <div class="state-layer"></div>
-          </a>
-        </div>
-      </article>`;
+  <div class="card-header" data-aos="flip-left">
+    <div class="tech-tags">${tags.join('')}</div>
+  </div>
+  <div class="card-content">
+    <h3 class="title-large">${title}</h3>
+  </div>
+  <a href="${repo.html_url}" target="_blank" class="github-icon" title="Ver no GitHub">
+    <i data-lucide="github"></i>
+  </a>
+</article>`;
   });
+
+lucide.createIcons();
 
   const totalPages = Math.ceil(filteredProjects.length / perPage);
   pageInfo.textContent = `Página ${currentPage}`;
