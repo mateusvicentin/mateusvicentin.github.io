@@ -7,31 +7,32 @@
   <meta name="robots" content="index, follow" />
   <title>Mateus Vicentin | Engenheiro de Dados</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2"></script>
+  <div id="tsparticles" class="particles-background"></div>
   <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Estilos -->
   <link rel="stylesheet" href="./css/style.css" />
+  <!-- AOS CSS -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-  <!-- Schema.org Person -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Mateus Vicentin",
-    "jobTitle": "Engenheiro de Dados",
-    "url": "https://seusite.com",
-    "sameAs": [
-      "https://github.com/mateusvicentin",
-      "https://linkedin.com/in/mateusvicentin"
-    ]
-  }
-  </script>
+
 </head>
 <body>
+  <!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000, // duração das animações
+    once: true      // anima uma vez apenas
+  });
+</script>
+
   <!-- Fundo animado -->
   <div class="tech-background">
     <div class="gradient-pulse"></div>
@@ -41,38 +42,47 @@
   <!-- Topo -->
   <header class="topbar animate-fade">
     <div class="container">
-      <div class="logo">
-        <span class="gradient-text">MV</span>
+      <!-- Grupo esquerdo: logo + menu desktop -->
+      <div class="nav-left">
+        <div class="logo">
+          <span class="gradient-text">MV</span>
+        </div>
+        <nav class="nav-menu">
+          <a href="#about">Sobre</a>
+          <a href="#projects">Projetos</a>
+          <a href="#contato">Contato</a>
+          <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" class="highlight">Currículo</a>
+        </nav>
       </div>
-      <nav class="nav-menu">
-        <a href="#about">Sobre</a>
-        <a href="#projects">Projetos</a>
-        <a href="#contato">Contato</a>
-        <a href="./assets/docs/curriculo-mateus-vicentin.pdf" download class="highlight">Currículo</a>
-      </nav>
-      <button class="icon-btn theme-btn" data-theme-btn aria-label="Alternar tema">
-        <span class="material-symbols-outlined dark">dark_mode</span>
-        <span class="material-symbols-outlined light">light_mode</span>
-        <div class="state-layer"></div>
-      </button>
-      <button class="icon-btn lang-btn" id="langToggle" aria-label="Mudar idioma">
-        <span class="material-symbols-outlined">translate</span>
-      </button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
+
+      <!-- Grupo direito: ícones e hambúrguer -->
+      <div class="nav-right">
+        <button class="icon-btn lang-btn" id="langToggle" aria-label="Mudar idioma">
+          <span class="material-symbols-outlined">translate</span>
+        </button>
+        <button class="icon-btn theme-btn" data-theme-btn aria-label="Alternar tema">
+          <span class="material-symbols-outlined dark">dark_mode</span>
+          <span class="material-symbols-outlined light">light_mode</span>
+          <div class="state-layer"></div>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+
+      <!-- Menu mobile -->
       <nav class="nav-mobile hidden" id="navMobile">
         <a href="#about">Sobre</a>
         <a href="#projects">Projetos</a>
         <a href="#contato">Contato</a>
-        <a href="./assets/docs/curriculo-mateus-vicentin.pdf" download>Currículo</a>
+        <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank">Currículo</a>
       </nav>
     </div>
   </header>
 
   <main role="main">
     <!-- Hero -->
-    <section class="section hero animate-rise">
+    <section class="section hero" data-aos="fade-up">
       <div class="container hero-flex">
         <div class="hero-left">
           <h1 class="display-small">
@@ -84,7 +94,7 @@
               <span class="label-large">Ver Projetos</span>
               <div class="state-layer"></div>
             </a>
-            <a href="./assets/docs/curriculo-mateus-vicentin.pdf" download class="btn scan-effect glow">
+            <a href="./assets/images/curriculo_mateusvicentin.pdf" class="btn scan-effect glow" target="_blank" rel="noopener noreferrer">
               <span class="material-symbols-outlined">download</span>
               <span class="label-large">Baixar Currículo</span>
               <div class="state-layer"></div>
@@ -93,53 +103,68 @@
         </div>
         <div class="hero-right">
           <div class="profile-glow">
-            <img src="./assets/images/profile.jpg" alt="Mateus Vicentin" class="profile-pic" loading="lazy" />
+            <img src="./assets/images/profile.jpg" alt="Mateus Vicentin" class="profile-pic" data-aos="zoom-in" loading="lazy" />
           </div>
         </div>
       </div>
     </section>
 
     <!-- Sobre -->
-    <section id="about" class="section about animate-rise">
+    <section id="about" class="section about" data-aos="fade-right">>
       <div class="container">
         <h2 class="section-title">Sobre Mim</h2>
         <p class="body-medium">
-          Engenheiro de dados com experiência em arquiteturas distribuídas, pipelines ETL/ELT, cloud, DevOps e automação com Python. Minha missão é transformar dados brutos em valor para negócios, combinando performance com escalabilidade.
+          Pós-graduado em Engenharia de Dados pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas pelo Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP). Atualmente, estou aprimorando meus conhecimentos em engenharia de dados, estudando processos ETL, computação em nuvem (AWS e Azure), Big Data, processamento distribuído com Apache Spark e Databricks, além de bancos de dados SQL e NoSQL como DuckDB, linguagens e ferramentas essenciais, como Python, Pandas, Apache Airflow, dbt e Apache Kafka, aplicando boas práticas de modelagem e otimização de dados. Apaixonado por Segurança da Informação, Redes e Computação em Nuvem, busco constantemente aprimorar minhas habilidades para atuar de forma eficiente na construção e manutenção de pipelines de dados escaláveis.
         </p>
       </div>
     </section>
 
     <!-- Skills -->
-    <section class="section skills animate-rise">
+    <section class="section skills" data-aos="zoom-in">
       <div class="container">
         <h2 class="section-title">Tecnologias</h2>
         <div class="skills-grid">
-          <span class="tag">Python</span>
-          <span class="tag">Airflow</span>
-          <span class="tag">Spark</span>
-          <span class="tag">SQL</span>
-          <span class="tag">MongoDB</span>
-          <span class="tag">Kafka</span>
-          <span class="tag">Docker</span>
-          <span class="tag">Git</span>
-          <span class="tag">Linux</span>
-          <span class="tag">AWS</span>
+          <span class="tag"><i data-lucide="code" class="lucide-icon"></i> Python</span>
+          <span class="tag"><i data-lucide="settings" class="lucide-icon"></i> Airflow</span>
+          <span class="tag"><i data-lucide="database" class="lucide-icon"></i> SQL</span>
+          <span class="tag"><i data-lucide="server" class="lucide-icon"></i> Kafka</span>
+          <span class="tag"><i data-lucide="hard-drive" class="lucide-icon"></i> MongoDB</span>
+          <span class="tag"><i data-lucide="radio" class="lucide-icon"></i> Kafka</span>
+          <span class="tag"><i data-lucide="box" class="lucide-icon"></i> Docker</span>
+          <span class="tag"><i data-lucide="git-branch" class="lucide-icon"></i> Git</span>
+          <span class="tag"><i data-lucide="terminal" class="lucide-icon"></i> Linux</span>
+          <span class="tag"><i data-lucide="cloud" class="lucide-icon"></i> AWS</span>
         </div>
       </div>
     </section>
 
-    <!-- Projetos -->
-    <section id="projects" class="section projects animate-rise">
-      <div class="container">
-        <h2 class="section-title">Projetos Destacados</h2>
-        <div id="project-list" class="project-list">
-          <p class="loading-text">Carregando projetos...</p>
-        </div>
-      </div>
-    </section>
+<section id="projects" class="section projects" data-aos="fade-left">
+  <div class="container">
+    <h2 class="section-title">Projetos Destacados</h2>
+
+    <!-- Campo de busca acima -->
+    <div class="project-controls">
+      <input type="text" id="projectSearch" placeholder="Buscar projeto (ex: Python, Docker...)">
+    </div>
+
+    <!-- Lista de projetos -->
+    <div id="project-list" class="project-list">
+      <p class="loading-text">Carregando projetos...</p>
+    </div>
+
+    <!-- Paginação embaixo -->
+    <div class="pagination" id="paginationControls">
+      <button id="prevPage" disabled>&laquo;</button>
+      <span id="pageInfo">Página 1</span>
+      <button id="nextPage">&raquo;</button>
+    </div>
+  </div>
+</section>
+
+
 
     <!-- Contato -->
-    <section id="contato" class="section contact animate-rise">
+    <section id="contato" class="section contact" data-aos="fade-up">
       <div class="container">
         <h2 class="section-title">Vamos conversar?</h2>
         <p class="body-medium">
@@ -163,19 +188,68 @@
   <!-- Rodapé -->
   <footer class="footer animate-fade">
     <div class="container">
-      <p class="body-medium">© 2024 Mateus Vicentin. Todos os direitos reservados.</p>
+      <p class="body-medium">© 2025 Mateus Vicentin. Todos os direitos reservados.</p>
     </div>
   </footer>
 
   <!-- Scripts -->
+
   <script>
-    const themeBtn = document.querySelector('[data-theme-btn]');
     const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-btn]');
+    const langBtn = document.getElementById('langToggle');
+    const menuToggle = document.getElementById('menuToggle');
 
     function updateThemeIcon() {
+      const darkIcon = document.querySelector('.material-symbols-outlined.dark');
+      const lightIcon = document.querySelector('.material-symbols-outlined.light');
       const isDark = html.getAttribute('data-theme') === 'dark';
-      document.querySelector('.material-symbols-outlined.dark').style.display = isDark ? 'none' : 'inline';
-      document.querySelector('.material-symbols-outlined.light').style.display = isDark ? 'inline' : 'none';
+      darkIcon.style.display = isDark ? 'none' : 'inline';
+      lightIcon.style.display = isDark ? 'inline' : 'none';
+    }
+
+    tsParticles.load("tsparticles", {
+  fullScreen: { enable: true },
+  background: { color: "transparent" },
+  particles: {
+    number: { value: 80, density: { enable: true, area: 800 } },
+    color: { value: "#2ecc71" },
+    shape: { type: "circle" },
+    opacity: { value: 0.5 },
+    size: { value: { min: 1, max: 2 } },
+    links: {
+      enable: true,
+      distance: 120,
+      color: "#2ecc71",
+      opacity: 0.4,
+      width: 1
+    },
+    move: {
+      enable: true,
+      speed: 1,
+      direction: "none",
+      outModes: { default: "bounce" }
+    }
+  },
+  interactivity: {
+    events: {
+      onHover: { enable: true, mode: "grab" },
+      onClick: { enable: false }
+    },
+    modes: {
+      grab: { distance: 150, line_linked: { opacity: 1 } }
+    }
+  },
+  detectRetina: true
+});
+
+
+    function updateThemeIcon() {
+      const darkIcon = document.querySelector('.material-symbols-outlined.dark');
+      const lightIcon = document.querySelector('.material-symbols-outlined.light');
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      darkIcon.style.display = isDark ? 'none' : 'inline';
+      lightIcon.style.display = isDark ? 'inline' : 'none';
     }
 
     themeBtn.addEventListener('click', () => {
@@ -185,28 +259,76 @@
       updateThemeIcon();
     });
 
+    langBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'pt' ? 'en' : 'pt';
+      applyTranslations();
+    });
+
+    menuToggle.addEventListener('click', () => {
+      document.getElementById('navMobile').classList.toggle('hidden');
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) html.setAttribute('data-theme', savedTheme);
+      const saved = localStorage.getItem('theme');
+      if (saved) html.setAttribute('data-theme', saved);
       updateThemeIcon();
       type();
       loadProjects();
-
       document.querySelectorAll('#navMobile a').forEach(link => {
-        link.addEventListener('click', () => {
-          document.getElementById('navMobile').classList.add('hidden');
-        });
+        link.addEventListener('click', () => document.getElementById('navMobile').classList.add('hidden'));
       });
     });
 
-    const typingElement = document.getElementById("typing");
-    const phrases = [" Engenheiro de Dados ", " Analista de Infraestrutura "];
+    let currentLang = 'pt';
+    const translations = {
+      pt: {
+        about: 'Sobre Mim',
+        aboutText: 'Pós-graduado em Engenharia de Dados pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas pelo Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP). Atualmente, estou aprimorando meus conhecimentos em engenharia de dados, estudando processos ETL, computação em nuvem (AWS e Azure), Big Data, processamento distribuído com Apache Spark e Databricks, além de bancos de dados SQL e NoSQL como DuckDB, linguagens e ferramentas essenciais, como Python, Pandas, Apache Airflow, dbt e Apache Kafka, aplicando boas práticas de modelagem e otimização de dados. Apaixonado por Segurança da Informação, Redes e Computação em Nuvem, busco constantemente aprimorar minhas habilidades para atuar de forma eficiente na construção e manutenção de pipelines de dados escaláveis.',
+        tech: 'Tecnologias',
+        projects: 'Projetos Destacados',
+        hero_title: 'Engenheiro de Dados e Analista de Infraestrutura',
+        contact: 'Vamos conversar?',
+        contactText: 'Estou disponível para colaborações, freelas ou oportunidades em engenharia de dados. Você pode me encontrar no LinkedIn, GitHub ou enviar um e-mail.',
+        viewProjects: 'Ver Projetos',
+        downloadCV: 'Baixar Currículo',
+        footer: '© 2025 Mateus Vicentin. Todos os direitos reservados.'
+      },
+      en: {
+        about: 'About Me',
+        aboutText: 'Postgraduate in Data Engineering from the Pontifical Catholic University of Minas Gerais (PUC Minas) and graduate in Systems Analysis and Development from the Federal Institute of Education, Science and Technology of São Paulo (IFSP). Currently enhancing my knowledge in data engineering, focusing on ETL processes, cloud computing (AWS and Azure), Big Data, distributed processing with Apache Spark and Databricks, as well as SQL and NoSQL databases such as DuckDB. I work with essential languages and tools like Python, Pandas, Apache Airflow, dbt, and Apache Kafka, applying best practices in data modeling and optimization. Passionate about Information Security, Networks, and Cloud Computing, I am constantly seeking to improve my skills to efficiently build and maintain scalable data pipelines.',
+        tech: 'Technologies',
+        projects: 'Featured Projects',
+        hero_title: 'Data Engineer and Infrastructure Analyst',
+        contact: "Let's talk?",
+        contactText: "I'm available for collaborations, freelance work, or data engineering opportunities. You can reach me on LinkedIn, GitHub or via email.",
+        viewProjects: 'View Projects',
+        downloadCV: 'Download CV',
+        footer: '© 2025 Mateus Vicentin. All rights reserved.'
+      }
+    };
+
+    function applyTranslations() {
+      const t = translations[currentLang];
+      document.querySelector('[href="#about"]').textContent = currentLang === 'pt' ? 'Sobre' : 'About';
+      document.querySelector('[href="#projects"]').textContent = currentLang === 'pt' ? 'Projetos' : 'Projects';
+      document.querySelector('[href="#contato"]').textContent = currentLang === 'pt' ? 'Contato' : 'Contact';
+      document.querySelectorAll('.section-title')[0].textContent = t.about;
+      document.querySelector('#about p').textContent = t.aboutText;
+      document.querySelectorAll('.section-title')[1].textContent = t.tech;
+      document.querySelectorAll('.section-title')[2].textContent = t.projects;
+      document.querySelectorAll('.section-title')[3].textContent = t.contact;
+      document.querySelector('#contato p').textContent = t.contactText;
+      document.querySelectorAll('.btn .label-large')[0].textContent = t.viewProjects;
+      document.querySelectorAll('.btn .label-large')[1].textContent = t.downloadCV;
+      document.querySelector('footer p').textContent = t.footer;
+    }
+
+    const typingElement = document.getElementById('typing');
+    const phrases = [' Engenheiro de Dados ', ' Analista de Infraestrutura '];
     let part = 0, i = 0, isDeleting = false;
     function type() {
       const current = phrases[part];
-      const display = isDeleting
-        ? current.substring(0, i--)
-        : current.substring(0, i++);
+      const display = isDeleting ? current.substring(0, i--) : current.substring(0, i++);
       typingElement.textContent = display;
       let speed = isDeleting ? 50 : 100;
       if (!isDeleting && i === current.length) {
@@ -219,88 +341,100 @@
       setTimeout(type, speed);
     }
 
-    const GITHUB_USERNAME = "mateusvicentin";
-    async function loadProjects() {
-      const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`);
-      const data = await res.json();
-      const container = document.getElementById("project-list");
-      document.querySelector(".loading-text")?.remove();
-      data.filter(r => !r.fork).slice(0, 6).forEach(repo => {
-        const techKeywords = ["Python","Docker","MongoDB","Spark","Apache","FastAPI"];
-        const tags = [];
-        if (repo.language) tags.push(`<span class="tag">${repo.language}</span>`);
-        techKeywords.forEach(k => {
-          if ((repo.description||"").toLowerCase().includes(k.toLowerCase()))
-            tags.push(`<span class="tag">${k}</span>`);
-        });
-        const title = repo.description || repo.name.replace(/-/g,' ');
-        container.innerHTML += `
-          <article class="card">
-            <div class="card-header">
-              <span class="material-symbols-outlined">folder</span>
-              <div class="tech-tags">${tags.join('')}</div>
-            </div>
-            <div class="card-content">
-              <h3 class="title-large">${title}</h3>
-              <a href="${repo.html_url}" target="_blank" class="btn btn-outline">
-                <span class="label-large">Ver no GitHub</span>
-                <div class="state-layer"></div>
-              </a>
-            </div>
-          </article>`;
-      });
-    }
+    let allProjects = [];
+let filteredProjects = [];
+let currentPage = 1;
+const perPage = 6;
 
-    document.getElementById("menuToggle").addEventListener("click", () => {
-      document.getElementById("navMobile").classList.toggle("hidden");
-    });
+const searchInput = document.getElementById('projectSearch');
+const container = document.getElementById('project-list');
+const pageInfo = document.getElementById('pageInfo');
+const prevPage = document.getElementById('prevPage');
+const nextPage = document.getElementById('nextPage');
 
-    const translations = {
-      pt: {
-        about: "Sobre Mim",
-        aboutText: "Engenheiro de dados com experiência em arquiteturas distribuídas, pipelines ETL/ELT, cloud, DevOps e automação com Python. Minha missão é transformar dados brutos em valor para negócios, combinando performance com escalabilidade.",
-        tech: "Tecnologias",
-        projects: "Projetos Destacados",
-        contact: "Vamos conversar?",
-        contactText: "Estou disponível para colaborações, freelas ou oportunidades em engenharia de dados. Você pode me encontrar no LinkedIn, GitHub ou enviar um e-mail.",
-        viewProjects: "Ver Projetos",
-        downloadCV: "Baixar Currículo",
-        footer: "© 2024 Mateus Vicentin. Todos os direitos reservados."
-      },
-      en: {
-        about: "About Me",
-        aboutText: "Data engineer with experience in distributed architectures, ETL/ELT pipelines, cloud, DevOps, and Python automation. My mission is to transform raw data into business value, combining performance with scalability.",
-        tech: "Technologies",
-        projects: "Featured Projects",
-        contact: "Let's talk?",
-        contactText: "I'm available for collaborations, freelance work, or data engineering opportunities. You can reach me on LinkedIn, GitHub or via email.",
-        viewProjects: "View Projects",
-        downloadCV: "Download CV",
-        footer: "© 2024 Mateus Vicentin. All rights reserved."
+async function loadProjects() {
+  const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
+  const data = await res.json();
+  allProjects = data.filter(r => !r.fork);
+  filteredProjects = allProjects;
+  renderProjects();
+}
+
+function renderProjects() {
+  container.innerHTML = '';
+  const start = (currentPage - 1) * perPage;
+  const paginated = filteredProjects.slice(start, start + perPage);
+
+  if (paginated.length === 0) {
+    container.innerHTML = '<p>Nenhum projeto encontrado.</p>';
+    pageInfo.textContent = 'Página 1';
+    prevPage.disabled = true;
+    nextPage.disabled = true;
+    return;
+  }
+
+  paginated.forEach(repo => {
+    const tags = [];
+    if (repo.language) tags.push(`<span class="tag">${repo.language}</span>`);
+    ['Python', 'Docker', 'MongoDB', 'Spark', 'Apache', 'FastAPI'].forEach(k => {
+      if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
+        tags.push(`<span class="tag">${k}</span>`);
       }
-    };
-
-    let currentLang = "pt";
-    document.getElementById("langToggle").addEventListener("click", () => {
-      currentLang = currentLang === "pt" ? "en" : "pt";
-      applyTranslations();
     });
 
-    function applyTranslations() {
-      const t = translations[currentLang];
-      document.querySelector('[href="#about"]').textContent = currentLang === "pt" ? "Sobre" : "About";
-      document.querySelector('[href="#projects"]').textContent = currentLang === "pt" ? "Projetos" : "Projects";
-      document.querySelector('[href="#contato"]').textContent = currentLang === "pt" ? "Contato" : "Contact";
-      document.querySelectorAll(".section-title")[0].textContent = t.about;
-      document.querySelector("#about p").textContent = t.aboutText;
-      document.querySelectorAll(".section-title")[1].textContent = t.tech;
-      document.querySelectorAll(".section-title")[2].textContent = t.projects;
-      document.querySelectorAll(".section-title")[3].textContent = t.contact;
-      document.querySelector("#contato p").textContent = t.contactText;
-      document.querySelectorAll(".btn .label-large")[0].textContent = t.viewProjects;
-      document.querySelectorAll(".btn .label-large")[1].textContent = t.downloadCV;
-      document.querySelector("footer p").textContent = t.footer;
-    }
+    const title = repo.description || repo.name.replace(/-/g, ' ');
+    container.innerHTML += `
+      <article class="card">
+        <div class="card-header" data-aos="flip-left">
+          <span class="material-symbols-outlined">folder</span>
+          <div class="tech-tags">${tags.join('')}</div>
+        </div>
+        <div class="card-content">
+          <h3 class="title-large">${title}</h3>
+          <a href="${repo.html_url}" target="_blank" class="btn btn-outline">
+            <span class="label-large">Ver no GitHub</span>
+            <div class="state-layer"></div>
+          </a>
+        </div>
+      </article>`;
+  });
+
+  const totalPages = Math.ceil(filteredProjects.length / perPage);
+  pageInfo.textContent = `Página ${currentPage}`;
+  prevPage.disabled = currentPage === 1;
+  nextPage.disabled = currentPage === totalPages;
+}
+
+// Eventos de paginação
+prevPage.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderProjects();
+  }
+});
+nextPage.addEventListener('click', () => {
+  const totalPages = Math.ceil(filteredProjects.length / perPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderProjects();
+  }
+});
+
+// Filtro de busca
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase();
+  filteredProjects = allProjects.filter(repo => {
+    const name = repo.name.toLowerCase();
+    const desc = (repo.description || '').toLowerCase();
+    return name.includes(term) || desc.includes(term);
+  });
+  currentPage = 1;
+  renderProjects();
+});
+
   </script>
+  <script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
