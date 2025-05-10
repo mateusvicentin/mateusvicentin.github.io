@@ -15,9 +15,129 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Estilos -->
+  <script src="./js/script.js" defer></script>
   <link rel="stylesheet" href="./css/style.css" />
   <!-- AOS CSS -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<script src="script.js" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const cores = [
+  "#2ecc71", // verde menta
+  "#3498db", // azul
+  "#9b59b6", // roxo
+  "#e67e22", // laranja queimado
+  "#1abc9c", // verde água
+  "#e84393", // rosa vibrante
+  "#f1c40f", // amarelo ouro
+  "#fd79a8", // rosa chiclete
+  "#00cec9", // ciano
+  "#6c5ce7", // azul violeta
+  "#fab1a0", // salmão claro
+  "#81ecec", // azul piscina claro
+  "#ffeaa7", // amarelo pastel
+  "#ff7675", // vermelho coral suave
+  "#55efc4"  // verde neon pastel
+];
+
+  const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
+
+  // Aplica para ambos temas
+  const root = document.documentElement;
+  root.style.setProperty('--primary', corAleatoria);
+
+  // Se quiser mudar hover de botão também (suavemente mais escura)
+  const hoverMap = {
+  "#2ecc71": "#27ae60",
+  "#3498db": "#2980b9",
+  "#9b59b6": "#8e44ad",
+  "#e67e22": "#d35400",
+  "#1abc9c": "#16a085",
+  "#e84393": "#c03976",
+  "#f1c40f": "#f39c12",
+  "#fd79a8": "#e05696",
+  "#00cec9": "#00b0ae",
+  "#6c5ce7": "#4834d4",
+  "#fab1a0": "#e17055",
+  "#81ecec": "#48c9c9",
+  "#ffeaa7": "#f1c40f",
+  "#ff7675": "#d63031",
+  "#55efc4": "#00b894"
+};
+  root.style.setProperty('--primary-hover', hoverMap[corAleatoria] || corAleatoria);
+});
+
+  window.onload = function() {
+    window.location.href = '#top';
+  };
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const cores = [
+    "#2ecc71", "#3498db", "#9b59b6", "#e67e22", "#1abc9c", "#e84393", "#f1c40f"
+  ];
+
+  const hoverMap = {
+    "#2ecc71": "#27ae60",
+    "#3498db": "#2980b9",
+    "#9b59b6": "#8e44ad",
+    "#e67e22": "#d35400",
+    "#1abc9c": "#16a085",
+    "#e84393": "#c03976",
+    "#f1c40f": "#f39c12"
+  };
+
+  const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
+  const hoverCor = hoverMap[corAleatoria] || corAleatoria;
+
+  // Aplica nos estilos do site
+  const root = document.documentElement;
+  root.style.setProperty('--primary', corAleatoria);
+  root.style.setProperty('--primary-hover', hoverCor);
+
+  // Aplica no tsParticles
+  tsParticles.load("tsparticles", {
+    fullScreen: { enable: true },
+    background: { color: "transparent" },
+    particles: {
+      number: { value: 80, density: { enable: true, area: 800 } },
+      color: { value: corAleatoria },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: { min: 1, max: 2 } },
+      links: {
+        enable: true,
+        distance: 120,
+        color: corAleatoria,
+        opacity: 0.4,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 1,
+        direction: "none",
+        outModes: { default: "bounce" }
+      }
+    },
+    interactivity: {
+      events: {
+        onHover: { enable: true, mode: "grab" },
+        onClick: { enable: false }
+      },
+      modes: {
+        grab: { distance: 150, line_linked: { opacity: 1 } }
+      }
+    },
+    detectRetina: true
+  });
+
+  // Atualiza os ícones Lucide depois da troca
+  lucide.createIcons();
+});
+</script>
 
 
 </head>
@@ -28,6 +148,7 @@
   <!-- AOS JS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
+
   AOS.init({
     duration: 1000, // duração das animações
     once: true      // anima uma vez apenas
@@ -235,40 +356,7 @@
       lightIcon.style.display = isDark ? 'inline' : 'none';
     }
 
-    tsParticles.load("tsparticles", {
-  fullScreen: { enable: true },
-  background: { color: "transparent" },
-  particles: {
-    number: { value: 80, density: { enable: true, area: 800 } },
-    color: { value: "#2ecc71" },
-    shape: { type: "circle" },
-    opacity: { value: 0.5 },
-    size: { value: { min: 1, max: 2 } },
-    links: {
-      enable: true,
-      distance: 120,
-      color: "#2ecc71",
-      opacity: 0.4,
-      width: 1
-    },
-    move: {
-      enable: true,
-      speed: 1,
-      direction: "none",
-      outModes: { default: "bounce" }
-    }
-  },
-  interactivity: {
-    events: {
-      onHover: { enable: true, mode: "grab" },
-      onClick: { enable: false }
-    },
-    modes: {
-      grab: { distance: 150, line_linked: { opacity: 1 } }
-    }
-  },
-  detectRetina: true
-});
+
 
 
     function updateThemeIcon() {
@@ -461,6 +549,7 @@ searchInput.addEventListener('input', () => {
 
   </script>
   <script>
+
   lucide.createIcons();
 </script>
 </body>
