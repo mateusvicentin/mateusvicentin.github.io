@@ -4,6 +4,35 @@ let allRepos = [];
 let currentPage = 1;
 const perPage = 6;
 
+// Sempre volta ao topo ao carregar
+window.addEventListener('load', function () {
+  setTimeout(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, 10);
+});
+
+// Força o scroll para o topo ao carregar/recarregar a página
+window.onload = function() {
+  window.scrollTo(0, 0);
+};
+
+// Opcional: Desabilita o scroll automático do navegador (ex.: ao usar o botão "Voltar")
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual';
+}
+
+// Remove hash da URL para evitar scroll automático
+if (window.location.hash) {
+  history.replaceState(null, null, window.location.pathname);
+}
+
+window.onload = function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
@@ -25,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-
 
   // Eventos de paginação
   document.getElementById('prevPage')?.addEventListener('click', () => {
