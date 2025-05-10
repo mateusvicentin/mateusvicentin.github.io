@@ -23,29 +23,29 @@ body {
 
 /* Tema escuro */
 :root {
-  --primary: #2ecc71;         /* verde menta moderno */
-  --on-primary: #ffffff;      /* texto branco sobre verde */
-  --background: #0a0f14;      /* um pouco mais escuro e neutro */
-  --on-background: #e1f2e9;   /* um leve tom esverdeado claro para o texto */
-  --surface: #111b1a;         /* superfícies com tom esverdeado */
-  --surface-container: #1d2e2a; /* containers discretos com contraste */
-  --outline-variant: #345c4f; /* bordas/sombras suaves verdes */
+  --primary: #2ecc71;
+  --on-primary: #ffffff;
+  --background: #0a0f14;
+  --on-background: #e1f2e9;
+  --surface: color-mix(in srgb, var(--primary) 10%, #000000); /* 🔄 dinâmico */
+  --surface-container: color-mix(in srgb, var(--primary) 5%, #000000);
+  --outline-variant: color-mix(in srgb, var(--primary) 30%, transparent);
   --radius-medium: 10px;
 }
 
 
-/* Tema claro */
+/* Tema claro tecnológico e suave */
+/* Tema claro suave com base creme */
 html[data-theme="light"] {
-  --primary: #2ecc71;           /* verde menta em destaque */
-  --on-primary: #ffffff;        /* texto branco sobre verde */
-  --background: #f4fdf7;        /* tom quase branco com leve toque de verde */
-  --on-background: #1c1f1d;     /* cinza quase preto para texto */
-  --surface: #ffffff;           /* caixas principais */
-  --surface-container: #e8f5ec; /* caixas internas ou contraste suave */
-  --outline-variant: #a8d5bd;   /* bordas e detalhes suaves em verde claro */
+  --primary: #2ecc71;
+  --on-primary: #ffffff;
+  --background: #e0d6c3;
+  --on-background: #1c1c1c;
+  --surface: color-mix(in srgb, var(--primary) 2%, #ffffff); /* bem sutil */
+  --surface-container: color-mix(in srgb, var(--primary) 4%, #f2f2f2);
+  --outline-variant: color-mix(in srgb, var(--primary) 25%, transparent);
   --radius-medium: 10px;
 }
-
 
 
 /* Container */
@@ -104,7 +104,7 @@ html[data-theme="light"] {
 .logo .gradient-text {
   font-size: 1.8rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  background: linear-gradient(90deg, var(--primary), var(--primary));
   background-clip: text;
 -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -307,6 +307,14 @@ html[data-theme="light"] {
   50% { border-color: var(--primary); }
 }
 
+.btn .material-symbols-outlined {
+  transition: transform 0.3s ease;
+}
+
+.btn:hover .material-symbols-outlined {
+  transform: rotate(5deg);
+}
+
 /* Botões e cards */
 .btn-wrapper {
   display: flex;
@@ -332,8 +340,8 @@ html[data-theme="light"] {
 }
 
 .btn:hover {
-  background-color: #27ae60;
-  transform: translateY(-2px);
+  background-color: var(--primary-hover);
+  transform: translateY(-2px) scale(1.05);
 }
 
 .btn-outline {
@@ -370,10 +378,11 @@ html[data-theme="light"] {
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: perspective(600px) rotateX(4deg);
   border: 1px solid var(--outline-variant);
-  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.15);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.15),
+    0 4px 12px color-mix(in srgb, var(--primary) 15%, transparent);
 }
 
 .card-header {
@@ -400,7 +409,7 @@ html[data-theme="light"] {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background-color: rgba(46, 204, 113, 0.1);
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
   color: var(--primary);
   border: 1px solid var(--primary);
   font-size: 0.75rem;
@@ -453,7 +462,9 @@ html[data-theme="light"] {
   position: absolute;
   inset: 0;
   border-radius: 16px;
-  background: linear-gradient(145deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.05));
+  background: linear-gradient(145deg,
+  color-mix(in srgb, var(--primary) 20%, transparent),
+  color-mix(in srgb, var(--primary) 5%, transparent));
   z-index: -1;
   transition: opacity 0.3s ease;
   opacity: 0;
@@ -463,7 +474,7 @@ html[data-theme="light"] {
   transform: scale(1.1) rotate(3deg);
   background: var(--primary);
   color: var(--on-primary);
-  box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
+  box-shadow: 0 0 12px var(--primary);
 }
 
 .social-btn:hover::before {
@@ -632,12 +643,17 @@ html[data-theme="light"] {
   height: 100%;
   z-index: -2;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(46, 204, 113, 0.05), rgba(0, 0, 0, 0.1));
+  background: linear-gradient(135deg,
+  color-mix(in srgb, var(--primary) 5%, transparent),
+  rgba(0, 0, 0, 0.1));
+
   transition: background 0.5s ease;
 }
 
 html[data-theme="light"] .tech-background {
-  background: linear-gradient(135deg, rgba(46, 204, 113, 0.05), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(135deg,
+  color-mix(in srgb, var(--primary) 5%, transparent),
+  rgba(255, 255, 255, 0.1));
 }
 
 #scrollProgress {
@@ -693,7 +709,8 @@ html[data-theme="light"] .tech-background {
   background-color: var(--primary);
   border-radius: 50%;
   z-index: 2;
-  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+
 }
 
 .timeline-item:nth-child(odd) .timeline-dot {
@@ -716,11 +733,34 @@ html[data-theme="light"] .tech-background {
   max-width: 90%;
   display: flex;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.timeline-content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 3px;
+  background: var(--primary);
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.timeline-content:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .timeline-content:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  transform: translateY(-4px); /* eleva o card suavemente */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* sombra ampla e difusa */
 } @media (max-width: 768px) {
   .timeline::before {
     left: 8px;
