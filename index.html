@@ -15,7 +15,6 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Estilos -->
-  <script src="./js/script.js" defer></script>
   <link rel="stylesheet" href="./css/style.css" />
   <!-- AOS CSS -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -75,6 +74,27 @@
 </script>
 
 <script>
+function showSkeletons() {
+  const container = document.getElementById('project-list');
+  container.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    container.innerHTML += `
+      <article class="card skeleton-card" data-aos="fade-up">
+        <div class="card-header">
+          <div class="skeleton skeleton-tags"></div>
+        </div>
+        <div class="card-content">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-line" style="width: 80%"></div>
+          <div class="skeleton skeleton-line" style="width: 60%"></div>
+        </div>
+      </article>
+    `;
+  }
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const cores = [
   "#2ecc71", "#3498db", "#9b59b6", "#e67e22", "#1abc9c", "#e84393", "#f1c40f",
@@ -214,6 +234,7 @@ detectRetina: true
           <a href="#about">Sobre</a>
           <a href="#projects">Projetos</a>
           <a href="#contato">Contato</a>
+          <a href="#trajetoria">Qualificações</a>
           <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" class="highlight">Currículo</a>
         </nav>
       </div>
@@ -238,6 +259,7 @@ detectRetina: true
         <a href="#about">Sobre</a>
         <a href="#projects">Projetos</a>
         <a href="#contato">Contato</a>
+        <a href="#trajetoria">Qualificações</a>
         <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank">Currículo</a>
       </nav>
     </div>
@@ -312,8 +334,10 @@ detectRetina: true
 
     <!-- Lista de projetos -->
     <div id="project-list" class="project-list">
-      <p class="loading-text">Carregando projetos...</p>
+      
     </div>
+
+
 
     <!-- Paginação embaixo -->
     <div class="pagination" id="paginationControls">
@@ -324,31 +348,110 @@ detectRetina: true
   </div>
 </section>
 
-<section id="experiencia" class="section experiencia" data-aos="fade-up">
+<section id="trajetoria" class="section" data-aos="fade-up">
   <div class="container">
-    <h2 class="section-title">Experiência Profissional</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3>Supervisor de Suporte Técnico</h3>
-          <p>Empresa X • 2022 - Atualmente</p>
-          <p>Responsável por coordenar equipe de suporte, monitoramento e infraestrutura.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3>Analista de Redes</h3>
-          <p>Empresa Y • 2020 - 2022</p>
-          <p>Gerenciamento de redes e segurança da informação.</p>
-        </div>
-      </div>
-      <!-- Adicione mais experiências conforme necessário -->
+    <h2 class="section-title">Qualificações</h2>
+
+    <!-- Botões de aba -->
+    <div class="btn-wrapper tab-buttons">
+
+
+<button class="btn tab-btn active" data-tab="experiencia">Experiência Profissional</button>
+<button class="btn tab-btn" data-tab="formacao">Formação Acadêmica</button>
+
     </div>
+
+    <!-- Experiência -->
+    <div class="tab-content" id="experiencia">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>Analista de Infraestrutura - Datacenter</h3>
+            <p>Flash Net Brasil • 2023 - Atualmente</p>
+            <p>Responsável por coordenar equipe de suporte, monitoramento e infraestrutura.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>Analista de Redes</h3>
+            <p>Empresa Y • 2020 - 2022</p>
+            <p>Gerenciamento de redes e segurança da informação.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formação -->
+    <div class="tab-content hidden" id="formacao">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>Pós-graduação em Engenharia de Dados</h3>
+            <p>PUC Minas • 2023 - 2024</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>ADS - Análise e Desenvolvimento de Sistemas</h3>
+            <p>IFSP • 2018 - 2020</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Alternância entre abas de experiência/formação
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.tab;
+
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      tabContents.forEach(content => {
+        content.classList.toggle('hidden', content.id !== target);
+      });
+    });
+  });
+
+  // Botão "Voltar ao Topo"
+  const backToTop = document.getElementById("backToTop");
+  window.addEventListener("scroll", () => {
+    backToTop.classList.toggle("visible", window.scrollY > 300);
+  });
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+
+  // Barra de progresso de scroll
+  const scrollBar = document.getElementById("scrollProgress");
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    if (scrollBar) scrollBar.style.width = `${progress}%`;
+  });
+
+  // Tema
+  const html = document.documentElement;
+  const saved = localStorage.getItem('theme');
+  if (saved) html.setAttribute('data-theme', saved);
+
+  // Ativa ícones Lucide
+  lucide.createIcons();
+});
+</script>
+
   </div>
 </section>
-
 
 
 
@@ -484,6 +587,7 @@ detectRetina: true
     let part = 0, i = 0, isDeleting = false;
     function type() {
       const current = phrases[part];
+      
       const display = isDeleting ? current.substring(0, i--) : current.substring(0, i++);
       typingElement.textContent = display;
       let speed = isDeleting ? 50 : 100;
@@ -509,6 +613,7 @@ const prevPage = document.getElementById('prevPage');
 const nextPage = document.getElementById('nextPage');
 
 async function loadProjects() {
+  showSkeletons();
   const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
   const data = await res.json();
   allProjects = data.filter(r => !r.fork);
@@ -532,7 +637,12 @@ function renderProjects() {
   paginated.forEach(repo => {
     const tags = [];
     if (repo.language) tags.push(`<span class="tag">${repo.language}</span>`);
-    ['Python', 'Docker', 'MongoDB', 'Spark', 'Apache', 'FastAPI'].forEach(k => {
+    [ 'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
+    'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
+    'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
+    'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
+    'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
+    'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming'].forEach(k => {
       if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
         tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
       }
@@ -593,5 +703,10 @@ searchInput.addEventListener('input', () => {
 
   lucide.createIcons();
 </script>
+
+<button id="backToTop" title="Voltar ao topo">↑</button>
+<div class="custom-cursor"></div>
+<script src="./js/script.js" defer></script>
+
 </body>
 </html>
