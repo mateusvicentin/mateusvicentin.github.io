@@ -60,7 +60,7 @@
       container.innerHTML = '';
       for (let i = 0; i < 6; i++) {
         container.innerHTML += `
-          <article class="card skeleton-card" data-aos="fade-up-right">
+          <article class="card skeleton-card" >
             <div class="card-header">
               <div class="skeleton skeleton-tags"></div>
             </div>
@@ -234,7 +234,7 @@
   <main role="main">
 
     <!-- Hero -->
-    <section class="section hero" data-aos="fade-up-right">
+    <section class="section hero" >
       <div class="container hero-flex">
         <div class="hero-left">
           <h1 class="display-small">
@@ -255,14 +255,14 @@
         </div>
         <div class="hero-right">
           <div class="profile-glow">
-            <img src="./assets/images/profile.jpg" alt="Mateus Vicentin" class="profile-pic" data-aos="zoom-out" loading="lazy" />
+            <img src="./assets/images/profile.jpg" alt="Mateus Vicentin" class="profile-pic" loading="lazy" />
           </div>
         </div>
       </div>
     </section>
 
     <!-- Sobre -->
-    <section id="about" class="section about" data-aos="fade-down-left">
+    <section id="about" class="section about" >
       <div class="container">
         <h2 class="section-title">Sobre Mim</h2>
         <p class="body-medium">
@@ -272,7 +272,7 @@
     </section>
 
     <!-- Skills -->
-    <section class="section skills" data-aos="flip-up">
+    <section class="section skills" >
       <div class="container">
         <h2 class="section-title">Habilidades</h2>
         <div class="skills-grid">
@@ -290,7 +290,7 @@
       </div>
     </section>
 
-    <section id="projects" class="section projects" data-aos="flip-down">
+    <section id="projects" class="section projects" >
       <div class="container">
         <h2 class="section-title">Projetos</h2>
 
@@ -311,7 +311,7 @@
       </div>
     </section>
 
-    <section id="trajetoria" class="section" data-aos="zoom-in-down">
+    <section id="trajetoria" class="section" >
     <div class="container">
       <h2 class="section-title">Qualificações</h2>
 
@@ -418,22 +418,42 @@
   document.addEventListener('DOMContentLoaded', () => {
 
     // 🔥 CLIMA - OpenWeather
-    async function fetchWeather() {
+   async function fetchWeather() {
   const apiKey = "ccc2d6d0f68233555ad513894193b7ce";
   const city = "Votuporanga";
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
+  // Mapeamento de condições para ícones
+  const iconMap = {
+    Clear: '☀️',
+    Clouds: '☁️',
+    Rain: '🌧️',
+    Thunderstorm: '⛈️',
+    Drizzle: '🌦️',
+    Snow: '❄️',
+    Mist: '🌫️',
+    Haze: '🌁',
+    Fog: '🌁',
+    Smoke: '💨',
+    Dust: '🌪️'
+  };
+
   try {
     const res = await fetch(url);
     const data = await res.json();
+
+    const weatherType = data.weather[0].main;
+    const icon = iconMap[weatherType] || '🌡️';
     const desc = data.weather[0].description;
     const temp = Math.round(data.main.temp);
-    document.getElementById("weather").textContent =  ` 🌤️ ${city} • ${temp}°C, ${desc}`;
+
+    document.getElementById("weather").textContent = `${icon} ${city} • ${temp}°C, ${desc}`;
   } catch (err) {
     document.getElementById("weather").textContent = "";
     console.error("Erro ao buscar clima:", err);
   }
 }
+
 
 
     fetchWeather();
@@ -571,7 +591,7 @@
 
 
     <!-- Contato -->
-    <section id="contato" class="section contact" data-aos="fade-down-right">
+    <section id="contato" class="section contact" >
       <div class="container">
         <h2 class="section-title">Vamos conversar?</h2>
         <p class="body-medium">
@@ -777,7 +797,7 @@
         const title = repo.description || repo.name.replace(/-/g, ' ');
         container.innerHTML += `
           <article class="card">
-            <div class="card-header" data-aos="fade-down-left">
+            <div class="card-header" >
               <div class="tech-tags">${tags.join('')}</div>
             </div>
             <div class="card-content">
@@ -867,6 +887,33 @@
     // ... seu código de tsParticles, tema, scroll, abas, projetos ...
   </script>
 
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.section, .card, .timeline-item, .hero-flex').forEach(el => {
+      gsap.from(el, {
+        opacity: 0,
+        y: 50,
+        duration: 0.9,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+        }
+      });
+    });
+  });
+
+  const profile = document.querySelector('.profile-glow');
+window.addEventListener('scroll', () => {
+  const offset = window.scrollY * 0.2;
+  profile.style.transform = `translateY(${offset}px)`;
+});
+
+</script>
+
+
   <!-- Script de abertura/fechamento do modal -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -907,6 +954,8 @@
 </body>
 </html>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <button id="backToTop" title="Voltar ao topo">↑</button>
   <div class="custom-cursor"></div>
