@@ -10,7 +10,8 @@
   <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -27,7 +28,8 @@
         "#2ecc71",
         "#ff0033",
         "#1e90ff",
-        "#ff6f00"
+        "#ff6f00",
+        "#8a2be2"
       ];
 
       const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
@@ -42,6 +44,7 @@
         "#ff0033": "#ff0033",
         "#1e90ff": "#1e90ff",
         "#ff6f00": "#ff6f00",
+        "#8a2be2": "#8a2be2",
       };
       root.style.setProperty('--primary-hover', hoverMap[corAleatoria] || corAleatoria);
     });
@@ -76,7 +79,8 @@
         "#2ecc71",
         "#ff0033",
         "#1e90ff",
-        "#ff6f00"
+        "#ff6f00",
+        "#8a2be2"
       ];
 
       const hoverMap = {
@@ -84,6 +88,7 @@
         "#ff0033": "#ff0033",
         "#1e90ff": "#1e90ff",
         "#ff6f00": "#ff6f00",
+        "#8a2be2": "#8a2be2",
       };
 
       const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
@@ -858,7 +863,7 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 1000, once: true });
+    AOS.init({ duration: 1000, once: false });
     // ... seu código de tsParticles, tema, scroll, abas, projetos ...
   </script>
 
