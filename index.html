@@ -264,8 +264,8 @@
     <!-- Sobre -->
     <section id="about" class="section about" >
       <div class="container">
-        <h2 class="section-title">Sobre Mim</h2>
-        <p class="body-medium">
+        <div data-layer> <h2 class="section-title">Sobre Mim</h2> </div>
+        <div data-layer>
           Pós-graduado em Engenharia de Dados pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas pelo Instituto Federal de Educação, Ciência e Tecnologia de São Paulo (IFSP). Atualmente, estou aprimorando meus conhecimentos em engenharia de dados, estudando processos ETL, computação em nuvem (AWS e Azure), Big Data, processamento distribuído com Apache Spark e Databricks, além de bancos de dados SQL e NoSQL como DuckDB, linguagens e ferramentas essenciais, como Python, Pandas, Apache Airflow, dbt e Apache Kafka, aplicando boas práticas de modelagem e otimização de dados. Apaixonado por Segurança da Informação, Redes e Computação em Nuvem, busco constantemente aprimorar minhas habilidades para atuar de forma eficiente na construção e manutenção de pipelines de dados escaláveis.
         </p>
       </div>
@@ -273,9 +273,9 @@
 
     <!-- Skills -->
     <section class="section skills" >
-      <div class="container">
+      <div data-layer class="container">
         <h2 class="section-title">Habilidades</h2>
-        <div class="skills-grid">
+        <div data-layer></div> <div class="skills-grid">
           <span class="tag"><i data-lucide="code" class="lucide-icon"></i> Python</span>
           <span class="tag"><i data-lucide="settings" class="lucide-icon"></i> Airflow</span>
           <span class="tag"><i data-lucide="database" class="lucide-icon"></i> SQL</span>
@@ -284,26 +284,27 @@
           <span class="tag"><i data-lucide="radio" class="lucide-icon"></i> Kafka</span>
           <span class="tag"><i data-lucide="box" class="lucide-icon"></i> Docker</span>
           <span class="tag"><i data-lucide="git-branch" class="lucide-icon"></i> Git</span>
-          <span class="tag"><i data-lucide="terminal" class="lucide-icon"></i> Linux</span>
+          <span class="tag"><i data-lucide="terminal" class="lucide-icon"></i> Linux</span de Infraestruturaan>
           <span class="tag"><i data-lucide="cloud" class="lucide-icon"></i> AWS</span>
+        </div>
         </div>
       </div>
     </section>
 
     <section id="projects" class="section projects" >
-      <div class="container">
-        <h2 class="section-title">Projetos</h2>
+      <div data-layer class="container">
+        <div data-layer> <h2 class="section-title">Projetos</h2> </div>
 
         <!-- Campo de busca acima -->
-        <div class="project-controls">
+        <div data-layer class="project-controls">
           <input type="text" id="projectSearch" placeholder="Buscar projeto (ex: Python, Docker...)">
         </div>
 
         <!-- Lista de projetos -->
-        <div id="project-list" class="project-list"></div>
+        <div data-layer id="project-list" class="project-list"></div>
 
         <!-- Paginação embaixo -->
-        <div class="pagination" id="paginationControls">
+        <div data-layer class="pagination" id="paginationControls">
           <button id="prevPage" disabled>&laquo;</button>
           <span id="pageInfo">Página 1</span>
           <button id="nextPage">&raquo;</button>
@@ -312,23 +313,23 @@
     </section>
 
     <section id="trajetoria" class="section" >
-    <div class="container">
-      <h2 class="section-title">Qualificações</h2>
+    <div data-layer class="container">
+      <div data-layer> <h2 class="section-title">Qualificações</h2> </div>
 
       <!-- Botões de aba -->
-      <div class="btn-wrapper tab-buttons">
+      <div data-layer class="btn-wrapper tab-buttons">
         <button class="btn tab-btn active" data-tab="experiencia">Experiência Profissional</button>
         <button class="btn tab-btn" data-tab="formacao">Formação Acadêmica</button>
       </div>
 
       <!-- Experiência -->
-      <div class="tab-content" id="experiencia">
+      <div data-layer class="tab-content" id="experiencia">
         <div class="timeline">
 
           <!-- Item 1 -->
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
+          <div  class="timeline-item">
+            <div  class="timeline-dot"></div>
+            <div  class="timeline-content">
               <h3>Analista de Infraestrutura – Datacenter</h3>
               <p>Flash Net Brasil • 2023 - Atualmente</p>
               <button class="plus-btn" title="Ver mais">
@@ -352,8 +353,8 @@
 
           <!-- Item 2 -->
           <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
+            <div  class="timeline-dot"></div>
+            <div  class="timeline-content">
               <h3>Analista de Infraestrutura</h3>
               <p>TOTVS • 2023 - 2023</p>
             <button class="plus-btn" title="Ver mais">
@@ -415,6 +416,33 @@
       </div>
 
       <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('lang');
+    if (!savedLang) {
+      const lang = navigator.language.startsWith('en') ? 'en' : 'pt';
+      localStorage.setItem('lang', lang);
+      document.documentElement.setAttribute('lang', lang);
+
+      // 👇 Chama função de tradução se você tiver
+      if (typeof applyLanguage === 'function') {
+        applyLanguage(lang);
+      }
+    }
+  });
+const langBtn = document.querySelector('.lang-btn');
+langBtn.addEventListener('click', () => {
+  const current = localStorage.getItem('lang') || 'pt';
+  const next = current === 'pt' ? 'en' : 'pt';
+  localStorage.setItem('lang', next);
+  document.documentElement.setAttribute('lang', next);
+  applyLanguage(next); // função que aplica as traduções
+});
+
+</script>
+
+      <script>
+
+
   document.addEventListener('DOMContentLoaded', () => {
 
     // 🔥 CLIMA - OpenWeather
@@ -486,6 +514,32 @@
       }
     });
   });
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Scroll Reveal com camadas
+  gsap.utils.toArray('.section').forEach((section, i) => {
+    const layers = section.querySelectorAll('[data-layer]');
+    layers.forEach((el, idx) => {
+      gsap.fromTo(el, 
+        { y: 80 * (idx + 1), opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            toggleActions: 'play none none reset'
+          }
+        });
+    });
+  });
+});
+
 </script>
 
 
@@ -593,11 +647,12 @@
     <!-- Contato -->
     <section id="contato" class="section contact" >
       <div class="container">
-        <h2 class="section-title">Vamos conversar?</h2>
-        <p class="body-medium">
+        <div data-layer> <h2 class="section-title">Vamos conversar?</h2> </div>
+        <div data-layer><p class="body-medium">
           Estou disponível para colaborações, freelas ou oportunidades em engenharia de dados. Você pode me encontrar no LinkedIn, GitHub ou enviar um e-mail.
         </p>
-        <div class="social-links">
+        </div>
+        <div data-layer class="social-links">
           <a href="https://github.com/mateusvicentin" target="_blank" class="social-btn" title="GitHub">
             <i data-lucide="github"></i>
           </a>
