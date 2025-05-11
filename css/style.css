@@ -65,6 +65,21 @@ body {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+/* Exemplo para usar: */
+.card, .timeline-content, .modal-content, .topbar, .btn, .nav-mobile {
+  background: rgba(255, 255, 255, 0.05); /* já presente */
+  backdrop-filter: blur(12px); /* intensificado */
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
 
 
 /* Tema claro tecnológico e suave */
@@ -73,9 +88,9 @@ html[data-theme="light"] {
   --primary: #2ecc71;
   --on-primary: #ffffff;
   --background: #e0d6c3;
-  --on-background: #1c1c1c;
-  --surface: color-mix(in srgb, var(--primary) 2%, #ffffff); /* bem sutil */
-  --surface-container: color-mix(in srgb, var(--primary) 4%, #f2f2f2);
+  --on-background: #1a1a1a;
+  --surface: #fdfaf5; /* bem sutil */
+  --surface-container: #f5f1e8;
   --outline-variant: color-mix(in srgb, var(--primary) 25%, transparent);
   --radius-medium: 10px;
 }
@@ -522,6 +537,7 @@ html[data-theme="light"] {
   0% { left: -100%; }
   100% { left: 100%; }
 }
+
 
 .card:hover {
   transform: perspective(800px) rotateY(4deg) rotateX(2deg);
