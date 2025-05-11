@@ -1,61 +1,46 @@
-// script.js
-
 let allRepos = [];
 let currentPage = 1;
 const perPage = 6;
 
-// Sempre volta ao topo ao carregar
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
   setTimeout(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, 10);
 });
 
-// Força o scroll para o topo ao carregar/recarregar a página
-window.onload = function() {
-  window.scrollTo(0, 0);
-};
-
-// Opcional: Desabilita o scroll automático do navegador (ex.: ao usar o botão "Voltar")
-if (history.scrollRestoration) {
-  history.scrollRestoration = 'manual';
-}
-
-// Remove hash da URL para evitar scroll automático
-if (window.location.hash) {
-  history.replaceState(null, null, window.location.pathname);
-}
-
-window.onload = function() {
+window.onload = function () {
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
 };
 
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual';
+}
+if (window.location.hash) {
+  history.replaceState(null, null, window.location.pathname);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const tabButtons = document.querySelectorAll(".tab-btn");
-  const tabContents = document.querySelectorAll(".tab-content");
+  // Alternância entre abas: Experiência e Formação
+const tabButtons = document.querySelectorAll(".tab-btn");
+const tabContents = document.querySelectorAll(".tab-content");
 
-  tabButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      // Troca botão ativo
-      tabButtons.forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
+tabButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    tabButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
 
-      // Troca conteúdo visível
-      const target = button.dataset.tab;
-      tabContents.forEach(content => {
-        if (content.id === target) {
-          content.classList.remove("hidden");
-        } else {
-          content.classList.add("hidden");
-        }
-      });
+    const target = button.dataset.tab;
+    tabContents.forEach(content => {
+      content.classList.toggle("hidden", content.id !== target);
     });
   });
+});
 
-  // Eventos de paginação
+
+  // Paginação de projetos
   document.getElementById('prevPage')?.addEventListener('click', () => {
     if (currentPage > 1) {
       currentPage--;
@@ -71,30 +56,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Filtro de busca
+  
+
+  // Busca de projetos
   document.getElementById('projectSearch')?.addEventListener('input', () => {
     currentPage = 1;
     renderProjects();
   });
 
-  // Barra de progresso de scroll
+  // Cursor personalizado
+  document.addEventListener("mousemove", e => {
+    const cursor = document.querySelector(".custom-cursor");
+    if (!cursor) return;
+    requestAnimationFrame(() => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+    });
+  });
+
+  // Barra de progresso de scroll e botão "Voltar ao Topo"
+  const scrollBar = document.getElementById("scrollProgress");
+  const backToTop = document.getElementById("backToTop");
+
   window.addEventListener("scroll", () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = (scrollTop / docHeight) * 100;
-    const scrollBar = document.getElementById("scrollProgress");
-    if (scrollBar) {
-      scrollBar.style.width = `${progress}%`;
-    }
+
+    if (scrollBar) scrollBar.style.width = `${progress}%`;
+    if (backToTop) backToTop.classList.toggle("visible", scrollTop > 300);
   });
 
-  // Carrega os projetos ao iniciar
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Carrega os projetos do GitHub
   loadProjects();
 });
 
-// Busca os projetos do GitHub
+// Exibe skeletons enquanto carrega projetos
+function showSkeletons() {
+  const container = document.getElementById('project-list');
+  container.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    container.innerHTML += `
+      <div class="skeleton-card">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-line" style="width: 90%;"></div>
+        <div class="skeleton-line" style="width: 70%;"></div>
+      </div>
+    `;
+  }
+}
+
+// Carrega repositórios do GitHub
 async function loadProjects() {
   try {
+    showSkeletons();
     const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
     const data = await res.json();
     allRepos = data.filter(r => !r.fork);
@@ -104,7 +125,7 @@ async function loadProjects() {
   }
 }
 
-// Renderiza os projetos
+// Renderiza os cards de projeto
 function renderProjects() {
   const container = document.getElementById('project-list');
   const search = document.getElementById('projectSearch')?.value.toLowerCase() || "";
