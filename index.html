@@ -814,55 +814,109 @@ langBtn.addEventListener('click', () => {
     const nextPage = document.getElementById('nextPage');
 
     async function loadProjects() {
-      showSkeletons();
-      const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
-      const data = await res.json();
-      allProjects = data.filter(r => !r.fork);
-      filteredProjects = allProjects;
-      renderProjects();
+  showSkeletons();
+  const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
+  const data = await res.json();
+  allProjects = data.filter(r => !r.fork);
+  filteredProjects = allProjects;
+  renderProjects();
+}
+
+function renderProjects() {
+  container.innerHTML = '';
+  const start = (currentPage - 1) * perPage;
+  const paginated = filteredProjects.slice(start, start + perPage);
+
+  if (paginated.length === 0) {
+    container.innerHTML = '<p>Nenhum projeto encontrado.</p>';
+    pageInfo.textContent = 'Página 1';
+    prevPage.disabled = true;
+    nextPage.disabled = true;
+    return;
+  }
+
+  paginated.forEach(repo => {
+    const tags = [];
+    if (repo.language) {
+      tags.push(`<span class="tag">${repo.language}</span>`);
     }
 
-    function renderProjects() {
-      container.innerHTML = '';
-      const start = (currentPage - 1) * perPage;
-      const paginated = filteredProjects.slice(start, start + perPage);
-
-      if (paginated.length === 0) {
-        container.innerHTML = '<p>Nenhum projeto encontrado.</p>';
-        pageInfo.textContent = 'Página 1';
-        prevPage.disabled = true;
-        nextPage.disabled = true;
-        return;
+    [
+      'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
+      'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
+      'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
+      'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
+      'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
+      'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming'
+    ].forEach(k => {
+      if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
+        tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
       }
+    });
 
-      paginated.forEach(repo => {
-        const tags = [];
-        if (repo.language) tags.push(`<span class="tag">${repo.language}</span>`);
-        [ 'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
-        'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
-        'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
-        'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
-        'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
-        'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming'].forEach(k => {
-          if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
-            tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
-          }
-        });
+    const title = repo.description || repo.name.replace(/-/g, ' ');
 
-        const title = repo.description || repo.name.replace(/-/g, ' ');
-        container.innerHTML += `
-          <article class="card">
-            <div class="card-header" >
-              <div class="tech-tags">${tags.join('')}</div>
-            </div>
-            <div class="card-content">
-              <h3 class="title-large">${title}</h3>
-            </div>
-            <a href="${repo.html_url}" target="_blank" class="github-icon" title="Ver no GitHub">
-              <i data-lucide="github"></i>
-            </a>
-          </article>`;
-      });
+    const createdDate = new Date(repo.created_at).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+    const updatedDate = new Date(repo.updated_at).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+
+    container.innerHTML += `
+  <article class="card">
+    <div class="card-header">
+      <div class="tech-tags">${tags.join('')}</div>
+    </div>
+    <div class="card-content">
+      <h3 class="title-large">${title}</h3>
+    </div>
+    <div class="card-footer">
+      <p class="body-small">📅 Criado: ${createdDate}</p>
+      <p class="body-small">🔄 Atualizado: ${updatedDate}</p>
+    </div>
+    <a href="${repo.html_url}" target="_blank" class="github-icon" title="Ver no GitHub">
+      <i data-lucide="github"></i>
+    </a>
+  </article>`;
+  });
+
+  lucide.createIcons();
+
+  const totalPages = Math.ceil(filteredProjects.length / perPage);
+  pageInfo.textContent = `Página ${currentPage}`;
+  prevPage.disabled = currentPage === 1;
+  nextPage.disabled = currentPage === totalPages;
+}
+
+// Eventos de paginação
+prevPage.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderProjects();
+  }
+});
+
+nextPage.addEventListener('click', () => {
+  const totalPages = Math.ceil(filteredProjects.length / perPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderProjects();
+  }
+});
+
+// Filtro de busca
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase();
+  filteredProjects = allProjects.filter(repo => {
+    const name = repo.name.toLowerCase();
+    const desc = (repo.description || '').toLowerCase();
+    return name.includes(term) || desc.includes(term);
+  });
+  currentPage = 1;
+  renderProjects();
+});
+
 
       lucide.createIcons();
 
@@ -870,7 +924,7 @@ langBtn.addEventListener('click', () => {
       pageInfo.textContent = `Página ${currentPage}`;
       prevPage.disabled = currentPage === 1;
       nextPage.disabled = currentPage === totalPages;
-    }
+    
 
     // Eventos de paginação
     prevPage.addEventListener('click', () => {
