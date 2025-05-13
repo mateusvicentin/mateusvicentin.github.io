@@ -853,7 +853,8 @@ function renderProjects() {
       'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
       'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
       'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
-      'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming'
+      'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming',
+      'DuckDB', 'Streamlit'
     ].forEach(k => {
       if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
         tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
