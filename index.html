@@ -861,32 +861,28 @@ function renderProjects() {
 
   paginated.forEach(repo => {
     const tags = [];
-    if (repo.language) {
-      tags.push(`<span class="tag">${repo.language}</span>`);
-    }
+    const tagSet = new Set();
 
-    [
-      'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
-      'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
-      'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
-      'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
-      'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
-      'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming',
-      'DuckDB', 'Streamlit'
-    ].forEach(k => {
-      if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
-        tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
-      }
-    });
+if (repo.language && !tagSet.has(repo.language)) {
+  tagSet.add(repo.language);
+  tags.push(`<span class="tag">${repo.language}</span>`);
+}
 
-    const title = repo.description || repo.name.replace(/-/g, ' ');
-
-    const createdDate = new Date(repo.created_at).toLocaleDateString('pt-BR', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-    const updatedDate = new Date(repo.updated_at).toLocaleDateString('pt-BR', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
+[
+  'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
+  'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
+  'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
+  'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
+  'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
+  'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming',
+  'DuckDB', 'Streamlit'
+  
+].forEach(k => {
+  if ((repo.description || '').toLowerCase().includes(k.toLowerCase()) && !tagSet.has(k)) {
+    tagSet.add(k);
+    tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
+  }
+});
 
     container.innerHTML += `
   <article class="card">
