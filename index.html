@@ -66,7 +66,7 @@ google-site-verification: google2056b675d5d06d42.html>
       const container = document.getElementById('project-list');
       container.innerHTML = '';
       for (let i = 0; i < 6; i++) {
-        container.innerHTML += `
+        container.innerHTML += 
           <article class="card skeleton-card" >
             <div class="card-header">
               <div class="skeleton skeleton-tags"></div>
@@ -77,7 +77,7 @@ google-site-verification: google2056b675d5d06d42.html>
               <div class="skeleton skeleton-line" style="width: 60%"></div>
             </div>
           </article>
-        `;
+        ;
       }
     }
 
@@ -470,7 +470,7 @@ langBtn.addEventListener('click', () => {
    async function fetchWeather() {
   const apiKey = "ccc2d6d0f68233555ad513894193b7ce";
   const city = "Votuporanga";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
+  const url = https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br;
 
   // Mapeamento de condições para ícones
   const iconMap = {
@@ -496,7 +496,7 @@ langBtn.addEventListener('click', () => {
     const desc = data.weather[0].description;
     const temp = Math.round(data.main.temp);
 
-    document.getElementById("weather").textContent = `${icon} ${city} • ${temp}°C, ${desc}`;
+    document.getElementById("weather").textContent = ${icon} ${city} • ${temp}°C, ${desc};
   } catch (err) {
     document.getElementById("weather").textContent = "";
     console.error("Erro ao buscar clima:", err);
@@ -733,7 +733,7 @@ langBtn.addEventListener('click', () => {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const progress = (scrollTop / docHeight) * 100;
-        if (scrollBar) scrollBar.style.width = `${progress}%`;
+        if (scrollBar) scrollBar.style.width = ${progress}%;
       });
 
       // Tema
@@ -839,7 +839,7 @@ langBtn.addEventListener('click', () => {
 
     async function loadProjects() {
   showSkeletons();
-  const res = await fetch(`https://api.github.com/users/mateusvicentin/repos?sort=updated`);
+  const res = await fetch(https://api.github.com/users/mateusvicentin/repos?sort=updated);
   const data = await res.json();
   allProjects = data.filter(r => !r.fork);
   filteredProjects = allProjects;
@@ -861,30 +861,34 @@ function renderProjects() {
 
   paginated.forEach(repo => {
     const tags = [];
-    const tagSet = new Set();
+    if (repo.language) {
+      tags.push(<span class="tag">${repo.language}</span>);
+    }
 
-if (repo.language && !tagSet.has(repo.language)) {
-  tagSet.add(repo.language);
-  tags.push(`<span class="tag">${repo.language}</span>`);
-}
+    [
+      'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
+      'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
+      'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
+      'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
+      'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
+      'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming',
+      'DuckDB', 'Streamlit'
+    ].forEach(k => {
+      if ((repo.description || '').toLowerCase().includes(k.toLowerCase())) {
+        tags.push(<span class="tag" data-label="${k.toLowerCase()}">${k}</span>);
+      }
+    });
 
-[
-  'Python', 'Docker', 'MongoDB', 'Spark', 'Apache Hop', 'FastAPI',
-  'Airflow', 'Kafka', 'SQL', 'NoSQL', 'PostgreSQL', 'MySQL',
-  'InfluxDB', 'dbt', 'ETL', 'Data Lake', 'BigQuery', 'Redshift',
-  'AWS', 'GCP', 'Azure', 'Parquet', 'Delta Lake', 'Pandas',
-  'Polars', 'Dask', 'Hadoop', 'Presto', 'Trino', 'Superset',
-  'PowerBI', 'Tableau', 'Grafana', 'Athena', 'REST API', 'Streaming',
-  'DuckDB', 'Streamlit'
-  
-].forEach(k => {
-  if ((repo.description || '').toLowerCase().includes(k.toLowerCase()) && !tagSet.has(k)) {
-    tagSet.add(k);
-    tags.push(`<span class="tag" data-label="${k.toLowerCase()}">${k}</span>`);
-  }
-});
+    const title = repo.description || repo.name.replace(/-/g, ' ');
 
-    container.innerHTML += `
+    const createdDate = new Date(repo.created_at).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+    const updatedDate = new Date(repo.updated_at).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+
+    container.innerHTML += 
   <article class="card">
     <div class="card-header">
       <div class="tech-tags">${tags.join('')}</div>
@@ -899,13 +903,13 @@ if (repo.language && !tagSet.has(repo.language)) {
     <a href="${repo.html_url}" target="_blank" class="github-icon" title="Ver no GitHub">
       <i data-lucide="github"></i>
     </a>
-  </article>`;
+  </article>;
   });
 
   lucide.createIcons();
 
   const totalPages = Math.ceil(filteredProjects.length / perPage);
-  pageInfo.textContent = `Página ${currentPage}`;
+  pageInfo.textContent = Página ${currentPage};
   prevPage.disabled = currentPage === 1;
   nextPage.disabled = currentPage === totalPages;
 }
@@ -942,7 +946,7 @@ searchInput.addEventListener('input', () => {
       lucide.createIcons();
 
       const totalPages = Math.ceil(filteredProjects.length / perPage);
-      pageInfo.textContent = `Página ${currentPage}`;
+      pageInfo.textContent = Página ${currentPage};
       prevPage.disabled = currentPage === 1;
       nextPage.disabled = currentPage === totalPages;
     
@@ -1037,7 +1041,7 @@ searchInput.addEventListener('input', () => {
   const profile = document.querySelector('.profile-glow');
 window.addEventListener('scroll', () => {
   const offset = window.scrollY * 0.2;
-  profile.style.transform = `translateY(${offset}px)`;
+  profile.style.transform = translateY(${offset}px);
 });
 
 </script>
