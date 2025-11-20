@@ -2022,11 +2022,6 @@ body::before {
     display: none; /* deixa só o MV no mobile para ficar limpo */
   }
 
-  /* Alternativa: reduzir, em vez de sumir */
-  /*
-  .logo-text span:first-child { font-size: .85rem; }
-  .logo-sub { font-size: .7rem; }
-  */
 
   #themeToggle {
     grid-area: theme;
@@ -2074,3 +2069,4 @@ body::before {
   -webkit-columns: 1 !important;
   -moz-columns: 1 !important;
 }
+
