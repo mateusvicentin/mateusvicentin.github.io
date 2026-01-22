@@ -1,5 +1,8 @@
+<!-- =======================
+     index.html (COMPLETO)
+======================= -->
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR" data-theme="dark" data-lang="pt">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,342 +11,424 @@
   <meta name="description" content="Portfólio de Mateus Vicentin, Engenheiro de Dados e Analista de Infraestrutura.">
   <meta name="author" content="Mateus Vicentin">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://mateusvicentin.com.br/" />
 
-  <!-- Favicon -->
   <link rel="icon" href="./assets/images/profile.png" type="image/png">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest" defer></script>
 
-  <!-- Styles -->
   <link rel="stylesheet" href="./css/style.css" />
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Mateus Vicentin",
-    "url": "https://mateusvicentin.com.br",
-    "image": "https://mateusvicentin.com.br/assets/images/profile.png",
-    "jobTitle": ["Engenheiro de Dados", "Analista de Infraestrutura"],
-    "alumniOf": [
-      {
-        "@type": "CollegeOrUniversity",
-        "name": "Pontifícia Universidade Católica de Minas Gerais"
-      },
-      {
-        "@type": "CollegeOrUniversity",
-        "name": "Instituto Federal de São Paulo"
-      }
-    ],
-    "sameAs": [
-      "https://www.linkedin.com/in/mateusvicentin",
-      "https://github.com/mateusvicentin"
-    ]
-  }
-  </script>
 </head>
 
 <body>
-  <!-- Fundo neutro com leve detalhe -->
-  <div class="bg-layer">
-    <div class="bg-gradient"></div>
+  <div class="fx">
+    <div class="fx-grid"></div>
+    <div class="fx-blob fx-blob--a"></div>
+    <div class="fx-blob fx-blob--b"></div>
+    <div class="fx-noise"></div>
   </div>
 
-  <!-- Barra de progresso de scroll -->
-  <div id="scrollProgress"></div>
+  <div id="scrollProgress" aria-hidden="true"></div>
 
-  <!-- Header -->
-  <header class="header">
+  <header class="header" role="banner">
     <div class="container header-inner">
-      <a href="#hero" class="logo">
-        <span class="logo-mark">MV</span>
+      <a href="#hero" class="logo" aria-label="Ir para o topo">
         <span class="logo-text">
           <span>Mateus Vicentin</span>
-          <span class="logo-sub">Engenharia de Dados & Infra</span>
+          <span class="logo-sub" data-i18n="logo.sub">Engenharia de Dados & Infra</span>
         </span>
       </a>
 
-      <nav class="nav">
-        <a href="#about">Sobre</a>
-        <a href="#skills">Stack</a>
-        <a href="#projects">Projetos</a>
-        <a href="#journey">Trajetória</a>
-        <a href="#contact" class="nav-cta">Contato</a>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#about" data-i18n="nav.about">Sobre</a>
+        <a href="#skills" data-i18n="nav.stack">Habilidades</a>
+        <a href="#projects" data-i18n="nav.projects">Projetos</a>
+        <a href="#journey" data-i18n="nav.journey">Trajetória</a>
+        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#contact" class="nav-cta" data-i18n="nav.contact">Contato</a>
       </nav>
 
-      <!-- Toggle de tema -->
-      <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
-        <span class="material-symbols-outlined">dark_mode</span>
-      </button>
+      <div class="header-actions">
+        <button class="theme-toggle" id="langToggle" aria-label="Traduzir para inglês" type="button" title="Translate">
+          <span class="material-symbols-outlined">translate</span>
+        </button>
 
-      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
-        <i class="material-symbols-outlined">menu</i>
-      </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" type="button" title="Tema">
+          <span class="material-symbols-outlined">dark_mode</span>
+        </button>
 
-      <nav class="nav-mobile" id="navMobile">
-        <a href="#about">Sobre</a>
-        <a href="#skills">Stack</a>
-        <a href="#projects">Projetos</a>
-        <a href="#journey">Trajetória</a>
-        <a href="#contact">Contato</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" type="button">
+          <i class="material-symbols-outlined">menu</i>
+        </button>
+      </div>
+
+      <nav class="nav-mobile" id="navMobile" aria-label="Navegação mobile">
+        <a href="#about" data-i18n="nav.about">Sobre</a>
+        <a href="#skills" data-i18n="nav.stack">Habilidades</a>
+        <a href="#projects" data-i18n="nav.projects">Projetos</a>
+        <a href="#journey" data-i18n="nav.journey">Trajetória</a>
+        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#contact" data-i18n="nav.contact">Contato</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- HERO -->
     <section id="hero" class="section hero">
       <div class="container hero-grid">
         <div class="hero-left reveal">
-          <p class="pill">Engenharia de Dados & Infraestrutura</p>
+          <p class="pill" data-i18n="hero.pill">Engenharia de Dados & Infraestrutura</p>
+
           <h1 class="hero-title">
             <span id="typing" class="typing gradient-text"></span>
           </h1>
-          <p class="hero-subtitle">
+
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
             Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.
           </p>
-          <div class="hero-actions">
-            <a href="#projects" class="btn primary">
-              <span class="material-symbols-outlined">dashboard</span>
-              <span>Ver projetos</span>
-            </a>
-            <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn ghost">
-              <span class="material-symbols-outlined">download</span>
-              <span>Baixar currículo</span>
-            </a>
-          </div>
+
+        <div class="hero-actions hero-actions--single">
+  <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary">
+    <span class="material-symbols-outlined">download</span>
+    <span data-i18n="hero.cta.resume">Baixar currículo</span>
+  </a>
+</div>
+
         </div>
 
         <div class="hero-right reveal">
-          <div class="avatar-orbit">
+          <div class="avatar-shell">
+            <div class="avatar-ring" aria-hidden="true"></div>
             <img
               src="./assets/images/profile.png"
               alt="Foto de Mateus Vicentin"
               class="avatar"
               loading="lazy"
             />
+            <div class="scanline" aria-hidden="true"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SOBRE -->
     <section id="about" class="section">
       <div class="container narrow">
         <header class="section-header reveal">
-          <p class="section-kicker">Quem sou</p>
-          <h2 class="section-title gradient-text">Sobre mim</h2>
+          <h2 class="section-title gradient-text" data-i18n="about.title">Sobre mim</h2>
         </header>
-        <div class="section-body reveal">
-          <p>
-  Pós-graduado em <strong>Engenharia de Dados</strong> pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em
-  <strong>Análise e Desenvolvimento de Sistemas</strong> pelo Instituto Federal de São Paulo (IFSP). Tenho me aprofundado na área de Engenharia de Dados com foco na construção de soluções escaláveis para coleta, processamento, modelagem e análise de dados.
-</p>
 
-<p>
-  Minha atuação envolve o desenvolvimento de <strong>pipelines de dados</strong> eficientes, utilizando processos ETL/ELT, conceitos de Big Data e arquiteturas modernas em nuvem (<strong>AWS</strong> e <strong>Azure</strong>). Nesse contexto, aplico ferramentas amplamente consolidadas no ecossistema de dados, como <strong>Apache Spark</strong>, <strong>Databricks</strong> e <strong>Apache Kafka</strong> para processamento distribuído e streaming; <strong>Apache Airflow</strong> e <strong>dbt</strong> para orquestração de fluxos e transformação de dados; além de <strong>Python</strong> e <strong>Pandas</strong> para análise e manipulação.
-</p>
+        <div class="section-body glass reveal">
+          <p data-i18n-html="about.p1">
+            Pós-graduado em <strong>Engenharia de Dados</strong> pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em
+            <strong>Análise e Desenvolvimento de Sistemas</strong> pelo Instituto Federal de São Paulo (IFSP). Tenho me aprofundado na área de Engenharia de Dados com foco na construção de soluções escaláveis para coleta, processamento, modelagem e análise de dados.
+          </p>
 
-<p>
-  Também trabalho com bancos de dados relacionais e não relacionais, como <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong> e <strong>NoSQL</strong>, garantindo a persistência, governança e disponibilidade dos dados para diferentes aplicações analíticas e operacionais.
-</p>
+          <p data-i18n-html="about.p2">
+            Minha atuação envolve o desenvolvimento de <strong>pipelines de dados</strong> eficientes, utilizando processos ETL/ELT, conceitos de Big Data e arquiteturas modernas em nuvem (<strong>AWS</strong> e <strong>Azure</strong>). Nesse contexto, aplico ferramentas amplamente consolidadas no ecossistema de dados, como <strong>Apache Spark</strong>, <strong>Databricks</strong> e <strong>Apache Kafka</strong> para processamento distribuído e streaming; <strong>Apache Airflow</strong> e <strong>dbt</strong> para orquestração de fluxos e transformação de dados; além de <strong>Python</strong> e <strong>Pandas</strong> para análise e manipulação.
+          </p>
 
-<p>
-  Sou apaixonado por áreas como <strong>Segurança da Informação</strong>, <strong>Redes</strong>, <strong>Infraestrutura de TI</strong> e <strong>Computação em Nuvem</strong>.
-  Atualmente, estou disponível para colaborar em projetos que envolvam engenharia de dados, com o objetivo de aplicar na prática os conhecimentos que venho adquirindo e aprofundar minhas habilidades técnicas.
-</p>
+          <p data-i18n-html="about.p3">
+            Também trabalho com bancos de dados relacionais e não relacionais, como <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong> e <strong>NoSQL</strong>, garantindo a persistência, governança e disponibilidade dos dados para diferentes aplicações analíticas e operacionais.
+          </p>
 
-
+          <p data-i18n-html="about.p4">
+            Sou apaixonado por áreas como <strong>Segurança da Informação</strong>, <strong>Redes</strong>, <strong>Infraestrutura de TI</strong> e <strong>Computação em Nuvem</strong>.
+            Atualmente, estou disponível para colaborar em projetos que envolvam engenharia de dados, com o objetivo de aplicar na prática os conhecimentos que venho adquirindo e aprofundar minhas habilidades técnicas.
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- SKILLS -->
-    <section id="skills" class="section">
-      <div class="container">
-        <header class="section-header reveal">
-          <p class="section-kicker">Stack</p>
-          <h2 class="section-title gradient-text">Principais tecnologias</h2>
-        </header>
+<section id="skills" class="section">
+  <div class="container">
+    <header class="section-header reveal">
+      <h2 class="section-title gradient-text" data-i18n="skills.title">Habilidades</h2>
+    </header>
 
-        <!-- Chips soltos, sem caixas ao redor -->
-        <div class="skills-free-grid reveal">
-          <span class="chip"><i data-lucide="code-2"></i> Python</span>
-          <span class="chip"><i data-lucide="workflow"></i> Airflow</span>
-          <span class="chip"><i data-lucide="boxes"></i> dbt</span>
-          <span class="chip"><i data-lucide="sparkles"></i> Spark</span>
+    <div class="skills-wrap glass reveal">
+      <div class="skills-free-grid">
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="code-2"></i></span>
+          <span class="chip-txt">Python</span>
+        </span>
 
-          <span class="chip"><i data-lucide="radio"></i> Kafka</span>
-          <span class="chip"><i data-lucide="server"></i> APIs</span>
-          <span class="chip"><i data-lucide="network"></i> ETL/ELT</span>
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="workflow"></i></span>
+          <span class="chip-txt">Airflow</span>
+        </span>
 
-          <span class="chip"><i data-lucide="database"></i> SQL</span>
-          <span class="chip"><i data-lucide="hard-drive"></i> MongoDB</span>
-          <span class="chip"><i data-lucide="layers"></i> Data Lakes</span>
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="boxes"></i></span>
+          <span class="chip-txt">dbt</span>
+        </span>
 
-          <span class="chip"><i data-lucide="cloud"></i> Azure</span>
-          <span class="chip"><i data-lucide="cloudy"></i> AWS</span>
-          <span class="chip"><i data-lucide="ship"></i> Docker</span>
-          <span class="chip"><i data-lucide="terminal"></i> Linux</span>
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="sparkles"></i></span>
+          <span class="chip-txt">Spark</span>
+        </span>
 
-          <span class="chip"><i data-lucide="activity"></i> Zabbix</span>
-          <span class="chip"><i data-lucide="bar-chart-3"></i> Grafana</span>
-          <span class="chip"><i data-lucide="phone"></i> VoIP</span>
-          <span class="chip"><i data-lucide="server-cog"></i> NetBox</span>
-          <span class="chip"><i data-lucide="phone-forwarded"></i> PABX</span>
-          <span class="chip"><i data-lucide="voicemail"></i> Issabel</span>
-          <span class="chip"><i data-lucide="database"></i> TrueNAS</span>
-          <span class="chip"><i data-lucide="shield"></i> NGINX</span>
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="radio"></i></span>
+          <span class="chip-txt">Kafka</span>
+        </span>
 
-        </div>
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="server"></i></span>
+          <span class="chip-txt">APIs</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="network"></i></span>
+          <span class="chip-txt">ETL/ELT</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="database"></i></span>
+          <span class="chip-txt">SQL</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="hard-drive"></i></span>
+          <span class="chip-txt">MongoDB</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="layers"></i></span>
+          <span class="chip-txt">Data Lakes</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="cloud"></i></span>
+          <span class="chip-txt">Azure</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="cloudy"></i></span>
+          <span class="chip-txt">AWS</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="ship"></i></span>
+          <span class="chip-txt">Docker</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="terminal"></i></span>
+          <span class="chip-txt">Linux</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="activity"></i></span>
+          <span class="chip-txt">Zabbix</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="bar-chart-3"></i></span>
+          <span class="chip-txt">Grafana</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="phone"></i></span>
+          <span class="chip-txt">VoIP</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="server-cog"></i></span>
+          <span class="chip-txt">NetBox</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="phone-forwarded"></i></span>
+          <span class="chip-txt">PABX</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="voicemail"></i></span>
+          <span class="chip-txt">Issabel</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="database"></i></span>
+          <span class="chip-txt">TrueNAS</span>
+        </span>
+
+        <span class="chip">
+          <span class="chip-ico"><i data-lucide="shield"></i></span>
+          <span class="chip-txt">NGINX</span>
+        </span>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- PROJETOS -->
+
     <section id="projects" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <p class="section-kicker">GitHub</p>
-          <h2 class="section-title gradient-text">Projetos em destaque</h2>
+          <h2 class="section-title gradient-text" data-i18n="projects.title">Projetos</h2>
           <p class="section-subtitle">
-            Lista automática dos repositórios públicos do GitHub
-            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer">@mateusvicentin</a>.
+            <span data-i18n="projects.subtitle.prefix">GitHub</span>
+            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer">@mateusvicentin</a>
           </p>
         </header>
 
         <div class="projects-controls reveal">
-          <div class="input-wrapper">
+          <div class="input-wrapper" role="search">
             <span class="material-symbols-outlined">search</span>
             <input
               type="text"
               id="projectSearch"
+              data-i18n-placeholder="projects.search.placeholder"
               placeholder="Buscar projeto por nome, tecnologia ou descrição..."
+              autocomplete="off"
             />
           </div>
           <span id="projectCount" class="project-count">Carregando repositórios...</span>
         </div>
 
-        <div id="projectList" class="projects-grid reveal"></div>
+        <div id="projectList" class="projects-grid reveal" aria-live="polite"></div>
 
-        <div class="pagination reveal">
-          <button id="prevPage" disabled>&laquo; Anterior</button>
-          <span id="pageInfo">Página 1</span>
-          <button id="nextPage">Próxima &raquo;</button>
+        <div class="pagination reveal" role="navigation" aria-label="Paginação de projetos">
+          <button id="prevPage" disabled type="button" data-i18n="projects.pagination.prev">&laquo; Anterior</button>
+          <span id="pageInfo" data-i18n="projects.pagination.page">Página 1</span>
+          <button id="nextPage" type="button" data-i18n="projects.pagination.next">Próxima &raquo;</button>
         </div>
       </div>
     </section>
 
-    <!-- TRAJETÓRIA -->
     <section id="journey" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <p class="section-kicker">Carreira</p>
-          <h2 class="section-title gradient-text">Trajetória profissional e acadêmica</h2>
+          <h2 class="section-title gradient-text" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
         </header>
 
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="experience">Experiência</button>
-          <button class="tab-btn" data-tab="education">Formação</button>
+        <div class="tabs reveal" role="tablist" aria-label="Trajetória">
+          <button class="tab-btn active" data-tab="experience" role="tab" aria-selected="true" type="button" data-i18n="journey.tabs.experience">Experiência</button>
+          <button class="tab-btn" data-tab="education" role="tab" aria-selected="false" type="button" data-i18n="journey.tabs.education">Formação</button>
         </div>
 
-        <!-- Experiência -->
-        <div id="experience" class="tab-panel">
-          <div class="futuristic-timeline">
-            <div class="futuristic-line"></div>
+        <div id="experience" class="tab-panel" role="tabpanel">
+          <div class="timeline">
+            <div class="timeline-line" aria-hidden="true"></div>
 
-            <div class="futuristic-item">
-              <div class="futuristic-connector"></div>
-              <div class="futuristic-connector-line"></div>
-              <div class="futuristic-card">
-                <h3>Analista de Infraestrutura</h3>
-                <span class="futuristic-meta">Flash Net Brasil • 2023 - Atual</span>
-                <p>Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.</p>
-                <button class="futuristic-button timeline-more" data-modal-target="exp-flashnet-atual">Ver detalhes</button>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card glass">
+                <h3 data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
+                <span class="timeline-meta" data-i18n="journey.exp1.meta">Flash Net Brasil • 2023 - Atual</span>
+                <p data-i18n="journey.exp1.desc">Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.</p>
+                <button class="timeline-btn timeline-more" data-modal-target="exp-flashnet-atual" type="button" data-i18n="journey.details">Ver detalhes</button>
               </div>
             </div>
 
-            <div class="futuristic-item">
-              <div class="futuristic-connector"></div>
-              <div class="futuristic-connector-line"></div>
-              <div class="futuristic-card">
-                <h3>Analista de Infraestrutura</h3>
-                <span class="futuristic-meta meta-passada">TOTVS • 2023</span>
-                <p>Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.</p>
-                <button class="futuristic-button timeline-more" data-modal-target="exp-totvs">Ver detalhes</button>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card glass">
+                <h3 data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
+                <span class="timeline-meta meta-passada" data-i18n="journey.exp2.meta">TOTVS • 2023</span>
+                <p data-i18n="journey.exp2.desc">Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.</p>
+                <button class="timeline-btn timeline-more" data-modal-target="exp-totvs" type="button" data-i18n="journey.details">Ver detalhes</button>
               </div>
             </div>
 
-            <div class="futuristic-item">
-              <div class="futuristic-connector"></div>
-              <div class="futuristic-connector-line"></div>
-              <div class="futuristic-card">
-                <h3>Analista de Qualidade</h3>
-                <span class="futuristic-meta meta-passada">Flash Net Brasil • 2018 - 2023</span>
-                <p>Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.</p>
-                <button class="futuristic-button timeline-more" data-modal-target="exp-flashnet-qualidade">Ver detalhes</button>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card glass">
+                <h3 data-i18n="journey.exp3.role">Analista de Qualidade</h3>
+                <span class="timeline-meta meta-passada" data-i18n="journey.exp3.meta">Flash Net Brasil • 2018 - 2023</span>
+                <p data-i18n="journey.exp3.desc">Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.</p>
+                <button class="timeline-btn timeline-more" data-modal-target="exp-flashnet-qualidade" type="button" data-i18n="journey.details">Ver detalhes</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Educação -->
-        <div id="education" class="tab-panel hidden">
-          <div class="futuristic-timeline">
-            <div class="futuristic-line"></div>
+        <div id="education" class="tab-panel hidden" role="tabpanel">
+          <div class="timeline">
+            <div class="timeline-line" aria-hidden="true"></div>
 
-            <div class="futuristic-item">
-              <div class="futuristic-connector"></div>
-              <div class="futuristic-connector-line"></div>
-              <div class="futuristic-card">
-                <h3>Pós-Graduação em Engenharia de Dados</h3>
-                <span class="futuristic-meta">PUC Minas • 2024 - 2025</span>
-                <p>Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.</p>
-                <button class="futuristic-button timeline-more" data-modal-target="edu-puc">Ver disciplinas</button>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card glass">
+                <h3 data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
+                <span class="timeline-meta" data-i18n="journey.edu1.meta">PUC Minas • 2024 - 2025</span>
+                <p data-i18n="journey.edu1.desc">Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.</p>
+                <button class="timeline-btn timeline-more" data-modal-target="edu-puc" type="button" data-i18n="journey.subjects">Ver disciplinas</button>
               </div>
             </div>
 
-            <div class="futuristic-item">
-              <div class="futuristic-connector"></div>
-              <div class="futuristic-connector-line"></div>
-              <div class="futuristic-card">
-                <h3>Tecnólogo em Análise e Desenvolvimento de Sistemas</h3>
-                <span class="futuristic-meta">IFSP • 2016 - 2020</span>
-                <p>Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.</p>
-                <button class="futuristic-button timeline-more" data-modal-target="edu-ifsp">Ver disciplinas</button>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card glass">
+                <h3 data-i18n="journey.edu2.title">Tecnólogo em Análise e Desenvolvimento de Sistemas</h3>
+                <span class="timeline-meta" data-i18n="journey.edu2.meta">IFSP • 2016 - 2020</span>
+                <p data-i18n="journey.edu2.desc">Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.</p>
+                <button class="timeline-btn timeline-more" data-modal-target="edu-ifsp" type="button" data-i18n="journey.subjects">Ver disciplinas</button>
               </div>
             </div>
-
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ✅ CERTIFICAÇÕES (layout automático + logo como fundo com degradê) -->
+    <section id="certifications" class="section">
+      <div class="container narrow">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="certs.title">Certificações</h2>
+        </header>
+
+        <div class="certs-list reveal" role="list">
+
+          <!-- INTELBRAS -->
+<article
+  class="cert-item glass"
+  role="listitem"
+  style="--cert-bg:url('https://i.vimeocdn.com/video/1317363291-6796ca477fb906d5467d90d0282a8af6cc6833608b65d5472c0a437b0bcd09fd-d?f=webp')"
+>
+  <div class="cert-logo-wrap" aria-hidden="true"></div>
+
+  <div class="cert-content">
+    <div class="cert-head">
+      <h3 class="cert-title" data-i18n="certs.c2.name">ICC-A Telefonia IP (Intelbras)</h3>
+
+      <div class="cert-right">
+        <a
+          class="cert-go"
+          href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir certificado Intelbras"
+          title="Abrir certificado"
+        >
+          <i data-lucide="arrow-up-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</article>
+
+
         </div>
       </div>
     </section>
 
-    <!-- CONTATO -->
     <section id="contact" class="section">
       <div class="container narrow">
         <header class="section-header reveal">
-          <p class="section-kicker">Contato</p>
-          <h2 class="section-title gradient-text">Vamos conversar?</h2>
-          <p class="section-subtitle">
-            Aberto para colaborações, freelas e oportunidades em engenharia de dados
-            e infraestrutura.
-          </p>
+          <h2 class="section-title gradient-text" data-i18n="contact.title">Vamos conversar?</h2>
         </header>
 
         <div class="contact-grid reveal">
-          <div class="contact-card">
-            <h3>Onde me encontrar</h3>
-            <p>Escolha o canal que fizer mais sentido para o seu contexto:</p>
+          <div class="contact-card glass">
+            <h3 data-i18n="contact.where.title">Onde me encontrar</h3>
+            <p data-i18n="contact.where.desc">Escolha o canal que fizer mais sentido para o seu contexto:</p>
             <div class="social-row">
               <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
                 <i data-lucide="github"></i>
@@ -360,12 +445,12 @@
             </div>
           </div>
 
-          <div class="contact-card">
-            <h3>Direto ao ponto</h3>
-            <p>Se preferir, pode enviar um e-mail direto com contexto técnico, stack atual e objetivo do projeto.</p>
+          <div class="contact-card glass">
+            <h3 data-i18n="contact.direct.title">Direto ao ponto</h3>
+            <p data-i18n="contact.direct.desc">Se preferir, pode enviar um e-mail direto com contexto técnico, stack atual e objetivo do projeto.</p>
             <a href="mailto:mateusvicentin8@gmail.com" class="btn primary full">
               <span class="material-symbols-outlined">mail</span>
-              <span>Enviar e-mail</span>
+              <span data-i18n="contact.direct.cta">Enviar e-mail</span>
             </a>
           </div>
         </div>
@@ -373,33 +458,27 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-inner">
-      <span>© 2025 Mateus Vicentin.</span>
-      <span class="footer-secondary">Construído com foco em dados, performance e simplicidade.</span>
+      <span>© 2026 Mateus Vicentin.</span>
     </div>
   </footer>
 
-  <!-- Modal genérico -->
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="modal-dialog">
-      <button class="modal-close" aria-label="Fechar">
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Detalhes">
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" aria-label="Fechar" type="button">
         <i data-lucide="x"></i>
       </button>
       <div id="modalBody" class="modal-body"></div>
     </div>
   </div>
 
-  <!-- Botão voltar ao topo -->
-  <button id="backToTop" class="back-to-top" aria-label="Voltar ao topo">
+  <button id="backToTop" class="back-to-top" aria-label="Voltar ao topo" type="button">
     <i data-lucide="arrow-up"></i>
   </button>
 
-  <!-- Cursor customizado -->
-  <div class="cursor" id="cursor"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
 
-  <!-- Script principal -->
   <script src="./js/script.js" defer></script>
 </body>
 </html>
