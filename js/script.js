@@ -1,15 +1,292 @@
-/* ============================================================
-   CONFIG
-============================================================ */
+/* =======================
+   js/script.js (COMPLETO)
+======================= */
+
 const GITHUB_USER = "mateusvicentin";
-const PER_PAGE = 6;
+const PER_PAGE = 3;
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-/* ============================================================
-   THEME TOGGLE (Dark ↔ Light com LocalStorage)
-============================================================ */
+let currentLang = "pt";
+let typingTimer = null;
+
+const I18N = {
+  pt: {
+    "logo.sub": "Engenharia de Dados & Infra",
+
+    "nav.about": "Sobre",
+    "nav.stack": "Habilidades",
+    "nav.projects": "Projetos",
+    "nav.journey": "Trajetória",
+    "nav.contact": "Contato",
+    "nav.certs": "Certificações",
+
+    "hero.pill": "Engenharia de Dados & Infraestrutura",
+    "hero.subtitle": "Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.",
+    "hero.cta.projects": "Ver projetos",
+    "hero.cta.resume": "Baixar currículo",
+    "hero.cta.linkedin": "Ver LinkedIn",
+
+    "about.kicker": "Quem sou",
+    "about.title": "Sobre mim",
+    "about.p1": `Pós-graduado em <strong>Engenharia de Dados</strong> pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo Instituto Federal de São Paulo (IFSP). Tenho me aprofundado na área de Engenharia de Dados com foco na construção de soluções escaláveis para coleta, processamento, modelagem e análise de dados.`,
+    "about.p2": `Minha atuação envolve o desenvolvimento de <strong>pipelines de dados</strong> eficientes, utilizando processos ETL/ELT, conceitos de Big Data e arquiteturas modernas em nuvem (<strong>AWS</strong> e <strong>Azure</strong>). Nesse contexto, aplico ferramentas amplamente consolidadas no ecossistema de dados, como <strong>Apache Spark</strong>, <strong>Databricks</strong> e <strong>Apache Kafka</strong> para processamento distribuído e streaming; <strong>Apache Airflow</strong> e <strong>dbt</strong> para orquestração de fluxos e transformação de dados; além de <strong>Python</strong> e <strong>Pandas</strong> para análise e manipulação.`,
+    "about.p3": `Também trabalho com bancos de dados relacionais e não relacionais, como <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong> e <strong>NoSQL</strong>, garantindo a persistência, governança e disponibilidade dos dados para diferentes aplicações analíticas e operacionais.`,
+    "about.p4": `Sou apaixonado por áreas como <strong>Segurança da Informação</strong>, <strong>Redes</strong>, <strong>Infraestrutura de TI</strong> e <strong>Computação em Nuvem</strong>. Atualmente, estou disponível para colaborar em projetos que envolvam engenharia de dados, com o objetivo de aplicar na prática os conhecimentos que venho adquirindo e aprofundar minhas habilidades técnicas.`,
+
+    "skills.kicker": "Stack",
+    "skills.title": "Habilidades",
+
+    "projects.kicker": "GitHub",
+    "projects.title": "Projetos",
+    "projects.subtitle.prefix": "GitHub",
+    "projects.search.placeholder": "Buscar projeto por nome, tecnologia ou descrição...",
+    "projects.pagination.prev": "« Anterior",
+    "projects.pagination.next": "Próxima »",
+    "projects.pagination.page": "Página 1",
+
+    "journey.kicker": "Carreira",
+    "journey.title": "Trajetória profissional e acadêmica",
+    "journey.tabs.experience": "Experiência",
+    "journey.tabs.education": "Formação",
+    "journey.details": "Ver detalhes",
+    "journey.subjects": "Ver disciplinas",
+
+    "journey.exp1.role": "Analista de Infraestrutura",
+    "journey.exp1.meta": "Flash Net Brasil • 2023 - Atual",
+    "journey.exp1.desc": "Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.",
+
+    "journey.exp2.role": "Analista de Infraestrutura",
+    "journey.exp2.meta": "TOTVS • 2023",
+    "journey.exp2.desc": "Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.",
+
+    "journey.exp3.role": "Analista de Qualidade",
+    "journey.exp3.meta": "Flash Net Brasil • 2018 - 2023",
+    "journey.exp3.desc": "Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.",
+
+    "journey.edu1.title": "Pós-Graduação em Engenharia de Dados",
+    "journey.edu1.meta": "PUC Minas • 2024 - 2025",
+    "journey.edu1.desc": "Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.",
+
+    "journey.edu2.title": "Tecnólogo em Análise e Desenvolvimento de Sistemas",
+    "journey.edu2.meta": "IFSP • 2016 - 2020",
+    "journey.edu2.desc": "Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.",
+
+    "certs.kicker": "Certificações",
+    "certs.title": "Certificações",
+    "certs.subtitle": "Trilhas e certificações em andamento e concluídas.",
+    "certs.status.inprogress": "Em Andamento",
+    "certs.status.done": "Concluída",
+
+    "certs.c1.name": "Zabbix Certified User",
+    "certs.c1.desc": "Certificação focada em fundamentos, itens, triggers, templates e boas práticas no ecossistema Zabbix.",
+    "certs.c1.link.aria": "Abrir link da certificação",
+    "certs.c1.link.title": "Abrir link",
+
+    "certs.c2.name": "ICC-A Telefonia IP (Intelbras)",
+    "certs.c2.desc": "Certificação em Telefonia IP com foco em fundamentos, configuração e boas práticas em soluções Intelbras.",
+    "certs.c2.link.aria": "Abrir certificado Intelbras",
+    "certs.c2.link.title": "Abrir certificado",
+
+    "contact.kicker": "Contato",
+    "contact.title": "Vamos conversar?",
+    "contact.subtitle": "Aberto para colaborações, freelas e oportunidades em engenharia de dados e infraestrutura.",
+    "contact.where.title": "Onde me encontrar",
+    "contact.where.desc": "Escolha o canal que fizer mais sentido para o seu contexto:",
+    "contact.direct.title": "Direto ao ponto",
+    "contact.direct.desc": "Se preferir, pode enviar um e-mail direto com contexto técnico, stack atual e objetivo do projeto.",
+    "contact.direct.cta": "Enviar e-mail",
+
+    "dyn.loading": "Carregando...",
+    "dyn.loadingRepos": "Carregando repositórios...",
+    "dyn.loadFail": "Falha ao carregar",
+    "dyn.loadError": "Erro ao carregar.",
+    "dyn.noProjects": "Nenhum projeto encontrado.",
+    "dyn.noDesc": "Sem descrição",
+    "dyn.projectsCount": "{n} projeto(s)",
+    "dyn.pageOf": "Página {p} de {t}",
+
+    "aria.theme": "Alternar tema",
+    "aria.lang.toEN": "Traduzir para inglês",
+    "aria.lang.toPT": "Voltar para português",
+    "aria.openGithub": "Abrir no GitHub"
+  },
+
+  en: {
+    "logo.sub": "Data & Infrastructure",
+
+    "nav.about": "About",
+    "nav.stack": "Skills",
+    "nav.projects": "Projects",
+    "nav.journey": "Journey",
+    "nav.contact": "Contact",
+    "nav.certs": "Certifications",
+
+    "hero.pill": "Data Engineering & Infrastructure",
+    "hero.subtitle": "Postgraduate in Data Engineering (PUC Minas) and graduated in Systems Analysis and Development (IFSP). I work as an Infrastructure Analyst focused on servers, telephony, and datacenter operations.",
+    "hero.cta.projects": "View projects",
+    "hero.cta.resume": "Download resume",
+    "hero.cta.linkedin": "Open LinkedIn",
+
+    "about.kicker": "Who I am",
+    "about.title": "About me",
+    "about.p1": `Postgraduate in <strong>Data Engineering</strong> at Pontifícia Universidade Católica de Minas Gerais (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> at Instituto Federal de São Paulo (IFSP). I’ve been deepening my work in Data Engineering, focused on building scalable solutions for data collection, processing, modeling, and analysis.`,
+    "about.p2": `My work includes building efficient <strong>data pipelines</strong> using ETL/ELT processes, Big Data concepts, and modern cloud architectures (<strong>AWS</strong> and <strong>Azure</strong>). I use proven tools in the data ecosystem, such as <strong>Apache Spark</strong>, <strong>Databricks</strong>, and <strong>Apache Kafka</strong> for distributed processing and streaming; <strong>Apache Airflow</strong> and <strong>dbt</strong> for orchestration and transformations; plus <strong>Python</strong> and <strong>Pandas</strong> for analysis and manipulation.`,
+    "about.p3": `I also work with relational and non-relational databases such as <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong>, and <strong>NoSQL</strong>, ensuring data persistence, governance, and availability for analytical and operational needs.`,
+    "about.p4": `I’m passionate about <strong>Information Security</strong>, <strong>Networking</strong>, <strong>IT Infrastructure</strong>, and <strong>Cloud Computing</strong>. I’m currently open to collaborating on data engineering projects to apply what I’m learning in real scenarios and keep evolving my technical skills.`,
+
+    "skills.kicker": "Skills",
+    "skills.title": "Skills",
+
+    "projects.kicker": "GitHub",
+    "projects.title": "Projects",
+    "projects.subtitle.prefix": "GitHub",
+    "projects.search.placeholder": "Search projects by name, tech, or description...",
+    "projects.pagination.prev": "« Previous",
+    "projects.pagination.next": "Next »",
+    "projects.pagination.page": "Page 1",
+
+    "journey.kicker": "Career",
+    "journey.title": "Professional & academic journey",
+    "journey.tabs.experience": "Experience",
+    "journey.tabs.education": "Education",
+    "journey.details": "View details",
+    "journey.subjects": "View subjects",
+
+    "journey.exp1.role": "Infrastructure Analyst",
+    "journey.exp1.meta": "Flash Net Brasil • 2023 - Present",
+    "journey.exp1.desc": "Responsible for critical datacenter infrastructure, servers, networking, telephony, and monitoring.",
+
+    "journey.exp2.role": "Infrastructure Analyst",
+    "journey.exp2.meta": "TOTVS • 2023",
+    "journey.exp2.desc": "Datacenter operations, VM provisioning, networking, firewalls, and corporate support.",
+
+    "journey.exp3.role": "Quality Analyst",
+    "journey.exp3.meta": "Flash Net Brasil • 2018 - 2023",
+    "journey.exp3.desc": "Connectivity quality assurance, monitoring, documentation, and SOC/LGPD support.",
+
+    "journey.edu1.title": "Postgraduate in Data Engineering",
+    "journey.edu1.meta": "PUC Minas • 2024 - 2025",
+    "journey.edu1.desc": "Focus on data architecture, big data, distributed processing, and modern platforms.",
+
+    "journey.edu2.title": "Systems Analysis & Development (Tech Degree)",
+    "journey.edu2.meta": "IFSP • 2016 - 2020",
+    "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
+
+    "certs.kicker": "Certifications",
+    "certs.title": "Certifications",
+    "certs.subtitle": "Ongoing and completed certifications and tracks.",
+    "certs.status.inprogress": "In Progress",
+    "certs.status.done": "Completed",
+
+    "certs.c1.name": "Zabbix Certified User",
+    "certs.c1.desc": "Certification focused on fundamentals, items, triggers, templates, and best practices in the Zabbix ecosystem.",
+    "certs.c1.link.aria": "Open certification link",
+    "certs.c1.link.title": "Open link",
+
+    "certs.c2.name": "ICC-A IP Telephony (Intelbras)",
+    "certs.c2.desc": "IP Telephony certification focused on fundamentals, configuration, and best practices for Intelbras solutions.",
+    "certs.c2.link.aria": "Open Intelbras certificate",
+    "certs.c2.link.title": "Open certificate",
+
+    "contact.kicker": "Contact",
+    "contact.title": "Let’s talk?",
+    "contact.subtitle": "Open to collaborations, freelance work, and opportunities in data engineering and infrastructure.",
+    "contact.where.title": "Where to find me",
+    "contact.where.desc": "Choose the best channel for your context:",
+    "contact.direct.title": "Straight to the point",
+    "contact.direct.desc": "If you prefer, send an email with technical context, current stack, and project goals.",
+    "contact.direct.cta": "Send email",
+
+    "dyn.loading": "Loading...",
+    "dyn.loadingRepos": "Loading repositories...",
+    "dyn.loadFail": "Failed to load",
+    "dyn.loadError": "Error while loading.",
+    "dyn.noProjects": "No projects found.",
+    "dyn.noDesc": "No description",
+    "dyn.projectsCount": "{n} project(s)",
+    "dyn.pageOf": "Page {p} of {t}",
+
+    "aria.theme": "Toggle theme",
+    "aria.lang.toEN": "Translate to English",
+    "aria.lang.toPT": "Back to Portuguese",
+    "aria.openGithub": "Open on GitHub"
+  }
+};
+
+function t(key, vars = {}) {
+  const str = (I18N[currentLang] && I18N[currentLang][key]) || key;
+  return String(str).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? `{${k}}`));
+}
+
+function applyLanguage(lang) {
+  currentLang = lang === "en" ? "en" : "pt";
+
+  const root = document.documentElement;
+  root.setAttribute("data-lang", currentLang);
+  root.setAttribute("lang", currentLang === "en" ? "en" : "pt-BR");
+
+  $$("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    el.textContent = t(key);
+  });
+
+  $$("[data-i18n-html]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-html");
+    el.innerHTML = t(key);
+  });
+
+  $$("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    el.setAttribute("placeholder", t(key));
+  });
+
+  $$("[data-i18n-title]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-title");
+    el.setAttribute("title", t(key));
+  });
+
+  $$("[data-i18n-aria]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-aria");
+    el.setAttribute("aria-label", t(key));
+  });
+
+  const themeToggle = $("#themeToggle");
+  if (themeToggle) themeToggle.setAttribute("aria-label", t("aria.theme"));
+
+  const langToggle = $("#langToggle");
+  if (langToggle) {
+    langToggle.setAttribute(
+      "aria-label",
+      currentLang === "en" ? t("aria.lang.toPT") : t("aria.lang.toEN")
+    );
+    langToggle.setAttribute("title", currentLang === "en" ? "PT" : "EN");
+  }
+
+  refreshDynamicProjectTexts();
+  restartTyping();
+  window.lucide && window.lucide.createIcons();
+
+  // Reaplica layout quando trocar idioma (não muda nada, mas garante consistência)
+  layoutCertifications();
+}
+
+function initI18n() {
+  const saved = localStorage.getItem("lang");
+  const initial = saved === "en" ? "en" : "pt";
+  applyLanguage(initial);
+
+  const btn = $("#langToggle");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    const next = currentLang === "pt" ? "en" : "pt";
+    applyLanguage(next);
+    localStorage.setItem("lang", next);
+  });
+}
+
 function applyTheme(theme) {
   const root = document.documentElement;
   const toggle = $("#themeToggle");
@@ -45,14 +322,20 @@ function initTheme() {
   });
 }
 
-/* ============================================================
-   TYPING EFFECT
-============================================================ */
-function initTyping() {
+function getTypingPhrases() {
+  return currentLang === "en"
+    ? ["Data Engineer ", "Infrastructure Analyst "]
+    : ["Engenheiro de Dados ", "Analista de Infraestrutura "];
+}
+
+function restartTyping() {
   const el = $("#typing");
   if (!el) return;
 
-  const phrases = ["Engenheiro de Dados ", "Analista de Infraestrutura "];
+  if (typingTimer) clearTimeout(typingTimer);
+  el.textContent = "";
+
+  const phrases = getTypingPhrases();
   let idx = 0, char = 0, deleting = false;
 
   function tick() {
@@ -66,7 +349,7 @@ function initTyping() {
     if (!deleting && char === current.length) {
       delay = 1400;
       deleting = true;
-    } else if (deleting && char === 0) {
+    } else if (deleting && char <= 0) {
       deleting = false;
       idx = (idx + 1) % phrases.length;
       delay = 550;
@@ -74,15 +357,14 @@ function initTyping() {
       setTimeout(() => (el.style.opacity = 1), 120);
     }
 
-    setTimeout(tick, delay);
+    typingTimer = setTimeout(tick, delay);
   }
 
   tick();
 }
 
-/* ============================================================
-   NAV MOBILE
-============================================================ */
+function initTyping() { restartTyping(); }
+
 function initNav() {
   const toggle = $("#navToggle");
   const mobile = $("#navMobile");
@@ -97,33 +379,29 @@ function initNav() {
   );
 }
 
-/* ============================================================
-   SCROLL PROGRESS + BACK TO TOP
-============================================================ */
 function initScrollHelpers() {
   const bar = $("#scrollProgress");
   const topBtn = $("#backToTop");
   if (!bar || !topBtn) return;
 
-  window.addEventListener("scroll", () => {
+  const onScroll = () => {
     const scrollTop = window.scrollY;
     const docHeight =
       document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
     bar.style.width = `${progress}%`;
-
     topBtn.classList.toggle("visible", scrollTop > 350);
-  });
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
   topBtn.addEventListener("click", () =>
     window.scrollTo({ top: 0, behavior: "smooth" })
   );
 }
 
-/* ============================================================
-   REVEAL ON SCROLL
-============================================================ */
 function initReveal() {
   const elements = $$(".reveal");
   if (!elements.length) return;
@@ -137,37 +415,39 @@ function initReveal() {
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
   );
 
   elements.forEach((el, i) => {
-    el.style.transitionDelay = `${i * 40}ms`;
+    el.style.transitionDelay = `${Math.min(i * 40, 220)}ms`;
     observer.observe(el);
   });
 }
 
-/* ============================================================
-   CUSTOM CURSOR
-============================================================ */
 function initCursor() {
   const cursor = $("#cursor");
   if (!cursor) return;
 
+  const isTouch =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  if (isTouch) {
+    cursor.style.display = "none";
+    return;
+  }
+
   window.addEventListener("mousemove", (e) => {
     cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-  });
+  }, { passive: true });
 
   document.addEventListener("mouseover", (e) => {
     cursor.classList.toggle(
       "cursor--active",
-      !!e.target.closest("a, button, .btn, .project-card")
+      !!e.target.closest("a, button, .btn, .project-card, .social-btn, .timeline-btn, .cert-item, .cert-go")
     );
   });
 }
 
-/* ============================================================
-   TABS (TRAJETÓRIA)
-============================================================ */
 function initTabs() {
   const tabs = document.querySelector(".tabs");
   if (!tabs) return;
@@ -176,35 +456,25 @@ function initTabs() {
   const panels = document.querySelectorAll(".tab-panel");
 
   function activate(tabName) {
-    tabs.classList.remove("experience-active", "education-active");
-    tabs.classList.add(`${tabName}-active`);
+    buttons.forEach((btn) => {
+      const active = btn.dataset.tab === tabName;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
 
-    buttons.forEach((btn) =>
-      btn.classList.toggle("active", btn.dataset.tab === tabName)
-    );
-
-    panels.forEach((panel) =>
-      panel.classList.toggle("hidden", panel.id !== tabName)
-    );
+    panels.forEach((panel) => {
+      panel.classList.toggle("hidden", panel.id !== tabName);
+    });
   }
 
   activate("experience");
-
   buttons.forEach((btn) =>
     btn.addEventListener("click", () => activate(btn.dataset.tab))
   );
 }
 
-/* ============================================================
-   MODAL (TIMELINE)
-============================================================ */
-function initModal() {
-  const modal = $("#modal");
-  const body = $("#modalBody");
-  const closeBtn = $(".modal-close");
-  if (!modal || !body || !closeBtn) return;
-
-  const modals = {
+function getModalsByLang() {
+  const pt = {
     "exp-flashnet-atual": `
       <h2>Analista de Infraestrutura</h2>
       <h3>Flash Net Brasil • 2023 - Atual</h3>
@@ -310,25 +580,159 @@ function initModal() {
         <li>Segurança da Informação</li>
         <li>Tópicos em Tecnologia da Informação</li>
       </ul>
+    `
+  };
+
+  const en = {
+    "exp-flashnet-atual": `
+      <h2>Infrastructure Analyst</h2>
+      <h3>Flash Net Brasil • 2023 - Present</h3>
+      <ul>
+      <li>Responsible for maintaining, operating, and evolving critical datacenter infrastructure, ensuring availability and security.</li>
+      <li>Full power management: batteries, generators, and monitoring.</li>
+      <li>Physical/virtual server administration with Proxmox: VM creation, snapshots, updates, and maintenance.</li>
+      <li>Networking and firewall management (iptables), JumpServer access, and NGINX as reverse proxy/load balancer.</li>
+      <li>TrueNAS storage management with focus on redundancy and performance.</li>
+      <li>Telephony infrastructure (Issabel, PBX/PABX, VoIP): configuration, integration, and support.</li>
+      <li>Continuous monitoring with Zabbix, Grafana, and Home Assistant, including dashboards and metrics analysis.</li>
+      <li>Detailed infrastructure documentation in NetBox: inventory, topology, and power systems.</li>
+      <li>Structured cabling organization and rack standardization.</li>
+      </ul>
     `,
+    "exp-totvs": `
+      <h2>Infrastructure Analyst</h2>
+      <h3>TOTVS • 2023</h3>
+      <ul>
+      <li>Datacenter operations: Dell servers, Cisco UCS blade replacements, NetApp disk swaps, and IBM tape robot handling.</li>
+      <li>Full VM provisioning in VMware vCenter (Windows/Linux), CyberArk integration, hardware upgrades, and Rubrik backup onboarding.</li>
+      <li>Infrastructure monitoring via T-Cloud Watch, Grafana, and Zabbix; first-response for critical incidents and escalation.</li>
+      <li>Network & security administration: NAT rules, Palo Alto firewall, Big IP, VPNs, routing adjustments, and service availability.</li>
+      <li>IAM access management in T-Cloud ensuring compliance and permission controls.</li>
+      <li>Support via Cherwell, Zendesk, and Slack, including hands-on remote support inside the datacenter.</li>
+      <li>Focus on reliability, automation, and security to ensure continuity and continuous improvement.</li>
+      </ul>
+    `,
+    "exp-flashnet-qualidade": `
+      <h2>Quality Analyst</h2>
+      <h3>Flash Net Brasil • 2018 - 2023</h3>
+      <ul>
+      <li>Client connection activation and configuration ensuring technical compliance and quality.</li>
+      <li>Network setup and maintenance (MikroTik, Ubiquiti, radios, PTP links, routing, and firewall).</li>
+      <li>Incident monitoring and analysis using Grafana and Zabbix, troubleshooting and collaboration with NOC.</li>
+      <li>Team training, mentoring, and leadership, including creation of materials and videos.</li>
+      <li>On-site and remote customer support with fast diagnostics and retention focus.</li>
+      <li>Testing, validation, and updates of equipment before deployments and support visits.</li>
+      <li>SOP creation and maintenance to standardize and improve processes.</li>
+      <li>Windows Server administration: users, groups, and GPOs in Active Directory.</li>
+      <li>SOC support focused on LGPD, information security, and operational compliance.</li>
+      </ul>
+    `,
+    "edu-puc": `
+      <h2>Postgraduate in Data Engineering</h2>
+      <h3>PUC Minas • 2024 - 2025</h3>
+      <ul>
+      <li>Discrete and continuous data stream processing</li>
+      <li>Data Lake and Data Warehousing architectures/services</li>
+      <li>Python applied to Data Engineering</li>
+      <li>Data ingestion and cataloging</li>
+      <li>Database optimization, monitoring, and operations</li>
+      <li>Security in data storage, handling, and consumption</li>
+      <li>NoSQL databases</li>
+      <li>Massive/distributed data storage and processing</li>
+      <li>Workflow preparation, orchestration, and automation</li>
+      <li>Consumption layers and services</li>
+      <li>Relational databases and SQL</li>
+      <li>DataOps and MLOps culture and practices</li>
+      <li>Humanities fundamentals applied to the field</li>
+      <li>Data governance</li>
+      <li>Cloud computing</li>
+      <li>DevOps culture and practices</li>
+      </ul>
+    `,
+    "edu-ifsp": `
+      <h2>Systems Analysis & Development — IFSP</h2>
+      <ul>
+        <li>Algorithms and Programming</li>
+        <li>Computer Architecture</li>
+        <li>Communication and Writing</li>
+        <li>History of Science and Technology</li>
+        <li>Technical English</li>
+        <li>Mathematics</li>
+        <li>Structured Programming</li>
+        <li>Databases I</li>
+        <li>Statistics</li>
+        <li>Data Structures I</li>
+        <li>Human-Computer Interaction</li>
+        <li>Object-Oriented Programming</li>
+        <li>Operating Systems</li>
+        <li>Object-Oriented Analysis</li>
+        <li>Databases II</li>
+        <li>Data Structures II</li>
+        <li>Programming Language I</li>
+        <li>Computer Networks I</li>
+        <li>Database Administration</li>
+        <li>Web Development I</li>
+        <li>Software Engineering I</li>
+        <li>Introduction to Administration</li>
+        <li>Programming Language II</li>
+        <li>Computer Networks II</li>
+        <li>Mobile Development</li>
+        <li>Web Development II</li>
+        <li>Software Engineering II</li>
+        <li>Server Implementation</li>
+        <li>Research Methodology</li>
+        <li>Management Information Systems</li>
+        <li>Entrepreneurship</li>
+        <li>Project Management</li>
+        <li>Environment, Sustainability and IT</li>
+        <li>Capstone Project</li>
+        <li>Information Security</li>
+        <li>Topics in IT</li>
+      </ul>
+    `
+  };
+
+  return currentLang === "en" ? en : pt;
+}
+
+function initModal() {
+  const modal = $("#modal");
+  const body = $("#modalBody");
+  const closeBtn = $(".modal-close");
+  if (!modal || !body || !closeBtn) return;
+
+  let lastActiveEl = null;
+
+  const open = (html) => {
+    lastActiveEl = document.activeElement;
+    body.innerHTML = html || "";
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    closeBtn.focus();
+    document.body.style.overflow = "hidden";
+    window.lucide && window.lucide.createIcons();
+  };
+
+  const close = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    body.innerHTML = "";
+    document.body.style.overflow = "";
+    if (lastActiveEl) lastActiveEl.focus();
   };
 
   $$(".timeline-more").forEach((btn) =>
     btn.addEventListener("click", () => {
-      body.innerHTML = modals[btn.dataset.modalTarget] || "";
-      modal.classList.add("open");
+      const MODALS = getModalsByLang();
+      open(MODALS[btn.dataset.modalTarget] || "");
     })
   );
 
-  const close = () => modal.classList.remove("open");
   closeBtn.addEventListener("click", close);
   modal.addEventListener("click", (e) => e.target === modal && close());
   document.addEventListener("keydown", (e) => e.key === "Escape" && close());
 }
 
-/* ============================================================
-   FORMATTER DE NOMES
-============================================================ */
 function formatRepoName(name) {
   return name
     .replace(/[-_]/g, " ")
@@ -339,78 +743,74 @@ function formatRepoName(name) {
     .join(" ");
 }
 
+function formatUpdated(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    const locale = currentLang === "en" ? "en-US" : "pt-BR";
+    const fmt = new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short", year: "numeric" });
+    return currentLang === "en"
+      ? `Updated ${fmt.format(d)}`
+      : `Atualizado ${fmt.format(d)}`;
+  } catch {
+    return currentLang === "en" ? "Recently updated" : "Atualizado recentemente";
+  }
+}
+
 let allRepos = [];
 let filteredRepos = [];
 let currentPage = 1;
 
-/* ============================================================
-   FETCH GITHUB
-============================================================ */
+function renderProjectSkeleton() {
+  const list = $("#projectList");
+  const counter = $("#projectCount");
+  if (!list || !counter) return;
+
+  counter.textContent = t("dyn.loading");
+  list.innerHTML = Array.from({ length: PER_PAGE }).map(() => `
+    <article class="project-card" aria-hidden="true">
+      <div style="position:absolute;top:.9rem;right:.9rem;width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(148,163,184,.12)"></div>
+      <div style="height:18px;width:60%;border-radius:10px;background:rgba(255,255,255,.06);margin-bottom:12px"></div>
+      <div style="height:14px;width:92%;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:10px"></div>
+      <div style="height:14px;width:78%;border-radius:10px;background:rgba(255,255,255,.05)"></div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <div style="height:26px;width:92px;border-radius:999px;background:rgba(255,255,255,.05)"></div>
+        <div style="height:26px;width:64px;border-radius:999px;background:rgba(255,255,255,.05)"></div>
+      </div>
+    </article>
+  `).join("");
+}
+
 async function fetchRepos() {
   const list = $("#projectList");
   const counter = $("#projectCount");
+  if (!list || !counter) return;
 
-  list.innerHTML = "<p>Carregando projetos...</p>";
-  counter.textContent = "Carregando...";
+  renderProjectSkeleton();
 
   try {
-    const res = await fetch(
-      `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated`
-    );
-    let data = await res.json();
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100`, {
+      headers: { "Accept": "application/vnd.github+json" }
+    });
 
-    allRepos = data.filter((r) => !r.fork);
+    if (!res.ok) {
+      list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
+      counter.textContent = t("dyn.loadFail");
+      return;
+    }
+
+    const data = await res.json();
+
+    allRepos = (Array.isArray(data) ? data : []).filter((r) => !r.fork);
     filteredRepos = [...allRepos];
     currentPage = 1;
 
     renderRepos();
   } catch (err) {
-    list.innerHTML = "<p>Erro ao carregar.</p>";
-    counter.textContent = "Falha ao carregar";
+    list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
+    counter.textContent = t("dyn.loadFail");
   }
 }
 
-/* ============================================================
-   EXTRACT TAGS (mantido se quiser usar depois)
-============================================================ */
-const LANGUAGE_COLORS = {
-  python: "#16a394",
-  javascript: "#f59e0b",
-  typescript: "#3b82f6",
-  html: "#f97316",
-  css: "#6366f1",
-  dockerfile: "#0ea5e9",
-  spark: "#d97706",
-  kafka: "#8b5cf6",
-  default: "#00c896",
-};
-
-function extractTags(repo) {
-  const tags = [];
-
-  if (repo.language) {
-    const lang = repo.language.toLowerCase();
-    tags.push({
-      label: repo.language,
-      color: LANGUAGE_COLORS[lang] || LANGUAGE_COLORS.default,
-    });
-  }
-
-  const desc = (repo.description || "").toLowerCase();
-  const keywords = ["python", "docker", "spark", "etl", "airflow", "kafka"];
-
-  keywords.forEach((k) => {
-    if (desc.includes(k)) {
-      tags.push({ label: k.toUpperCase(), color: LANGUAGE_COLORS[k] });
-    }
-  });
-
-  return tags;
-}
-
-/* ============================================================
-   RENDER REPOS — COM PAGINAÇÃO
-============================================================ */
 function renderRepos() {
   const list = $("#projectList");
   const counter = $("#projectCount");
@@ -418,9 +818,14 @@ function renderRepos() {
   const prev = $("#prevPage");
   const next = $("#nextPage");
 
+  if (!list || !counter || !pageInfo || !prev || !next) return;
+
   if (!filteredRepos.length) {
-    list.innerHTML = "<p>Nenhum projeto encontrado.</p>";
-    counter.textContent = "0 projetos";
+    list.innerHTML = `<p>${t("dyn.noProjects")}</p>`;
+    counter.textContent = t("dyn.projectsCount", { n: 0 });
+    pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
+    prev.disabled = true;
+    next.disabled = true;
     return;
   }
 
@@ -435,20 +840,28 @@ function renderRepos() {
       const niceName = formatRepoName(repo.name);
 
       return `
-        <article class="project-card">
-          <button class="project-link" onclick="window.open('${repo.html_url}', '_blank')">
-            <i data-lucide="github"></i>
-          </button>
+  <article class="project-card">
+    <button class="project-link" type="button" aria-label="${t("aria.openGithub")}"
+      onclick="window.open('${repo.html_url}', '_blank')">
+      <i data-lucide="github"></i>
+    </button>
 
-          <h3 class="project-title">${niceName}</h3>
-          <p class="project-desc">${repo.description || "Sem descrição"}</p>
-        </article>
-      `;
+    <h3 class="project-title">${niceName}</h3>
+    <p class="project-desc">${repo.description || t("dyn.noDesc")}</p>
+
+    <div class="project-meta">
+      <span class="meta-pill">
+        <i data-lucide="clock-3"></i>${formatUpdated(repo.updated_at)}
+      </span>
+    </div>
+  </article>
+`;
+
     })
     .join("");
 
-  counter.textContent = `${filteredRepos.length} projeto(s)`;
-  pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+  counter.textContent = t("dyn.projectsCount", { n: filteredRepos.length });
+  pageInfo.textContent = t("dyn.pageOf", { p: currentPage, t: totalPages });
 
   prev.disabled = currentPage === 1;
   next.disabled = currentPage === totalPages;
@@ -456,13 +869,29 @@ function renderRepos() {
   window.lucide && window.lucide.createIcons();
 }
 
-/* ============================================================
-   INIT PROJECTS
-============================================================ */
+function refreshDynamicProjectTexts() {
+  const counter = $("#projectCount");
+  const list = $("#projectList");
+  const pageInfo = $("#pageInfo");
+
+  if (counter && (!allRepos.length && !filteredRepos.length)) {
+    counter.textContent = t("dyn.loadingRepos");
+  }
+
+  if (list && allRepos.length) {
+    renderRepos();
+  } else if (pageInfo) {
+    pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
+  }
+}
+
 function initProjects() {
   const search = $("#projectSearch");
   const prev = $("#prevPage");
   const next = $("#nextPage");
+  const counter = $("#projectCount");
+
+  if (counter) counter.textContent = t("dyn.loadingRepos");
 
   if (search) {
     search.addEventListener("input", () => {
@@ -501,12 +930,49 @@ function initProjects() {
   fetchRepos();
 }
 
+/* =========================================================
+   CERTIFICATIONS LAYOUT (1 central / 2 lado a lado / 3 = 2+1 / etc)
+========================================================= */
+function layoutCertifications() {
+  const list = document.querySelector(".certs-list");
+  if (!list) return;
 
+  // Pega itens mesmo se já estiver em colunas
+  const items = [...list.querySelectorAll(".cert-item")];
 
-/* ============================================================
-   INIT — MAIN
-============================================================ */
+  // Limpa e recria
+  list.innerHTML = "";
+
+  const isMobile = window.matchMedia("(max-width: 820px)").matches;
+
+  if (items.length <= 1) {
+    list.classList.add("is-single");
+    items.forEach((it) => list.appendChild(it));
+    return;
+  }
+
+  list.classList.remove("is-single");
+
+  if (isMobile) {
+    items.forEach((it) => list.appendChild(it));
+    return;
+  }
+
+  const col1 = document.createElement("div");
+  const col2 = document.createElement("div");
+  col1.className = "certs-col";
+  col2.className = "certs-col";
+
+  const mid = Math.ceil(items.length / 2);
+  items.slice(0, mid).forEach((it) => col1.appendChild(it));
+  items.slice(mid).forEach((it) => col2.appendChild(it));
+
+  list.appendChild(col1);
+  list.appendChild(col2);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initI18n();
   initTheme();
   initTyping();
   initNav();
@@ -516,5 +982,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initModal();
   initProjects();
+
+  layoutCertifications();
+  window.addEventListener("resize", layoutCertifications);
+
   window.lucide && window.lucide.createIcons();
 });
