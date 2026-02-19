@@ -1,3 +1,7 @@
+/* =======================
+   js/script.js (COMPLETO)
+======================= */
+
 const GITHUB_USER = "mateusvicentin";
 const PER_PAGE = 3;
 
@@ -13,6 +17,13 @@ let infraFiltered = null;
 
 /* ✅ NOVO: posts Infra (LinkedIn) */
 const INFRA_POSTS = [
+   {
+    title: "Documentação de Datacenters com Netbox",
+    url: "https://www.linkedin.com/posts/mateusvicentin_datacenter-infraestrutura-networkinfrastructure-activity-7430294981564624896-NvOP",
+    descPT: "Implementei toda documentação de equipamentos, cabos de links, cabos de energia, IPs, blocos, VLANs e toda Infraestrutura de conexão.",
+    descEN: "I implemented complete documentation for equipment, link cabling, power cabling, IPs, IP blocks/subnets, VLANs, and the entire connectivity infrastructure.",
+    date: "2026-02-20"
+  },
   {
     title: "Alertas de Backup do Proxmox no Telegram",
     url: "https://www.linkedin.com/posts/mateusvicentin_proxmox-virtualizacao-backup-activity-7430005608407416833-9_1u",
@@ -20,8 +31,6 @@ const INFRA_POSTS = [
     descEN: "I automated Proxmox backup alerts by sending Telegram notifications with the job’s success/failure status, duration, and size.",
     date: "2026-02-19"
   },
-
-  
   // Adicionar novos projetos abaixo
 ];
 
@@ -1096,4 +1105,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.lucide && window.lucide.createIcons();
 });
-
