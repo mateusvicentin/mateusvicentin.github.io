@@ -11,6 +11,24 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 let currentLang = "pt";
 let typingTimer = null;
 
+/* ✅ NOVO: fonte atual (github = Dados, infra = LinkedIn) */
+let currentSource = "github"; // "github" | "infra"
+let infraFiltered = null;
+
+/* ✅ NOVO: posts Infra (LinkedIn) */
+const INFRA_POSTS = [
+  {
+    title: "Alertas de Backup do Proxmox no Telegram",
+    url: "https://www.linkedin.com/posts/mateusvicentin_proxmox-virtualizacao-backup-activity-7430005608407416833-9_1u",
+    descPT: "Automatizei alertas de backup no Proxmox enviando notificações pelo Telegram com status de sucesso, falha, duração e tamanho do job.",
+    descEN: "I automated Proxmox backup alerts by sending Telegram notifications with the job’s success/failure status, duration, and size.",
+    date: "2026-02-19"
+  },
+
+  
+  // Adicionar novos projetos abaixo
+];
+
 const I18N = {
   pt: {
     "logo.sub": "Engenharia de Dados & Infra",
@@ -45,6 +63,10 @@ const I18N = {
     "projects.pagination.prev": "« Anterior",
     "projects.pagination.next": "Próxima »",
     "projects.pagination.page": "Página 1",
+
+    /* ✅ NOVO (Dados / Infra) */
+    "projects.source.data": "Dados",
+    "projects.source.infra": "Infra",
 
     "journey.kicker": "Carreira",
     "journey.title": "Trajetória profissional e acadêmica",
@@ -146,6 +168,10 @@ const I18N = {
     "projects.pagination.prev": "« Previous",
     "projects.pagination.next": "Next »",
     "projects.pagination.page": "Page 1",
+
+    /* ✅ NOVO (Dados / Infra) */
+    "projects.source.data": "Data",
+    "projects.source.infra": "Infra",
 
     "journey.kicker": "Career",
     "journey.title": "Professional & academic journey",
@@ -756,6 +782,9 @@ function formatUpdated(dateStr) {
   }
 }
 
+/* ================================
+   Projects data
+================================ */
 let allRepos = [];
 let filteredRepos = [];
 let currentPage = 1;
@@ -785,7 +814,8 @@ async function fetchRepos() {
   const counter = $("#projectCount");
   if (!list || !counter) return;
 
-  renderProjectSkeleton();
+  // Só faz skeleton se estiver em GitHub
+  if (currentSource === "github") renderProjectSkeleton();
 
   try {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100`, {
@@ -793,8 +823,10 @@ async function fetchRepos() {
     });
 
     if (!res.ok) {
-      list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
-      counter.textContent = t("dyn.loadFail");
+      if (currentSource === "github") {
+        list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
+        counter.textContent = t("dyn.loadFail");
+      }
       return;
     }
 
@@ -804,14 +836,43 @@ async function fetchRepos() {
     filteredRepos = [...allRepos];
     currentPage = 1;
 
-    renderRepos();
+    if (currentSource === "github") renderItems();
   } catch (err) {
-    list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
-    counter.textContent = t("dyn.loadFail");
+    if (currentSource === "github") {
+      list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
+      counter.textContent = t("dyn.loadFail");
+    }
   }
 }
 
-function renderRepos() {
+/* ✅ NOVO: pega itens da fonte atual (Github/Infra) */
+function getInfraBaseItems() {
+  return INFRA_POSTS.map((p) => ({
+    kind: "infra",
+    title: p.title,
+    desc: currentLang === "en" ? p.descEN : p.descPT,
+    updated_at: p.date,
+    url: p.url
+  }));
+}
+
+function getActiveItems() {
+  if (currentSource === "infra") {
+    return infraFiltered ?? getInfraBaseItems();
+  }
+
+  // github
+  return filteredRepos.map((repo) => ({
+    kind: "github",
+    title: formatRepoName(repo.name),
+    desc: repo.description || t("dyn.noDesc"),
+    updated_at: repo.updated_at,
+    url: repo.html_url
+  }));
+}
+
+/* ✅ NOVO: render unificado */
+function renderItems() {
   const list = $("#projectList");
   const counter = $("#projectCount");
   const pageInfo = $("#pageInfo");
@@ -820,7 +881,9 @@ function renderRepos() {
 
   if (!list || !counter || !pageInfo || !prev || !next) return;
 
-  if (!filteredRepos.length) {
+  const items = getActiveItems();
+
+  if (!items.length) {
     list.innerHTML = `<p>${t("dyn.noProjects")}</p>`;
     counter.textContent = t("dyn.projectsCount", { n: 0 });
     pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
@@ -829,38 +892,31 @@ function renderRepos() {
     return;
   }
 
-  const totalPages = Math.ceil(filteredRepos.length / PER_PAGE);
-  const slice = filteredRepos.slice(
+  const totalPages = Math.ceil(items.length / PER_PAGE);
+  const slice = items.slice(
     (currentPage - 1) * PER_PAGE,
     currentPage * PER_PAGE
   );
 
-  list.innerHTML = slice
-    .map((repo) => {
-      const niceName = formatRepoName(repo.name);
+  list.innerHTML = slice.map((it) => `
+    <article class="project-card">
+      <button class="project-link" type="button" aria-label="${t("aria.openGithub")}"
+        onclick="window.open('${it.url}', '_blank')">
+        <i data-lucide="${it.kind === "infra" ? "linkedin" : "github"}"></i>
+      </button>
 
-      return `
-  <article class="project-card">
-    <button class="project-link" type="button" aria-label="${t("aria.openGithub")}"
-      onclick="window.open('${repo.html_url}', '_blank')">
-      <i data-lucide="github"></i>
-    </button>
+      <h3 class="project-title">${it.title}</h3>
+      <p class="project-desc">${it.desc}</p>
 
-    <h3 class="project-title">${niceName}</h3>
-    <p class="project-desc">${repo.description || t("dyn.noDesc")}</p>
+      <div class="project-meta">
+        <span class="meta-pill">
+          <i data-lucide="clock-3"></i>${formatUpdated(it.updated_at)}
+        </span>
+      </div>
+    </article>
+  `).join("");
 
-    <div class="project-meta">
-      <span class="meta-pill">
-        <i data-lucide="clock-3"></i>${formatUpdated(repo.updated_at)}
-      </span>
-    </div>
-  </article>
-`;
-
-    })
-    .join("");
-
-  counter.textContent = t("dyn.projectsCount", { n: filteredRepos.length });
+  counter.textContent = t("dyn.projectsCount", { n: items.length });
   pageInfo.textContent = t("dyn.pageOf", { p: currentPage, t: totalPages });
 
   prev.disabled = currentPage === 1;
@@ -874,12 +930,12 @@ function refreshDynamicProjectTexts() {
   const list = $("#projectList");
   const pageInfo = $("#pageInfo");
 
-  if (counter && (!allRepos.length && !filteredRepos.length)) {
+  if (counter && (!allRepos.length && currentSource === "github")) {
     counter.textContent = t("dyn.loadingRepos");
   }
 
-  if (list && allRepos.length) {
-    renderRepos();
+  if (list && (currentSource === "infra" || allRepos.length)) {
+    renderItems();
   } else if (pageInfo) {
     pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
   }
@@ -891,20 +947,75 @@ function initProjects() {
   const next = $("#nextPage");
   const counter = $("#projectCount");
 
-  if (counter) counter.textContent = t("dyn.loadingRepos");
+  const btnGithub = $("#sourceGithub");
+  const btnInfra = $("#sourceInfra");
+
+  function syncSourceButtons() {
+    if (!btnGithub || !btnInfra) return;
+    const isGit = currentSource === "github";
+    btnGithub.classList.toggle("active", isGit);
+    btnInfra.classList.toggle("active", !isGit);
+    btnGithub.setAttribute("aria-selected", isGit ? "true" : "false");
+    btnInfra.setAttribute("aria-selected", !isGit ? "true" : "false");
+  }
+
+  function setSource(nextSource) {
+    currentSource = nextSource === "infra" ? "infra" : "github";
+    currentPage = 1;
+    infraFiltered = null;
+
+    if (search) search.value = "";
+
+    syncSourceButtons();
+
+    // Atualiza contagem/estado imediatamente
+    if (currentSource === "infra") {
+      renderItems();
+    } else {
+      // github
+      if (!allRepos.length) {
+        if (counter) counter.textContent = t("dyn.loadingRepos");
+        fetchRepos();
+      } else {
+        filteredRepos = [...allRepos];
+        renderItems();
+      }
+    }
+  }
+
+  if (btnGithub) btnGithub.addEventListener("click", () => setSource("github"));
+  if (btnInfra) btnInfra.addEventListener("click", () => setSource("infra"));
+
+  // estado inicial
+  syncSourceButtons();
+
+  if (counter) {
+    counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: INFRA_POSTS.length }) : t("dyn.loadingRepos");
+  }
 
   if (search) {
     search.addEventListener("input", () => {
       const term = search.value.toLowerCase();
+      currentPage = 1;
 
+      if (currentSource === "infra") {
+        const base = getInfraBaseItems();
+        infraFiltered = base.filter(
+          (x) =>
+            x.title.toLowerCase().includes(term) ||
+            (x.desc || "").toLowerCase().includes(term)
+        );
+        renderItems();
+        return;
+      }
+
+      // github
       filteredRepos = allRepos.filter(
         (r) =>
           r.name.toLowerCase().includes(term) ||
           (r.description || "").toLowerCase().includes(term)
       );
-
-      currentPage = 1;
-      renderRepos();
+      renderItems();
     });
   }
 
@@ -912,21 +1023,22 @@ function initProjects() {
     prev.addEventListener("click", () => {
       if (currentPage > 1) {
         currentPage--;
-        renderRepos();
+        renderItems();
       }
     });
   }
 
   if (next) {
     next.addEventListener("click", () => {
-      const totalPages = Math.ceil(filteredRepos.length / PER_PAGE);
+      const totalPages = Math.ceil(getActiveItems().length / PER_PAGE);
       if (currentPage < totalPages) {
         currentPage++;
-        renderRepos();
+        renderItems();
       }
     });
   }
 
+  // carrega GitHub ao iniciar
   fetchRepos();
 }
 
