@@ -1,7 +1,3 @@
-/* =======================
-   js/script.js (COMPLETO)
-======================= */
-
 const GITHUB_USER = "mateusvicentin";
 const PER_PAGE = 3;
 
@@ -1100,3 +1096,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.lucide && window.lucide.createIcons();
 });
+
