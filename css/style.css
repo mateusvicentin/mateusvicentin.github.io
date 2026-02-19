@@ -1883,3 +1883,153 @@ body{
   color: rgba(185,28,28,0.95);
   text-shadow: none;
 }
+
+/* =========================================================
+   PROJECT SOURCES (Dados / Infra)  ✅ (NOVO)
+========================================================= */
+.project-sources{
+  display: inline-flex;
+  gap: .5rem;
+  padding: .35rem;
+  border-radius: var(--pill);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(16px);
+}
+
+:root[data-theme="light"] .project-sources{
+  background: rgba(255,255,255,0.78);
+  border-color: rgba(239,68,68,0.14);
+}
+
+.source-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+
+  border:none;
+  cursor:pointer;
+
+  padding: .6rem 1.05rem;
+  border-radius: var(--pill);
+
+  background: transparent;
+  color: rgba(123,135,149,0.98);
+
+  font-weight: 850;
+  transition: background var(--t), color var(--t), transform var(--t), border-color var(--t);
+}
+
+.source-btn .material-symbols-outlined{
+  font-size: 1.15rem;
+}
+
+.source-btn:hover{
+  transform: translateY(-1px);
+  color: var(--text);
+}
+
+.source-btn.active{
+  color: var(--primary2);
+  background: rgba(239,68,68,0.14);
+  border: 1px solid rgba(239,68,68,0.18);
+}
+
+/* =========================
+   FIX: Cards "Infra / LinkedIn" não quebram com textos grandes
+   Cole no FINAL do style.css
+========================= */
+
+/* Card vira coluna, com base bem definida */
+.project-card{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Título pode quebrar sem estourar */
+.project-title{
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Descrição: remove altura fixa e mantém clamp consistente */
+.project-desc{
+  min-height: unset;            /* <-- remove o min-height antigo */
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+
+  /* clamp mais "confortável" (ajuste se quiser) */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;        /* 3 -> 4 linhas */
+}
+
+/* Meta vai sempre pro final do card */
+.project-meta{
+  margin-top: auto;
+}
+
+/* Em telas maiores, garante cards com alturas mais consistentes */
+.projects-grid{
+  align-items: stretch;
+}
+
+/* Mobile: deixa mais espaço (não precisa cortar tanto) */
+@media (max-width: 768px){
+  .project-desc{
+    -webkit-line-clamp: 6;      /* mais linhas no mobile */
+  }
+}
+
+/* =========================
+   FIX: botão (LinkedIn/GitHub) longe do título
+========================= */
+
+/* Reserva espaço no título para não encostar no botão do canto */
+.project-title{
+  padding-right: 3.2rem;              /* espaço pro botão */
+  max-width: calc(100% - 3.2rem);     /* garante que ele não passe do botão */
+}
+
+/* (Opcional) afasta um pouquinho o botão do topo/canto */
+.project-link{
+  top: 1rem;
+  right: 1rem;
+}
+
+/* =========================
+   FIX universal: GitHub + LinkedIn (botão não encosta no título)
+========================= */
+
+.project-card{
+  position: relative;              /* garante o absoluto do botão certinho */
+}
+
+.project-link{
+  top: 1rem;
+  right: 1rem;
+}
+
+.project-title{
+  padding-right: 3.6rem;           /* espaço pro botão */
+  max-width: calc(100% - 3.6rem);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Tabs (Journey): ícone igual Dados/Infra */
+.tabs .tab-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+}
+
+.tabs .tab-btn i,
+.tabs .tab-btn svg{
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  opacity: .95;
+}
