@@ -1,1107 +1,540 @@
-/* =======================
-   js/script.js (COMPLETO)
-======================= */
-
-const GITHUB_USER = "mateusvicentin";
-const PER_PAGE = 3;
-
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
-const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
-
-let currentLang = "pt";
-let typingTimer = null;
-
-/* ✅ NOVO: fonte atual (github = Dados, infra = LinkedIn) */
-let currentSource = "github"; // "github" | "infra"
-let infraFiltered = null;
-
-/* ✅ NOVO: posts Infra (LinkedIn) */
-const INFRA_POSTS = [
-   {
-    title: "Documentação de Datacenters com Netbox",
-    url: "https://www.linkedin.com/posts/mateusvicentin_datacenter-infraestrutura-networkinfrastructure-activity-7430294981564624896-NvOP",
-    descPT: "Implementei toda documentação de equipamentos, cabos de links, cabos de energia, IPs, blocos, VLANs e toda Infraestrutura de conexão.",
-    descEN: "I implemented complete documentation for equipment, link cabling, power cabling, IPs, IP blocks/subnets, VLANs, and the entire connectivity infrastructure.",
-    date: "2026-02-20"
-  },
-  {
-    title: "Alertas de Backup do Proxmox no Telegram",
-    url: "https://www.linkedin.com/posts/mateusvicentin_proxmox-virtualizacao-backup-activity-7430005608407416833-9_1u",
-    descPT: "Automatizei alertas de backup no Proxmox enviando notificações pelo Telegram com status de sucesso, falha, duração e tamanho do job.",
-    descEN: "I automated Proxmox backup alerts by sending Telegram notifications with the job’s success/failure status, duration, and size.",
-    date: "2026-02-19"
-  },
-  // Adicionar novos projetos abaixo
-];
-
-const I18N = {
-  pt: {
-    "logo.sub": "Engenharia de Dados & Infra",
-
-    "nav.about": "Sobre",
-    "nav.stack": "Habilidades",
-    "nav.projects": "Projetos",
-    "nav.journey": "Trajetória",
-    "nav.contact": "Contato",
-    "nav.certs": "Certificações",
-
-    "hero.pill": "Engenharia de Dados & Infraestrutura",
-    "hero.subtitle": "Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.",
-    "hero.cta.projects": "Ver projetos",
-    "hero.cta.resume": "Baixar currículo",
-    "hero.cta.linkedin": "Ver LinkedIn",
-
-    "about.kicker": "Quem sou",
-    "about.title": "Sobre mim",
-    "about.p1": `Pós-graduado em <strong>Engenharia de Dados</strong> pela Pontifícia Universidade Católica de Minas Gerais (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo Instituto Federal de São Paulo (IFSP). Tenho me aprofundado na área de Engenharia de Dados com foco na construção de soluções escaláveis para coleta, processamento, modelagem e análise de dados.`,
-    "about.p2": `Minha atuação envolve o desenvolvimento de <strong>pipelines de dados</strong> eficientes, utilizando processos ETL/ELT, conceitos de Big Data e arquiteturas modernas em nuvem (<strong>AWS</strong> e <strong>Azure</strong>). Nesse contexto, aplico ferramentas amplamente consolidadas no ecossistema de dados, como <strong>Apache Spark</strong>, <strong>Databricks</strong> e <strong>Apache Kafka</strong> para processamento distribuído e streaming; <strong>Apache Airflow</strong> e <strong>dbt</strong> para orquestração de fluxos e transformação de dados; além de <strong>Python</strong> e <strong>Pandas</strong> para análise e manipulação.`,
-    "about.p3": `Também trabalho com bancos de dados relacionais e não relacionais, como <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong> e <strong>NoSQL</strong>, garantindo a persistência, governança e disponibilidade dos dados para diferentes aplicações analíticas e operacionais.`,
-    "about.p4": `Sou apaixonado por áreas como <strong>Segurança da Informação</strong>, <strong>Redes</strong>, <strong>Infraestrutura de TI</strong> e <strong>Computação em Nuvem</strong>. Atualmente, estou disponível para colaborar em projetos que envolvam engenharia de dados, com o objetivo de aplicar na prática os conhecimentos que venho adquirindo e aprofundar minhas habilidades técnicas.`,
-
-    "skills.kicker": "Stack",
-    "skills.title": "Habilidades",
-
-    "projects.kicker": "GitHub",
-    "projects.title": "Projetos",
-    "projects.subtitle.prefix": "GitHub",
-    "projects.search.placeholder": "Buscar projeto por nome, tecnologia ou descrição...",
-    "projects.pagination.prev": "« Anterior",
-    "projects.pagination.next": "Próxima »",
-    "projects.pagination.page": "Página 1",
-
-    /* ✅ NOVO (Dados / Infra) */
-    "projects.source.data": "Dados",
-    "projects.source.infra": "Infra",
-
-    "journey.kicker": "Carreira",
-    "journey.title": "Trajetória profissional e acadêmica",
-    "journey.tabs.experience": "Experiência",
-    "journey.tabs.education": "Formação",
-    "journey.details": "Ver detalhes",
-    "journey.subjects": "Ver disciplinas",
-
-    "journey.exp1.role": "Analista de Infraestrutura",
-    "journey.exp1.meta": "Flash Net Brasil • 2023 - Atual",
-    "journey.exp1.desc": "Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.",
-
-    "journey.exp2.role": "Analista de Infraestrutura",
-    "journey.exp2.meta": "TOTVS • 2023",
-    "journey.exp2.desc": "Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.",
-
-    "journey.exp3.role": "Analista de Qualidade",
-    "journey.exp3.meta": "Flash Net Brasil • 2018 - 2023",
-    "journey.exp3.desc": "Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.",
-
-    "journey.edu1.title": "Pós-Graduação em Engenharia de Dados",
-    "journey.edu1.meta": "PUC Minas • 2024 - 2025",
-    "journey.edu1.desc": "Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.",
-
-    "journey.edu2.title": "Tecnólogo em Análise e Desenvolvimento de Sistemas",
-    "journey.edu2.meta": "IFSP • 2016 - 2020",
-    "journey.edu2.desc": "Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.",
-
-    "certs.kicker": "Certificações",
-    "certs.title": "Certificações",
-    "certs.subtitle": "Trilhas e certificações em andamento e concluídas.",
-    "certs.status.inprogress": "Em Andamento",
-    "certs.status.done": "Concluída",
-
-    "certs.c1.name": "Zabbix Certified User",
-    "certs.c1.desc": "Certificação focada em fundamentos, itens, triggers, templates e boas práticas no ecossistema Zabbix.",
-    "certs.c1.link.aria": "Abrir link da certificação",
-    "certs.c1.link.title": "Abrir link",
-
-    "certs.c2.name": "ICC-A Telefonia IP (Intelbras)",
-    "certs.c2.desc": "Certificação em Telefonia IP com foco em fundamentos, configuração e boas práticas em soluções Intelbras.",
-    "certs.c2.link.aria": "Abrir certificado Intelbras",
-    "certs.c2.link.title": "Abrir certificado",
-
-    "contact.kicker": "Contato",
-    "contact.title": "Vamos conversar?",
-    "contact.subtitle": "Aberto para colaborações, freelas e oportunidades em engenharia de dados e infraestrutura.",
-    "contact.where.title": "Onde me encontrar",
-    "contact.where.desc": "Escolha o canal que fizer mais sentido para o seu contexto:",
-    "contact.direct.title": "Direto ao ponto",
-    "contact.direct.desc": "Se preferir, pode enviar um e-mail direto com contexto técnico, stack atual e objetivo do projeto.",
-    "contact.direct.cta": "Enviar e-mail",
-
-    "dyn.loading": "Carregando...",
-    "dyn.loadingRepos": "Carregando repositórios...",
-    "dyn.loadFail": "Falha ao carregar",
-    "dyn.loadError": "Erro ao carregar.",
-    "dyn.noProjects": "Nenhum projeto encontrado.",
-    "dyn.noDesc": "Sem descrição",
-    "dyn.projectsCount": "{n} projeto(s)",
-    "dyn.pageOf": "Página {p} de {t}",
-
-    "aria.theme": "Alternar tema",
-    "aria.lang.toEN": "Traduzir para inglês",
-    "aria.lang.toPT": "Voltar para português",
-    "aria.openGithub": "Abrir no GitHub"
-  },
-
-  en: {
-    "logo.sub": "Data & Infrastructure",
-
-    "nav.about": "About",
-    "nav.stack": "Skills",
-    "nav.projects": "Projects",
-    "nav.journey": "Journey",
-    "nav.contact": "Contact",
-    "nav.certs": "Certifications",
-
-    "hero.pill": "Data Engineering & Infrastructure",
-    "hero.subtitle": "Postgraduate in Data Engineering (PUC Minas) and graduated in Systems Analysis and Development (IFSP). I work as an Infrastructure Analyst focused on servers, telephony, and datacenter operations.",
-    "hero.cta.projects": "View projects",
-    "hero.cta.resume": "Download resume",
-    "hero.cta.linkedin": "Open LinkedIn",
-
-    "about.kicker": "Who I am",
-    "about.title": "About me",
-    "about.p1": `Postgraduate in <strong>Data Engineering</strong> at Pontifícia Universidade Católica de Minas Gerais (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> at Instituto Federal de São Paulo (IFSP). I’ve been deepening my work in Data Engineering, focused on building scalable solutions for data collection, processing, modeling, and analysis.`,
-    "about.p2": `My work includes building efficient <strong>data pipelines</strong> using ETL/ELT processes, Big Data concepts, and modern cloud architectures (<strong>AWS</strong> and <strong>Azure</strong>). I use proven tools in the data ecosystem, such as <strong>Apache Spark</strong>, <strong>Databricks</strong>, and <strong>Apache Kafka</strong> for distributed processing and streaming; <strong>Apache Airflow</strong> and <strong>dbt</strong> for orchestration and transformations; plus <strong>Python</strong> and <strong>Pandas</strong> for analysis and manipulation.`,
-    "about.p3": `I also work with relational and non-relational databases such as <strong>BigQuery</strong>, <strong>Snowflake</strong>, <strong>MongoDB</strong>, <strong>DuckDB</strong>, <strong>SQL</strong>, and <strong>NoSQL</strong>, ensuring data persistence, governance, and availability for analytical and operational needs.`,
-    "about.p4": `I’m passionate about <strong>Information Security</strong>, <strong>Networking</strong>, <strong>IT Infrastructure</strong>, and <strong>Cloud Computing</strong>. I’m currently open to collaborating on data engineering projects to apply what I’m learning in real scenarios and keep evolving my technical skills.`,
-
-    "skills.kicker": "Skills",
-    "skills.title": "Skills",
-
-    "projects.kicker": "GitHub",
-    "projects.title": "Projects",
-    "projects.subtitle.prefix": "GitHub",
-    "projects.search.placeholder": "Search projects by name, tech, or description...",
-    "projects.pagination.prev": "« Previous",
-    "projects.pagination.next": "Next »",
-    "projects.pagination.page": "Page 1",
-
-    /* ✅ NOVO (Dados / Infra) */
-    "projects.source.data": "Data",
-    "projects.source.infra": "Infra",
-
-    "journey.kicker": "Career",
-    "journey.title": "Professional & academic journey",
-    "journey.tabs.experience": "Experience",
-    "journey.tabs.education": "Education",
-    "journey.details": "View details",
-    "journey.subjects": "View subjects",
-
-    "journey.exp1.role": "Infrastructure Analyst",
-    "journey.exp1.meta": "Flash Net Brasil • 2023 - Present",
-    "journey.exp1.desc": "Responsible for critical datacenter infrastructure, servers, networking, telephony, and monitoring.",
-
-    "journey.exp2.role": "Infrastructure Analyst",
-    "journey.exp2.meta": "TOTVS • 2023",
-    "journey.exp2.desc": "Datacenter operations, VM provisioning, networking, firewalls, and corporate support.",
-
-    "journey.exp3.role": "Quality Analyst",
-    "journey.exp3.meta": "Flash Net Brasil • 2018 - 2023",
-    "journey.exp3.desc": "Connectivity quality assurance, monitoring, documentation, and SOC/LGPD support.",
-
-    "journey.edu1.title": "Postgraduate in Data Engineering",
-    "journey.edu1.meta": "PUC Minas • 2024 - 2025",
-    "journey.edu1.desc": "Focus on data architecture, big data, distributed processing, and modern platforms.",
-
-    "journey.edu2.title": "Systems Analysis & Development (Tech Degree)",
-    "journey.edu2.meta": "IFSP • 2016 - 2020",
-    "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
-
-    "certs.kicker": "Certifications",
-    "certs.title": "Certifications",
-    "certs.subtitle": "Ongoing and completed certifications and tracks.",
-    "certs.status.inprogress": "In Progress",
-    "certs.status.done": "Completed",
-
-    "certs.c1.name": "Zabbix Certified User",
-    "certs.c1.desc": "Certification focused on fundamentals, items, triggers, templates, and best practices in the Zabbix ecosystem.",
-    "certs.c1.link.aria": "Open certification link",
-    "certs.c1.link.title": "Open link",
-
-    "certs.c2.name": "ICC-A IP Telephony (Intelbras)",
-    "certs.c2.desc": "IP Telephony certification focused on fundamentals, configuration, and best practices for Intelbras solutions.",
-    "certs.c2.link.aria": "Open Intelbras certificate",
-    "certs.c2.link.title": "Open certificate",
-
-    "contact.kicker": "Contact",
-    "contact.title": "Let’s talk?",
-    "contact.subtitle": "Open to collaborations, freelance work, and opportunities in data engineering and infrastructure.",
-    "contact.where.title": "Where to find me",
-    "contact.where.desc": "Choose the best channel for your context:",
-    "contact.direct.title": "Straight to the point",
-    "contact.direct.desc": "If you prefer, send an email with technical context, current stack, and project goals.",
-    "contact.direct.cta": "Send email",
-
-    "dyn.loading": "Loading...",
-    "dyn.loadingRepos": "Loading repositories...",
-    "dyn.loadFail": "Failed to load",
-    "dyn.loadError": "Error while loading.",
-    "dyn.noProjects": "No projects found.",
-    "dyn.noDesc": "No description",
-    "dyn.projectsCount": "{n} project(s)",
-    "dyn.pageOf": "Page {p} of {t}",
-
-    "aria.theme": "Toggle theme",
-    "aria.lang.toEN": "Translate to English",
-    "aria.lang.toPT": "Back to Portuguese",
-    "aria.openGithub": "Open on GitHub"
-  }
-};
-
-function t(key, vars = {}) {
-  const str = (I18N[currentLang] && I18N[currentLang][key]) || key;
-  return String(str).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? `{${k}}`));
-}
-
-function applyLanguage(lang) {
-  currentLang = lang === "en" ? "en" : "pt";
-
-  const root = document.documentElement;
-  root.setAttribute("data-lang", currentLang);
-  root.setAttribute("lang", currentLang === "en" ? "en" : "pt-BR");
-
-  $$("[data-i18n]").forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    el.textContent = t(key);
-  });
-
-  $$("[data-i18n-html]").forEach((el) => {
-    const key = el.getAttribute("data-i18n-html");
-    el.innerHTML = t(key);
-  });
-
-  $$("[data-i18n-placeholder]").forEach((el) => {
-    const key = el.getAttribute("data-i18n-placeholder");
-    el.setAttribute("placeholder", t(key));
-  });
-
-  $$("[data-i18n-title]").forEach((el) => {
-    const key = el.getAttribute("data-i18n-title");
-    el.setAttribute("title", t(key));
-  });
-
-  $$("[data-i18n-aria]").forEach((el) => {
-    const key = el.getAttribute("data-i18n-aria");
-    el.setAttribute("aria-label", t(key));
-  });
-
-  const themeToggle = $("#themeToggle");
-  if (themeToggle) themeToggle.setAttribute("aria-label", t("aria.theme"));
-
-  const langToggle = $("#langToggle");
-  if (langToggle) {
-    langToggle.setAttribute(
-      "aria-label",
-      currentLang === "en" ? t("aria.lang.toPT") : t("aria.lang.toEN")
-    );
-    langToggle.setAttribute("title", currentLang === "en" ? "PT" : "EN");
-  }
-
-  refreshDynamicProjectTexts();
-  restartTyping();
-  window.lucide && window.lucide.createIcons();
-
-  // Reaplica layout quando trocar idioma (não muda nada, mas garante consistência)
-  layoutCertifications();
-}
-
-function initI18n() {
-  const saved = localStorage.getItem("lang");
-  const initial = saved === "en" ? "en" : "pt";
-  applyLanguage(initial);
-
-  const btn = $("#langToggle");
-  if (!btn) return;
-
-  btn.addEventListener("click", () => {
-    const next = currentLang === "pt" ? "en" : "pt";
-    applyLanguage(next);
-    localStorage.setItem("lang", next);
-  });
-}
-
-function applyTheme(theme) {
-  const root = document.documentElement;
-  const toggle = $("#themeToggle");
-
-  root.setAttribute("data-theme", theme);
-
-  if (toggle) {
-    toggle.innerHTML =
-      theme === "light"
-        ? '<span class="material-symbols-outlined">light_mode</span>'
-        : '<span class="material-symbols-outlined">dark_mode</span>';
-  }
-}
-
-function initTheme() {
-  const root = document.documentElement;
-  const saved = localStorage.getItem("theme");
-  const prefersDark =
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  const initial = saved || (prefersDark ? "dark" : "light");
-  applyTheme(initial);
-
-  const toggle = $("#themeToggle");
-  if (!toggle) return;
-
-  toggle.addEventListener("click", () => {
-    const current = root.getAttribute("data-theme") || "dark";
-    const next = current === "light" ? "dark" : "light";
-    applyTheme(next);
-    localStorage.setItem("theme", next);
-  });
-}
-
-function getTypingPhrases() {
-  return currentLang === "en"
-    ? ["Data Engineer ", "Infrastructure Analyst "]
-    : ["Engenheiro de Dados ", "Analista de Infraestrutura "];
-}
-
-function restartTyping() {
-  const el = $("#typing");
-  if (!el) return;
-
-  if (typingTimer) clearTimeout(typingTimer);
-  el.textContent = "";
-
-  const phrases = getTypingPhrases();
-  let idx = 0, char = 0, deleting = false;
-
-  function tick() {
-    const current = phrases[idx];
-    el.textContent = deleting
-      ? current.substring(0, char--)
-      : current.substring(0, char++);
-
-    let delay = deleting ? 55 : 105;
-
-    if (!deleting && char === current.length) {
-      delay = 1400;
-      deleting = true;
-    } else if (deleting && char <= 0) {
-      deleting = false;
-      idx = (idx + 1) % phrases.length;
-      delay = 550;
-      el.style.opacity = 0.4;
-      setTimeout(() => (el.style.opacity = 1), 120);
-    }
-
-    typingTimer = setTimeout(tick, delay);
-  }
-
-  tick();
-}
-
-function initTyping() { restartTyping(); }
-
-function initNav() {
-  const toggle = $("#navToggle");
-  const mobile = $("#navMobile");
-  if (!toggle || !mobile) return;
-
-  toggle.addEventListener("click", () => {
-    mobile.classList.toggle("open");
-  });
-
-  $$("#navMobile a").forEach((link) =>
-    link.addEventListener("click", () => mobile.classList.remove("open"))
-  );
-}
-
-function initScrollHelpers() {
-  const bar = $("#scrollProgress");
-  const topBtn = $("#backToTop");
-  if (!bar || !topBtn) return;
-
-  const onScroll = () => {
-    const scrollTop = window.scrollY;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
-    bar.style.width = `${progress}%`;
-    topBtn.classList.toggle("visible", scrollTop > 350);
-  };
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  topBtn.addEventListener("click", () =>
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  );
-}
-
-function initReveal() {
-  const elements = $$(".reveal");
-  if (!elements.length) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("reveal-visible");
-          observer.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
-  );
-
-  elements.forEach((el, i) => {
-    el.style.transitionDelay = `${Math.min(i * 40, 220)}ms`;
-    observer.observe(el);
-  });
-}
-
-function initCursor() {
-  const cursor = $("#cursor");
-  if (!cursor) return;
-
-  const isTouch =
-    "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-  if (isTouch) {
-    cursor.style.display = "none";
-    return;
-  }
-
-  window.addEventListener("mousemove", (e) => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-  }, { passive: true });
-
-  document.addEventListener("mouseover", (e) => {
-    cursor.classList.toggle(
-      "cursor--active",
-      !!e.target.closest("a, button, .btn, .project-card, .social-btn, .timeline-btn, .cert-item, .cert-go")
-    );
-  });
-}
-
-function initTabs() {
-  const tabs = document.querySelector(".tabs");
-  if (!tabs) return;
-
-  const buttons = tabs.querySelectorAll(".tab-btn");
-  const panels = document.querySelectorAll(".tab-panel");
-
-  function activate(tabName) {
-    buttons.forEach((btn) => {
-      const active = btn.dataset.tab === tabName;
-      btn.classList.toggle("active", active);
-      btn.setAttribute("aria-selected", active ? "true" : "false");
-    });
-
-    panels.forEach((panel) => {
-      panel.classList.toggle("hidden", panel.id !== tabName);
-    });
-  }
-
-  activate("experience");
-  buttons.forEach((btn) =>
-    btn.addEventListener("click", () => activate(btn.dataset.tab))
-  );
-}
-
-function getModalsByLang() {
-  const pt = {
-    "exp-flashnet-atual": `
-      <h2>Analista de Infraestrutura</h2>
-      <h3>Flash Net Brasil • 2023 - Atual</h3>
-      <ul>
-      <li>Responsável pela manutenção, operação e evolução da infraestrutura crítica do datacenter, garantindo alta disponibilidade e segurança.</li>
-      <li>Gerenciamento completo de energia: baterias, geradores e monitoramento.</li>
-      <li>Administração de servidores físicos e virtuais com Proxmox: criação de VMs, snapshots, atualizações e manutenção.</li>
-      <li>Gerenciamento de redes e firewalls (iptables), acessos via JumpServer e NGINX para proxy reverso e balanceamento.</li>
-      <li>Uso de TrueNAS para armazenamento em rede com foco em redundância e desempenho.</li>
-      <li>Responsável pela infraestrutura de telefonia (Issabel, PBX, PABX e VoIP): configuração, integração e suporte.</li>
-      <li>Monitoramento contínuo com Zabbix, Grafana e Home Assistant, incluindo criação de dashboards e análise de métricas.</li>
-      <li>Documentação detalhada da infraestrutura no NetBox: inventário, topologia e sistemas de energia.</li>
-      <li>Organização de cabeamento, montagem e padronização de racks.</li>
-      </ul>
-    `,
-    "exp-totvs": `
-      <h2>Analista de Infraestrutura</h2>
-      <h3>TOTVS • 2023</h3>
-      <ul>
-      <li>Atuação no Data Center com manutenção de servidores Dell, substituição de blades Cisco UCS, troca de discos NetApp e gestão de fitas em robôs IBM.</li>
-      <li>Provisionamento completo de VMs no VMware vCenter (Windows/Linux), integração com CyberArk, upgrades de hardware e inclusão em backups Rubrik.</li>
-      <li>Monitoramento da infraestrutura via T-Cloud Watch, Grafana e Zabbix, com atuação inicial em incidentes críticos e escalonamento para times especializados.</li>
-      <li>Administração de rede e segurança: regras NAT, firewall Palo Alto, Big IP, VPNs, ajustes de rotas e manutenção da disponibilidade de serviços.</li>
-      <li>Gestão de acessos IAM no T-Cloud, garantindo conformidade e controles de permissão corporativos.</li>
-      <li>Suporte técnico via Cherwell, Zendesk e Slack, atuando também como “mão remota” em atividades presenciais no Data Center.</li>
-      <li>Foco em confiabilidade, automação e segurança, garantindo continuidade operacional e melhoria contínua de processos.</li>
-      </ul>
-    `,
-    "exp-flashnet-qualidade": `
-      <h2>Analista de Qualidade</h2>
-      <h3>Flash Net Brasil • 2018 - 2023</h3>
-      <ul>
-      <li>Ativação e configuração de conexões de clientes, garantindo qualidade e conformidade técnica.</li>
-      <li>Configuração e manutenção de redes com MikroTik, Ubiquiti, rádios, PTPs, roteamento e firewall.</li>
-      <li>Monitoramento e análise de incidentes usando Grafana e Zabbix, com troubleshooting e atuação junto ao NOC.</li>
-      <li>Treinamento, mentoria e liderança da equipe de suporte técnico, incluindo criação de materiais e vídeos.</li>
-      <li>Atendimento ao cliente presencial e remoto, com foco em diagnóstico rápido e fidelização.</li>
-      <li>Testes, validação e atualização de equipamentos antes de instalações e assistências técnicas.</li>
-      <li>Criação e manutenção de SOPs para padronização e melhoria contínua dos processos.</li>
-      <li>Administração de Windows Server: criação de usuários, grupos e GPOs em Active Directory.</li>
-      <li>Atuação no SOC com foco em LGPD, segurança da informação e conformidade operacional.</li>
-      </ul>
-    `,
-    "edu-puc": `
-      <h2>Pós-graduação em Engenharia de Dados</h2>
-      <h3>PUC Minas • 2024 - 2025</h3>
-      <ul>
-      <li>Processamento de fluxos de dados discretos e contínuos</li>
-      <li>Arquiteturas e serviços de Data Lakes e Data Warehousing</li>
-      <li>Python aplicado à Engenharia de Dados</li>
-      <li>Ingestão e catalogação de dados</li>
-      <li>Otimização, monitoramento e operação em bancos de dados</li>
-      <li>Segurança no armazenamento, manuseio e consumo de dados</li>
-      <li>Bancos de Dados NoSQL</li>
-      <li>Armazenamento e processamento de dados massivos e distribuídos</li>
-      <li>Preparação, orquestração e automação de fluxos de dados</li>
-      <li>Camadas e serviços de consumo de dados</li>
-      <li>Bancos de dados relacionais e linguagem SQL</li>
-      <li>Cultura e práticas de DataOps e MLOps</li>
-      <li>Fundamentos de Humanidades aplicados à área</li>
-      <li>Governança de Dados</li>
-      <li>Computação em Nuvem</li>
-      <li>Cultura e práticas de DevOps</li>
-      </ul>
-    `,
-    "edu-ifsp": `
-      <h2>ADS — IFSP</h2>
-      <ul>
-        <li>Algoritmos e Programação</li>
-        <li>Arquitetura de Computadores</li>
-        <li>Comunicação e Expressão</li>
-        <li>História da Ciência e Tecnologia</li>
-        <li>Inglês Técnico</li>
-        <li>Matemática</li>
-        <li>Programação Estruturada</li>
-        <li>Banco de Dados I</li>
-        <li>Estatística</li>
-        <li>Estrutura de Dados I</li>
-        <li>Interação Humano-Computador</li>
-        <li>Programação Orientada a Objetos</li>
-        <li>Sistemas Operacionais</li>
-        <li>Análise Orientada a Objetos</li>
-        <li>Banco de Dados II</li>
-        <li>Estrutura de Dados II</li>
-        <li>Linguagem de Programação I</li>
-        <li>Redes de Computadores I</li>
-        <li>Administração de Banco de Dados</li>
-        <li>Desenvolvimento Web I</li>
-        <li>Engenharia de Software I</li>
-        <li>Introdução à Administração</li>
-        <li>Linguagem de Programação II</li>
-        <li>Redes de Computadores II</li>
-        <li>Desenvolvimento para Dispositivos Móveis</li>
-        <li>Desenvolvimento Web II</li>
-        <li>Engenharia de Software II</li>
-        <li>Implementação de Servidores</li>
-        <li>Metodologia de Pesquisa Científica e Tecnológica</li>
-        <li>Sistema de Informação Gerencial</li>
-        <li>Empreendedorismo</li>
-        <li>Gestão de Projetos</li>
-        <li>Meio Ambiente, Sustentabilidade e TI</li>
-        <li>Projeto Integrado</li>
-        <li>Segurança da Informação</li>
-        <li>Tópicos em Tecnologia da Informação</li>
-      </ul>
-    `
-  };
-
-  const en = {
-    "exp-flashnet-atual": `
-      <h2>Infrastructure Analyst</h2>
-      <h3>Flash Net Brasil • 2023 - Present</h3>
-      <ul>
-      <li>Responsible for maintaining, operating, and evolving critical datacenter infrastructure, ensuring availability and security.</li>
-      <li>Full power management: batteries, generators, and monitoring.</li>
-      <li>Physical/virtual server administration with Proxmox: VM creation, snapshots, updates, and maintenance.</li>
-      <li>Networking and firewall management (iptables), JumpServer access, and NGINX as reverse proxy/load balancer.</li>
-      <li>TrueNAS storage management with focus on redundancy and performance.</li>
-      <li>Telephony infrastructure (Issabel, PBX/PABX, VoIP): configuration, integration, and support.</li>
-      <li>Continuous monitoring with Zabbix, Grafana, and Home Assistant, including dashboards and metrics analysis.</li>
-      <li>Detailed infrastructure documentation in NetBox: inventory, topology, and power systems.</li>
-      <li>Structured cabling organization and rack standardization.</li>
-      </ul>
-    `,
-    "exp-totvs": `
-      <h2>Infrastructure Analyst</h2>
-      <h3>TOTVS • 2023</h3>
-      <ul>
-      <li>Datacenter operations: Dell servers, Cisco UCS blade replacements, NetApp disk swaps, and IBM tape robot handling.</li>
-      <li>Full VM provisioning in VMware vCenter (Windows/Linux), CyberArk integration, hardware upgrades, and Rubrik backup onboarding.</li>
-      <li>Infrastructure monitoring via T-Cloud Watch, Grafana, and Zabbix; first-response for critical incidents and escalation.</li>
-      <li>Network & security administration: NAT rules, Palo Alto firewall, Big IP, VPNs, routing adjustments, and service availability.</li>
-      <li>IAM access management in T-Cloud ensuring compliance and permission controls.</li>
-      <li>Support via Cherwell, Zendesk, and Slack, including hands-on remote support inside the datacenter.</li>
-      <li>Focus on reliability, automation, and security to ensure continuity and continuous improvement.</li>
-      </ul>
-    `,
-    "exp-flashnet-qualidade": `
-      <h2>Quality Analyst</h2>
-      <h3>Flash Net Brasil • 2018 - 2023</h3>
-      <ul>
-      <li>Client connection activation and configuration ensuring technical compliance and quality.</li>
-      <li>Network setup and maintenance (MikroTik, Ubiquiti, radios, PTP links, routing, and firewall).</li>
-      <li>Incident monitoring and analysis using Grafana and Zabbix, troubleshooting and collaboration with NOC.</li>
-      <li>Team training, mentoring, and leadership, including creation of materials and videos.</li>
-      <li>On-site and remote customer support with fast diagnostics and retention focus.</li>
-      <li>Testing, validation, and updates of equipment before deployments and support visits.</li>
-      <li>SOP creation and maintenance to standardize and improve processes.</li>
-      <li>Windows Server administration: users, groups, and GPOs in Active Directory.</li>
-      <li>SOC support focused on LGPD, information security, and operational compliance.</li>
-      </ul>
-    `,
-    "edu-puc": `
-      <h2>Postgraduate in Data Engineering</h2>
-      <h3>PUC Minas • 2024 - 2025</h3>
-      <ul>
-      <li>Discrete and continuous data stream processing</li>
-      <li>Data Lake and Data Warehousing architectures/services</li>
-      <li>Python applied to Data Engineering</li>
-      <li>Data ingestion and cataloging</li>
-      <li>Database optimization, monitoring, and operations</li>
-      <li>Security in data storage, handling, and consumption</li>
-      <li>NoSQL databases</li>
-      <li>Massive/distributed data storage and processing</li>
-      <li>Workflow preparation, orchestration, and automation</li>
-      <li>Consumption layers and services</li>
-      <li>Relational databases and SQL</li>
-      <li>DataOps and MLOps culture and practices</li>
-      <li>Humanities fundamentals applied to the field</li>
-      <li>Data governance</li>
-      <li>Cloud computing</li>
-      <li>DevOps culture and practices</li>
-      </ul>
-    `,
-    "edu-ifsp": `
-      <h2>Systems Analysis & Development — IFSP</h2>
-      <ul>
-        <li>Algorithms and Programming</li>
-        <li>Computer Architecture</li>
-        <li>Communication and Writing</li>
-        <li>History of Science and Technology</li>
-        <li>Technical English</li>
-        <li>Mathematics</li>
-        <li>Structured Programming</li>
-        <li>Databases I</li>
-        <li>Statistics</li>
-        <li>Data Structures I</li>
-        <li>Human-Computer Interaction</li>
-        <li>Object-Oriented Programming</li>
-        <li>Operating Systems</li>
-        <li>Object-Oriented Analysis</li>
-        <li>Databases II</li>
-        <li>Data Structures II</li>
-        <li>Programming Language I</li>
-        <li>Computer Networks I</li>
-        <li>Database Administration</li>
-        <li>Web Development I</li>
-        <li>Software Engineering I</li>
-        <li>Introduction to Administration</li>
-        <li>Programming Language II</li>
-        <li>Computer Networks II</li>
-        <li>Mobile Development</li>
-        <li>Web Development II</li>
-        <li>Software Engineering II</li>
-        <li>Server Implementation</li>
-        <li>Research Methodology</li>
-        <li>Management Information Systems</li>
-        <li>Entrepreneurship</li>
-        <li>Project Management</li>
-        <li>Environment, Sustainability and IT</li>
-        <li>Capstone Project</li>
-        <li>Information Security</li>
-        <li>Topics in IT</li>
-      </ul>
-    `
-  };
-
-  return currentLang === "en" ? en : pt;
-}
-
-function initModal() {
-  const modal = $("#modal");
-  const body = $("#modalBody");
-  const closeBtn = $(".modal-close");
-  if (!modal || !body || !closeBtn) return;
-
-  let lastActiveEl = null;
-
-  const open = (html) => {
-    lastActiveEl = document.activeElement;
-    body.innerHTML = html || "";
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    closeBtn.focus();
-    document.body.style.overflow = "hidden";
-    window.lucide && window.lucide.createIcons();
-  };
-
-  const close = () => {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    body.innerHTML = "";
-    document.body.style.overflow = "";
-    if (lastActiveEl) lastActiveEl.focus();
-  };
-
-  $$(".timeline-more").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      const MODALS = getModalsByLang();
-      open(MODALS[btn.dataset.modalTarget] || "");
-    })
-  );
-
-  closeBtn.addEventListener("click", close);
-  modal.addEventListener("click", (e) => e.target === modal && close());
-  document.addEventListener("keydown", (e) => e.key === "Escape" && close());
-}
-
-function formatRepoName(name) {
-  return name
-    .replace(/[-_]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(" ")
-    .map((w) => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)))
-    .join(" ");
-}
-
-function formatUpdated(dateStr) {
-  try {
-    const d = new Date(dateStr);
-    const locale = currentLang === "en" ? "en-US" : "pt-BR";
-    const fmt = new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short", year: "numeric" });
-    return currentLang === "en"
-      ? `Updated ${fmt.format(d)}`
-      : `Atualizado ${fmt.format(d)}`;
-  } catch {
-    return currentLang === "en" ? "Recently updated" : "Atualizado recentemente";
-  }
-}
-
-/* ================================
-   Projects data
-================================ */
-let allRepos = [];
-let filteredRepos = [];
-let currentPage = 1;
-
-function renderProjectSkeleton() {
-  const list = $("#projectList");
-  const counter = $("#projectCount");
-  if (!list || !counter) return;
-
-  counter.textContent = t("dyn.loading");
-  list.innerHTML = Array.from({ length: PER_PAGE }).map(() => `
-    <article class="project-card" aria-hidden="true">
-      <div style="position:absolute;top:.9rem;right:.9rem;width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(148,163,184,.12)"></div>
-      <div style="height:18px;width:60%;border-radius:10px;background:rgba(255,255,255,.06);margin-bottom:12px"></div>
-      <div style="height:14px;width:92%;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:10px"></div>
-      <div style="height:14px;width:78%;border-radius:10px;background:rgba(255,255,255,.05)"></div>
-      <div style="margin-top:14px;display:flex;gap:8px">
-        <div style="height:26px;width:92px;border-radius:999px;background:rgba(255,255,255,.05)"></div>
-        <div style="height:26px;width:64px;border-radius:999px;background:rgba(255,255,255,.05)"></div>
-      </div>
-    </article>
-  `).join("");
-}
-
-async function fetchRepos() {
-  const list = $("#projectList");
-  const counter = $("#projectCount");
-  if (!list || !counter) return;
-
-  // Só faz skeleton se estiver em GitHub
-  if (currentSource === "github") renderProjectSkeleton();
-
-  try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100`, {
-      headers: { "Accept": "application/vnd.github+json" }
-    });
-
-    if (!res.ok) {
-      if (currentSource === "github") {
-        list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
-        counter.textContent = t("dyn.loadFail");
-      }
-      return;
-    }
-
-    const data = await res.json();
-
-    allRepos = (Array.isArray(data) ? data : []).filter((r) => !r.fork);
-    filteredRepos = [...allRepos];
-    currentPage = 1;
-
-    if (currentSource === "github") renderItems();
-  } catch (err) {
-    if (currentSource === "github") {
-      list.innerHTML = `<p>${t("dyn.loadError")}</p>`;
-      counter.textContent = t("dyn.loadFail");
-    }
-  }
-}
-
-/* ✅ NOVO: pega itens da fonte atual (Github/Infra) */
-function getInfraBaseItems() {
-  return INFRA_POSTS.map((p) => ({
-    kind: "infra",
-    title: p.title,
-    desc: currentLang === "en" ? p.descEN : p.descPT,
-    updated_at: p.date,
-    url: p.url
-  }));
-}
-
-function getActiveItems() {
-  if (currentSource === "infra") {
-    return infraFiltered ?? getInfraBaseItems();
-  }
-
-  // github
-  return filteredRepos.map((repo) => ({
-    kind: "github",
-    title: formatRepoName(repo.name),
-    desc: repo.description || t("dyn.noDesc"),
-    updated_at: repo.updated_at,
-    url: repo.html_url
-  }));
-}
-
-/* ✅ NOVO: render unificado */
-function renderItems() {
-  const list = $("#projectList");
-  const counter = $("#projectCount");
-  const pageInfo = $("#pageInfo");
-  const prev = $("#prevPage");
-  const next = $("#nextPage");
-
-  if (!list || !counter || !pageInfo || !prev || !next) return;
-
-  const items = getActiveItems();
-
-  if (!items.length) {
-    list.innerHTML = `<p>${t("dyn.noProjects")}</p>`;
-    counter.textContent = t("dyn.projectsCount", { n: 0 });
-    pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
-    prev.disabled = true;
-    next.disabled = true;
-    return;
-  }
-
-  const totalPages = Math.ceil(items.length / PER_PAGE);
-  const slice = items.slice(
-    (currentPage - 1) * PER_PAGE,
-    currentPage * PER_PAGE
-  );
-
-  list.innerHTML = slice.map((it) => `
-    <article class="project-card">
-      <button class="project-link" type="button" aria-label="${t("aria.openGithub")}"
-        onclick="window.open('${it.url}', '_blank')">
-        <i data-lucide="${it.kind === "infra" ? "linkedin" : "github"}"></i>
-      </button>
-
-      <h3 class="project-title">${it.title}</h3>
-      <p class="project-desc">${it.desc}</p>
-
-      <div class="project-meta">
-        <span class="meta-pill">
-          <i data-lucide="clock-3"></i>${formatUpdated(it.updated_at)}
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark" data-lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Mateus Vicentin | Engenheiro de Dados</title>
+  <meta name="description" content="Portfólio de Mateus Vicentin, Engenheiro de Dados e Analista de Infraestrutura.">
+  <meta name="author" content="Mateus Vicentin">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mateusvicentin.github.io/">
+  <meta property="og:title" content="Mateus Vicentin | Engenheiro de Dados & Infra">
+  <meta property="og:description" content="Pós-graduado em Engenharia de Dados e Analista de Infraestrutura.">
+  <meta property="og:image" content="./assets/images/profile.png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Mateus Vicentin | Engenharia de Dados">
+  <meta property="twitter:description" content="Portfólio de Engenharia de Dados e Infraestrutura.">
+  <meta property="twitter:image" content="./assets/images/profile.png">
+
+  <link rel="icon" href="./assets/images/profile.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div class="fx">
+    <div class="fx-grid"></div>
+    <div class="fx-blob fx-blob--a"></div>
+    <div class="fx-blob fx-blob--b"></div>
+    <div class="fx-noise"></div>
+  </div>
+
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="header" role="banner">
+    <div class="container header-inner">
+      <a href="#hero" class="logo" aria-label="Ir para o topo">
+        <span class="logo-text">
+          <span>Mateus Vicentin</span>
+          <span class="logo-sub" data-i18n="logo.sub">Engenharia de Dados & Infra</span>
         </span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#about" data-i18n="nav.about">Sobre</a>
+        <a href="#skills" data-i18n="nav.stack">Habilidades</a>
+        <a href="#projects" data-i18n="nav.projects">Projetos</a>
+        <a href="#journey" data-i18n="nav.journey">Trajetória</a>
+        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#contact" class="nav-cta" data-i18n="nav.contact">Contato</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="langToggle" aria-label="Traduzir para inglês" type="button" title="Translate">
+          <span class="material-symbols-outlined">translate</span>
+        </button>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" type="button" title="Tema">
+          <span class="material-symbols-outlined">dark_mode</span>
+        </button>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" type="button">
+          <i class="material-symbols-outlined">menu</i>
+        </button>
       </div>
-    </article>
-  `).join("");
 
-  counter.textContent = t("dyn.projectsCount", { n: items.length });
-  pageInfo.textContent = t("dyn.pageOf", { p: currentPage, t: totalPages });
+      <nav class="nav-mobile" id="navMobile" aria-label="Navegação mobile">
+        <a href="#about" data-i18n="nav.about">Sobre</a>
+        <a href="#skills" data-i18n="nav.stack">Habilidades</a>
+        <a href="#projects" data-i18n="nav.projects">Projetos</a>
+        <a href="#journey" data-i18n="nav.journey">Trajetória</a>
+        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#contact" data-i18n="nav.contact">Contato</a>
+      </nav>
+    </div>
+  </header>
 
-  prev.disabled = currentPage === 1;
-  next.disabled = currentPage === totalPages;
+  <main>
+    <section id="hero" class="section hero">
+      <div class="container hero-grid">
+        <div class="hero-left reveal">
+          <p class="pill" data-i18n="hero.pill">Engenharia de Dados & Infraestrutura</p>
 
-  window.lucide && window.lucide.createIcons();
-}
+          <h1 class="hero-title">
+            <span id="typing" class="typing gradient-text"></span>
+          </h1>
 
-function refreshDynamicProjectTexts() {
-  const counter = $("#projectCount");
-  const list = $("#projectList");
-  const pageInfo = $("#pageInfo");
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.
+          </p>
 
-  if (counter && (!allRepos.length && currentSource === "github")) {
-    counter.textContent = t("dyn.loadingRepos");
-  }
+          <div class="hero-actions hero-actions--single desktop-only">
+            <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary">
+              <span class="material-symbols-outlined">download</span>
+              <span data-i18n="hero.cta.resume">Baixar currículo</span>
+            </a>
+          </div>
+        </div>
 
-  if (list && (currentSource === "infra" || allRepos.length)) {
-    renderItems();
-  } else if (pageInfo) {
-    pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
-  }
-}
+        <div class="hero-right reveal">
+          <div class="avatar-shell">
+            <img
+              src="./assets/images/profile.png"
+              alt="Foto de Mateus Vicentin"
+              class="avatar"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
-function initProjects() {
-  const search = $("#projectSearch");
-  const prev = $("#prevPage");
-  const next = $("#nextPage");
-  const counter = $("#projectCount");
+        <div class="hero-actions hero-actions--single mobile-only reveal">
+          <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary">
+            <span class="material-symbols-outlined">download</span>
+            <span data-i18n="hero.cta.resume">Baixar currículo</span>
+          </a>
+        </div>
 
-  const btnGithub = $("#sourceGithub");
-  const btnInfra = $("#sourceInfra");
+      </div>
+    </section>
 
-  function syncSourceButtons() {
-    if (!btnGithub || !btnInfra) return;
-    const isGit = currentSource === "github";
-    btnGithub.classList.toggle("active", isGit);
-    btnInfra.classList.toggle("active", !isGit);
-    btnGithub.setAttribute("aria-selected", isGit ? "true" : "false");
-    btnInfra.setAttribute("aria-selected", !isGit ? "true" : "false");
-  }
+    <section id="about" class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="about.title">Sobre mim</h2>
+        </header>
 
-  function setSource(nextSource) {
-    currentSource = nextSource === "infra" ? "infra" : "github";
-    currentPage = 1;
-    infraFiltered = null;
+        <div class="about-wrapper reveal">
+          <div class="about-main glass">
+            <div class="about-icon-main">
+              <i data-lucide="terminal"></i>
+            </div>
+            <p data-i18n-html="about.p1">
+              Pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Minha jornada profissional combina uma forte base operacional em infraestrutura de TI tradicional com arquiteturas modernas de dados, focando em soluções escaláveis.
+            </p>
+            <p data-i18n-html="about.p2">
+              Sou apaixonado por resolver problemas complexos na interseção entre <strong>Segurança da Informação</strong>, <strong>Redes</strong> e <strong>Computação em Nuvem</strong>. Atualmente, busco aplicar minha bagagem em operações de missão crítica na construção de ambientes analíticos que sejam robustos, governados e de alta disponibilidade.
+            </p>
+          </div>
 
-    if (search) search.value = "";
+          <div class="about-cards">
+            <div class="about-card glass">
+              <i data-lucide="workflow" class="about-icon"></i>
+              <h3 data-i18n="about.card1.title">Engenharia & Pipelines</h3>
+              <p data-i18n="about.card1.desc">
+                Construção de fluxos eficientes utilizando Python, Apache Spark, Databricks, Kafka, Airflow e dbt, do processamento distribuído à transformação de dados.
+              </p>
+            </div>
+            
+            <div class="about-card glass">
+              <i data-lucide="cloud-cog" class="about-icon"></i>
+              <h3 data-i18n="about.card2.title">Ecossistema Cloud</h3>
+              <p data-i18n="about.card2.desc">
+                Modelagem e governança de dados em plataformas como BigQuery, Snowflake, MongoDB e bancos SQL/NoSQL, operando sobre arquiteturas AWS e Azure.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    syncSourceButtons();
+    <section id="skills" class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="skills.title">Habilidades</h2>
+        </header>
 
-    // Atualiza contagem/estado imediatamente
-    if (currentSource === "infra") {
-      renderItems();
-    } else {
-      // github
-      if (!allRepos.length) {
-        if (counter) counter.textContent = t("dyn.loadingRepos");
-        fetchRepos();
-      } else {
-        filteredRepos = [...allRepos];
-        renderItems();
-      }
-    }
-  }
+        <div class="skills-panels reveal">
+          <div class="skills-category glass">
+            <h3 class="category-title">
+              <div class="category-title-icon"><i data-lucide="database"></i></div>
+              Dados & Desenvolvimento
+            </h3>
+            <div class="skills-grid-inner">
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="code-2"></i></span>
+                <span class="skill-name">Python</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="database"></i></span>
+                <span class="skill-name">SQL & PostgreSQL</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="boxes"></i></span>
+                <span class="skill-name">dbt</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="sparkles"></i></span>
+                <span class="skill-name">Spark & Pandas</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="radio"></i></span>
+                <span class="skill-name">Kafka</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="workflow"></i></span>
+                <span class="skill-name">Airflow</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="hard-drive"></i></span>
+                <span class="skill-name">MongoDB</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="server"></i></span>
+                <span class="skill-name">APIs REST</span>
+              </button>
+            </div>
+          </div>
 
-  if (btnGithub) btnGithub.addEventListener("click", () => setSource("github"));
-  if (btnInfra) btnInfra.addEventListener("click", () => setSource("infra"));
+          <div class="skills-category glass">
+            <h3 class="category-title">
+              <div class="category-title-icon"><i data-lucide="cloud"></i></div>
+              Infra, Cloud & Redes
+            </h3>
+            <div class="skills-grid-inner">
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="cloudy"></i></span>
+                <span class="skill-name">AWS & Azure</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="terminal"></i></span>
+                <span class="skill-name">Linux & Bash</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="ship"></i></span>
+                <span class="skill-name">Docker</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="git-merge"></i></span>
+                <span class="skill-name">Git & CI/CD</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="blocks"></i></span>
+                <span class="skill-name">Terraform (IaC)</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="activity"></i></span>
+                <span class="skill-name">Zabbix & Grafana</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="server-cog"></i></span>
+                <span class="skill-name">Proxmox & TrueNAS</span>
+              </button>
+              <button class="skill-item" type="button">
+                <span class="skill-icon"><i data-lucide="network"></i></span>
+                <span class="skill-name">Redes & NGINX</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  // estado inicial
-  syncSourceButtons();
+    <section id="projects" class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="projects.title">Projetos</h2>
+          <p class="section-subtitle">
+            <span data-i18n="projects.subtitle.prefix">GitHub</span>
+            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer">@mateusvicentin</a>
+          </p>
+        </header>
 
-  if (counter) {
-    counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: INFRA_POSTS.length }) : t("dyn.loadingRepos");
-  }
+        <div class="projects-controls reveal">
+          <div class="segmented-control" role="tablist" aria-label="Fonte de projetos">
+            <button id="sourceGithub" class="segmented-btn active" type="button" role="tab" aria-selected="true">
+              <i data-lucide="database"></i>
+              <span data-i18n="projects.source.data">Dados</span>
+            </button>
+            <button id="sourceInfra" class="segmented-btn" type="button" role="tab" aria-selected="false">
+              <i data-lucide="server"></i>
+              <span data-i18n="projects.source.infra">Infra</span>
+            </button>
+          </div>
 
-  if (search) {
-    search.addEventListener("input", () => {
-      const term = search.value.toLowerCase();
-      currentPage = 1;
+          <div class="search-bar" role="search">
+            <i data-lucide="search" class="search-icon"></i>
+            <input
+              type="text"
+              id="projectSearch"
+              data-i18n-placeholder="projects.search.placeholder"
+              placeholder="Buscar projeto por nome, tecnologia ou descrição..."
+              autocomplete="off"
+            />
+          </div>
+          <span id="projectCount" class="project-count">Carregando repositórios...</span>
+        </div>
 
-      if (currentSource === "infra") {
-        const base = getInfraBaseItems();
-        infraFiltered = base.filter(
-          (x) =>
-            x.title.toLowerCase().includes(term) ||
-            (x.desc || "").toLowerCase().includes(term)
-        );
-        renderItems();
-        return;
-      }
+        <div id="projectList" class="projects-grid reveal" aria-live="polite"></div>
 
-      // github
-      filteredRepos = allRepos.filter(
-        (r) =>
-          r.name.toLowerCase().includes(term) ||
-          (r.description || "").toLowerCase().includes(term)
-      );
-      renderItems();
-    });
-  }
+        <div class="pagination reveal" role="navigation" aria-label="Paginação de projetos">
+          <button id="prevPage" disabled type="button" data-i18n="projects.pagination.prev">&laquo; Anterior</button>
+          <span id="pageInfo" data-i18n="projects.pagination.page">Página 1</span>
+          <button id="nextPage" type="button" data-i18n="projects.pagination.next">Próxima &raquo;</button>
+        </div>
+      </div>
+    </section>
 
-  if (prev) {
-    prev.addEventListener("click", () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderItems();
-      }
-    });
-  }
+    <section id="journey" class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
+        </header>
 
-  if (next) {
-    next.addEventListener("click", () => {
-      const totalPages = Math.ceil(getActiveItems().length / PER_PAGE);
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderItems();
-      }
-    });
-  }
+        <div class="journey-tabs-container reveal">
+          <div class="segmented-control" role="tablist" aria-label="Trajetória">
+            <button class="segmented-btn active tab-btn" data-tab="experience" role="tab" aria-selected="true" type="button">
+              <i data-lucide="briefcase-business"></i>
+              <span data-i18n="journey.tabs.experience">Experiência</span>
+            </button>
+            <button class="segmented-btn tab-btn" data-tab="education" role="tab" aria-selected="false" type="button">
+              <i data-lucide="graduation-cap"></i>
+              <span data-i18n="journey.tabs.education">Formação</span>
+            </button>
+          </div>
+        </div>
 
-  // carrega GitHub ao iniciar
-  fetchRepos();
-}
+        <div id="experience" class="tab-panel" role="tabpanel">
+          <div class="timeline alternate">
+            <div class="timeline-line" aria-hidden="true"></div>
 
-/* =========================================================
-   CERTIFICATIONS LAYOUT (1 central / 2 lado a lado / 3 = 2+1 / etc)
-========================================================= */
-function layoutCertifications() {
-  const list = document.querySelector(".certs-list");
-  if (!list) return;
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
+              <div class="timeline-card glass">
+                <div class="timeline-card-header">
+                  <div class="timeline-title-wrap">
+                    <h3 data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
+                    <h4 class="timeline-company">Flash Net Brasil</h4>
+                  </div>
+                  <span class="timeline-date current-date" data-i18n="journey.exp1.date">2023 - Atual</span>
+                </div>
+                <p data-i18n="journey.exp1.desc">Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.</p>
+                <button class="timeline-more-link" data-modal-target="exp-flashnet-atual" type="button">
+                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
 
-  // Pega itens mesmo se já estiver em colunas
-  const items = [...list.querySelectorAll(".cert-item")];
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
+              <div class="timeline-card glass">
+                <div class="timeline-card-header">
+                  <div class="timeline-title-wrap">
+                    <h3 data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
+                    <h4 class="timeline-company">TOTVS</h4>
+                  </div>
+                  <span class="timeline-date" data-i18n="journey.exp2.date">2023</span>
+                </div>
+                <p data-i18n="journey.exp2.desc">Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.</p>
+                <button class="timeline-more-link" data-modal-target="exp-totvs" type="button">
+                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
 
-  // Limpa e recria
-  list.innerHTML = "";
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
+              <div class="timeline-card glass">
+                <div class="timeline-card-header">
+                  <div class="timeline-title-wrap">
+                    <h3 data-i18n="journey.exp3.role">Analista de Qualidade</h3>
+                    <h4 class="timeline-company">Flash Net Brasil</h4>
+                  </div>
+                  <span class="timeline-date" data-i18n="journey.exp3.date">2018 - 2023</span>
+                </div>
+                <p data-i18n="journey.exp3.desc">Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.</p>
+                <button class="timeline-more-link" data-modal-target="exp-flashnet-qualidade" type="button">
+                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  const isMobile = window.matchMedia("(max-width: 820px)").matches;
+        <div id="education" class="tab-panel hidden" role="tabpanel">
+          <div class="timeline alternate">
+            <div class="timeline-line" aria-hidden="true"></div>
 
-  if (items.length <= 1) {
-    list.classList.add("is-single");
-    items.forEach((it) => list.appendChild(it));
-    return;
-  }
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"><i data-lucide="graduation-cap"></i></div>
+              <div class="timeline-card glass">
+                <div class="timeline-card-header">
+                  <div class="timeline-title-wrap">
+                    <h3 data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
+                    <h4 class="timeline-company">PUC Minas</h4>
+                  </div>
+                  <span class="timeline-date" data-i18n="journey.edu1.date">2024 - 2025</span>
+                </div>
+                <p data-i18n="journey.edu1.desc">Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.</p>
+                <button class="timeline-more-link" data-modal-target="edu-puc" type="button">
+                  <span data-i18n="journey.subjects">Ver disciplinas</span> <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
 
-  list.classList.remove("is-single");
+            <div class="timeline-item reveal">
+              <div class="timeline-dot" aria-hidden="true"><i data-lucide="graduation-cap"></i></div>
+              <div class="timeline-card glass">
+                <div class="timeline-card-header">
+                  <div class="timeline-title-wrap">
+                    <h3 data-i18n="journey.edu2.title">Análise e Desenv. de Sistemas</h3>
+                    <h4 class="timeline-company">IFSP</h4>
+                  </div>
+                  <span class="timeline-date" data-i18n="journey.edu2.date">2016 - 2020</span>
+                </div>
+                <p data-i18n="journey.edu2.desc">Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.</p>
+                <button class="timeline-more-link" data-modal-target="edu-ifsp" type="button">
+                  <span data-i18n="journey.subjects">Ver disciplinas</span> <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  if (isMobile) {
-    items.forEach((it) => list.appendChild(it));
-    return;
-  }
+      </div>
+    </section>
 
-  const col1 = document.createElement("div");
-  const col2 = document.createElement("div");
-  col1.className = "certs-col";
-  col2.className = "certs-col";
+    <section id="certifications" class="section">
+      <div class="container narrow">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="certs.title">Certificações</h2>
+        </header>
 
-  const mid = Math.ceil(items.length / 2);
-  items.slice(0, mid).forEach((it) => col1.appendChild(it));
-  items.slice(mid).forEach((it) => col2.appendChild(it));
+        <div class="certs-list reveal" role="list">
+          <article class="cert-card glass" role="listitem">
+            <div class="cert-badge" aria-hidden="true">
+              <i data-lucide="award"></i>
+            </div>
+            
+            <div class="cert-details">
+              <span class="cert-org">Intelbras</span>
+              <h3 class="cert-name" data-i18n="certs.c1.name">ICC-A Telefonia IP</h3>
+              <p class="cert-desc" data-i18n="certs.c1.desc">Certificação focada em implementação, configuração e arquitetura de centrais telefônicas IP e infraestrutura VoIP.</p>
+            </div>
 
-  list.appendChild(col1);
-  list.appendChild(col2);
-}
+            <div class="cert-footer">
+              <a class="cert-verify-btn" href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229" target="_blank" rel="noopener noreferrer" aria-label="Verificar credencial">
+                <span class="material-symbols-outlined">verified</span>
+                <span data-i18n="certs.verify">Verificar credencial</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-document.addEventListener("DOMContentLoaded", () => {
-  initI18n();
-  initTheme();
-  initTyping();
-  initNav();
-  initScrollHelpers();
-  initReveal();
-  initCursor();
-  initTabs();
-  initModal();
-  initProjects();
+    <section id="contact" class="section">
+      <div class="container contact-container">
+        <header class="section-header reveal">
+          <h2 class="section-title gradient-text" data-i18n="contact.title">Vamos conversar?</h2>
+          <p class="section-subtitle" data-i18n="contact.subtitle">Estou sempre aberto a novos desafios e oportunidades.</p>
+        </header>
 
-  layoutCertifications();
-  window.addEventListener("resize", layoutCertifications);
+        <div class="contact-bento reveal">
+          <div class="contact-main glass">
+            <div class="contact-icon">
+              <i data-lucide="mail"></i>
+            </div>
+            <h3 data-i18n="contact.direct.title">Direto ao ponto</h3>
+            <p data-i18n="contact.direct.desc">Se preferir, envie um e-mail direto com o contexto técnico ou objetivo do projeto.</p>
+            <a href="mailto:mateusvicentin8@gmail.com" class="btn primary contact-btn">
+              <span class="material-symbols-outlined">send</span>
+              <span data-i18n="contact.direct.cta">Enviar e-mail</span>
+            </a>
+          </div>
 
-  window.lucide && window.lucide.createIcons();
-});
+          <div class="contact-socials">
+            <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
+              <div class="social-icon-wrapper"><i data-lucide="linkedin"></i></div>
+              <div class="social-text">
+                <strong>LinkedIn</strong>
+                <span data-i18n="contact.social.linkedin">Conexões profissionais</span>
+              </div>
+              <i data-lucide="arrow-up-right" class="social-arrow"></i>
+            </a>
+
+            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
+              <div class="social-icon-wrapper"><i data-lucide="github"></i></div>
+              <div class="social-text">
+                <strong>GitHub</strong>
+                <span data-i18n="contact.social.github">Repositórios e códigos</span>
+              </div>
+              <i data-lucide="arrow-up-right" class="social-arrow"></i>
+            </a>
+
+            <a href="https://t.me/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
+              <div class="social-icon-wrapper"><i data-lucide="send"></i></div>
+              <div class="social-text">
+                <strong>Telegram</strong>
+                <span data-i18n="contact.social.telegram">Bate-papo rápido</span>
+              </div>
+              <i data-lucide="arrow-up-right" class="social-arrow"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo-text">Mateus Vicentin</span>
+        <span class="footer-divider"></span>
+        <span>© 2026</span>
+      </div>
+      <div class="footer-right">
+        <span data-i18n="logo.sub">Engenharia de Dados & Infra</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Detalhes">
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" aria-label="Fechar" type="button">
+        <i data-lucide="x"></i>
+      </button>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <button id="backToTop" class="back-to-top" aria-label="Voltar ao topo" type="button">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <script src="./js/script.js" defer></script>
+</body>
+</html>
