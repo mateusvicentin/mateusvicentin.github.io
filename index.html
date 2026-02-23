@@ -90,20 +90,26 @@
     <section id="hero" class="section hero">
       <div class="container hero-grid">
         <div class="hero-left reveal">
-          <p class="pill" data-i18n="hero.pill">Engenharia de Dados & Infraestrutura</p>
+          
+          <span class="hero-greeting" data-i18n="hero.greeting">Oi, sou o Mateus 👋</span>
 
           <h1 class="hero-title">
-            <span id="typing" class="typing gradient-text"></span>
+            <span class="title-line gradient-text" data-i18n="hero.title.line1">Engenheiro de Dados</span>
+            <span class="title-line title-stroke" data-i18n="hero.title.line2">& Analista de Infra</span>
           </h1>
 
           <p class="hero-subtitle" data-i18n="hero.subtitle">
             Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.
           </p>
 
-          <div class="hero-actions hero-actions--single desktop-only">
-            <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary">
-              <span class="material-symbols-outlined">download</span>
-              <span data-i18n="hero.cta.resume">Baixar currículo</span>
+          <div class="hero-actions desktop-only">
+            <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary btn-deploy-resume">
+              <span class="material-symbols-outlined icon-default">terminal</span>
+              <span class="btn-text" data-i18n="hero.cta.resume">Deploy Currículo</span>
+            </a>
+            <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
+              <i data-lucide="linkedin"></i>
+              <span data-i18n="hero.cta.linkedin">Ver LinkedIn</span>
             </a>
           </div>
         </div>
@@ -119,10 +125,14 @@
           </div>
         </div>
 
-        <div class="hero-actions hero-actions--single mobile-only reveal">
-          <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary">
-            <span class="material-symbols-outlined">download</span>
-            <span data-i18n="hero.cta.resume">Baixar currículo</span>
+        <div class="hero-actions mobile-only reveal">
+          <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary btn-deploy-resume">
+            <span class="material-symbols-outlined icon-default">terminal</span>
+            <span class="btn-text" data-i18n="hero.cta.resume">Deploy Currículo</span>
+          </a>
+          <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
+            <i data-lucide="linkedin"></i>
+            <span data-i18n="hero.cta.linkedin">Ver LinkedIn</span>
           </a>
         </div>
 
@@ -432,7 +442,8 @@
         </header>
 
         <div class="certs-list reveal" role="list">
-          <article class="cert-card glass" role="listitem">
+          <article class="cert-card glass cert-tilt" role="listitem">
+            <div class="cert-glare"></div>
             <div class="cert-badge" aria-hidden="true">
               <i data-lucide="award"></i>
             </div>
