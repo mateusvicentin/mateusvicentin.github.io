@@ -529,14 +529,8 @@ function initDeployResume() {
 
       await new Promise(r => setTimeout(r, 800));
 
-      // Baixar PDF real
-      const tempLink = document.createElement("a");
-      tempLink.href = href;
-      tempLink.setAttribute("download", "");
-      tempLink.setAttribute("target", "_blank");
-      document.body.appendChild(tempLink);
-      tempLink.click();
-      document.body.removeChild(tempLink);
+      // Abrir PDF 
+      window.open(href, "_blank");
 
       // Reset
       setTimeout(() => {
@@ -1010,3 +1004,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
