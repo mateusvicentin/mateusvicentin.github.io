@@ -5,7 +5,6 @@ const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
 let currentLang = "pt";
-let typingTimer = null;
 
 let currentSource = "github"; // "github" | "infra"
 let infraFiltered = null;
@@ -43,11 +42,16 @@ const I18N = {
     "nav.journey": "Trajetória",
     "nav.contact": "Contato",
     "nav.certs": "Certificações",
-    "hero.pill": "Engenharia de Dados & Infraestrutura",
+    "hero.greeting": "Oi, sou o Mateus 👋",
+    "hero.title.line1": "Engenheiro de Dados",
+    "hero.title.line2": "& Analista de Infra",
     "hero.subtitle": "Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.",
     "hero.cta.projects": "Ver projetos",
-    "hero.cta.resume": "Baixar currículo",
+    "hero.cta.resume": "Deploy Currículo",
     "hero.cta.linkedin": "Ver LinkedIn",
+    "hero.deploy.init": "Inicializando...",
+    "hero.deploy.apply": "Aplicando configs...",
+    "hero.deploy.success": "Deploy Concluído!",
     "about.kicker": "Quem sou",
     "about.title": "Sobre mim",
     "about.p1": `Pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Minha jornada profissional combina uma forte base operacional em infraestrutura de TI tradicional com arquiteturas modernas de dados, focando em soluções escaláveis.`,
@@ -122,11 +126,16 @@ const I18N = {
     "nav.journey": "Journey",
     "nav.contact": "Contact",
     "nav.certs": "Certifications",
-    "hero.pill": "Data Engineering & Infrastructure",
+    "hero.greeting": "Hi, I'm Mateus 👋",
+    "hero.title.line1": "Data Engineer",
+    "hero.title.line2": "& Infrastructure Analyst",
     "hero.subtitle": "Postgraduate in Data Engineering (PUC Minas) and graduated in Systems Analysis and Development (IFSP). I work as an Infrastructure Analyst focused on servers, telephony, and datacenter operations.",
     "hero.cta.projects": "View projects",
-    "hero.cta.resume": "Download resume",
+    "hero.cta.resume": "Deploy Resume",
     "hero.cta.linkedin": "Open LinkedIn",
+    "hero.deploy.init": "Initializing...",
+    "hero.deploy.apply": "Applying configs...",
+    "hero.deploy.success": "Deploy Successful!",
     "about.kicker": "Who I am",
     "about.title": "About me",
     "about.p1": `Postgraduate in <strong>Data Engineering</strong> (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> (IFSP). My professional journey combines a strong operational foundation in traditional IT infrastructure with modern data architectures, focusing on scalable solutions.`,
@@ -437,7 +446,6 @@ function applyLanguage(lang) {
   }
 
   refreshDynamicProjectTexts();
-  restartTyping();
   window.lucide && window.lucide.createIcons();
 }
 
@@ -485,46 +493,61 @@ function initTheme() {
   });
 }
 
-function getTypingPhrases() {
-  return currentLang === "en"
-    ? ["Data Engineer ", "Infrastructure Analyst "]
-    : ["Engenheiro de Dados ", "Analista de Infraestrutura "];
+function initDeployResume() {
+  const deployBtns = $$(".btn-deploy-resume");
+  
+  deployBtns.forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      if (btn.classList.contains("deploying")) return;
+      btn.classList.add("deploying");
+
+      const iconEl = btn.querySelector(".icon-default");
+      const textEl = btn.querySelector(".btn-text");
+      const href = btn.getAttribute("href");
+      
+      const originalTextKey = textEl.getAttribute("data-i18n");
+
+      // Passo 1: Inicializando
+      iconEl.textContent = "terminal";
+      textEl.textContent = t("hero.deploy.init");
+      textEl.removeAttribute("data-i18n"); 
+      await new Promise(r => setTimeout(r, 600));
+
+      // Passo 2: Aplicando Configs
+      iconEl.textContent = "settings";
+      iconEl.classList.add("spin-animation");
+      textEl.textContent = t("hero.deploy.apply");
+      await new Promise(r => setTimeout(r, 1200));
+
+      // Passo 3: Sucesso
+      iconEl.classList.remove("spin-animation");
+      iconEl.textContent = "check_circle";
+      textEl.textContent = t("hero.deploy.success");
+      btn.classList.add("deploy-success");
+
+      await new Promise(r => setTimeout(r, 800));
+
+      // Baixar PDF real
+      const tempLink = document.createElement("a");
+      tempLink.href = href;
+      tempLink.setAttribute("download", "");
+      tempLink.setAttribute("target", "_blank");
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+
+      // Reset
+      setTimeout(() => {
+        btn.classList.remove("deploying", "deploy-success");
+        iconEl.textContent = "terminal";
+        textEl.setAttribute("data-i18n", originalTextKey);
+        textEl.textContent = t(originalTextKey);
+      }, 2500);
+    });
+  });
 }
-
-function restartTyping() {
-  const el = $("#typing");
-  if (!el) return;
-
-  if (typingTimer) clearTimeout(typingTimer);
-  el.textContent = "";
-
-  const phrases = getTypingPhrases();
-  let idx = 0, char = 0, deleting = false;
-
-  function tick() {
-    const current = phrases[idx];
-    el.textContent = deleting
-      ? current.substring(0, char--)
-      : current.substring(0, char++);
-
-    let delay = deleting ? 55 : 105;
-
-    if (!deleting && char === current.length) {
-      delay = 1400;
-      deleting = true;
-    } else if (deleting && char <= 0) {
-      deleting = false;
-      idx = (idx + 1) % phrases.length;
-      delay = 550;
-      el.style.opacity = 0.4;
-      setTimeout(() => (el.style.opacity = 1), 120);
-    }
-    typingTimer = setTimeout(tick, delay);
-  }
-  tick();
-}
-
-function initTyping() { restartTyping(); }
 
 function initNav() {
   const toggle = $("#navToggle");
@@ -950,20 +973,39 @@ function initScrollSpy() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initI18n(); initTheme(); initTyping(); initNav();
+  initI18n(); initTheme(); initNav();
   initScrollHelpers(); initReveal(); initCursor(); initTabs();
   initModal(); initProjects(); initScrollSpy();
+  initDeployResume();
   window.lucide && window.lucide.createIcons();
 
   if (window.matchMedia("(pointer: fine)").matches) {
-    const certCards = document.querySelectorAll(".cert-card");
-    certCards.forEach(card => {
+    const tiltCards = document.querySelectorAll(".cert-tilt");
+    tiltCards.forEach(card => {
       card.addEventListener("mousemove", (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((centerY - y) / centerY) * 8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        card.style.transition = `none`; 
+        
         card.style.setProperty("--mouse-x", `${x}px`);
         card.style.setProperty("--mouse-y", `${y}px`);
+        
+        const glarePercent = (x / rect.width) * 100;
+        card.style.setProperty("--glare-pos", `${glarePercent}%`);
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transition = `transform 0.5s ease`;
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
       });
     });
   }
