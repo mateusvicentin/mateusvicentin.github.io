@@ -27,6 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <script src="https://unpkg.com/lucide@latest" defer></script>
 
@@ -282,36 +283,40 @@
         </header>
 
         <div class="projects-controls reveal">
-          <div class="segmented-control" role="tablist" aria-label="Fonte de projetos">
-            <button id="sourceGithub" class="segmented-btn active" type="button" role="tab" aria-selected="true">
-              <i data-lucide="database"></i>
-              <span data-i18n="projects.source.data">Dados</span>
-            </button>
-            <button id="sourceInfra" class="segmented-btn" type="button" role="tab" aria-selected="false">
-              <i data-lucide="server"></i>
-              <span data-i18n="projects.source.infra">Infra</span>
-            </button>
+          <div class="controls-row">
+            <div class="segmented-control" role="tablist" aria-label="Fonte de projetos">
+              <button id="sourceGithub" class="segmented-btn active" type="button" role="tab" aria-selected="true">
+                <i data-lucide="database"></i>
+                <span data-i18n="projects.source.data">Dados</span>
+              </button>
+              <button id="sourceInfra" class="segmented-btn" type="button" role="tab" aria-selected="false">
+                <i data-lucide="server"></i>
+                <span data-i18n="projects.source.infra">Infra</span>
+              </button>
+            </div>
+
+            <span id="projectCount" class="project-count-badge">Carregando...</span>
           </div>
 
-          <div class="search-bar" role="search">
-            <i data-lucide="search" class="search-icon"></i>
+          <div class="search-command-bar" role="search">
+            <i data-lucide="terminal" class="search-icon-cmd"></i>
             <input
               type="text"
               id="projectSearch"
               data-i18n-placeholder="projects.search.placeholder"
-              placeholder="Buscar projeto por nome, tecnologia ou descrição..."
+              placeholder="Buscar projeto..."
               autocomplete="off"
             />
+            <div class="search-shortcut">/</div>
           </div>
-          <span id="projectCount" class="project-count">Carregando repositórios...</span>
         </div>
 
         <div id="projectList" class="projects-grid reveal" aria-live="polite"></div>
 
         <div class="pagination reveal" role="navigation" aria-label="Paginação de projetos">
-          <button id="prevPage" disabled type="button" data-i18n="projects.pagination.prev">&laquo; Anterior</button>
-          <span id="pageInfo" data-i18n="projects.pagination.page">Página 1</span>
-          <button id="nextPage" type="button" data-i18n="projects.pagination.next">Próxima &raquo;</button>
+          <button id="prevPage" disabled type="button" class="btn-pagination" data-i18n="projects.pagination.prev">« Anterior</button>
+          <span id="pageInfo" class="page-info-text" data-i18n="projects.pagination.page">Página 1</span>
+          <button id="nextPage" type="button" class="btn-pagination" data-i18n="projects.pagination.next">Próxima »</button>
         </div>
       </div>
     </section>
@@ -320,6 +325,7 @@
       <div class="container">
         <header class="section-header reveal">
           <h2 class="section-title gradient-text" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
+          <p class="section-subtitle">Minha evolução através de desafios e aprendizado contínuo.</p>
         </header>
 
         <div class="journey-tabs-container reveal">
@@ -336,102 +342,137 @@
         </div>
 
         <div id="experience" class="tab-panel" role="tabpanel">
-          <div class="timeline alternate">
-            <div class="timeline-line" aria-hidden="true"></div>
+          <div class="journey-timeline">
+            <div class="journey-line"></div>
 
-            <div class="timeline-item reveal">
-              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
-              <div class="timeline-card glass">
-                <div class="timeline-card-header">
-                  <div class="timeline-title-wrap">
-                    <h3 data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
-                    <h4 class="timeline-company">Flash Net Brasil</h4>
-                  </div>
-                  <span class="timeline-date current-date" data-i18n="journey.exp1.date">2023 - Atual</span>
-                </div>
-                <p data-i18n="journey.exp1.desc">Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.</p>
-                <button class="timeline-more-link" data-modal-target="exp-flashnet-atual" type="button">
-                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="journey-item reveal">
+              <div class="journey-marker current">
+                <i data-lucide="server"></i>
+                <div class="pulse-ring"></div>
+              </div>
+              <div class="journey-content left">
+                <article class="journey-card glass">
+                  <header class="journey-card-header">
+                    <div class="journey-meta">
+                      <span class="journey-company">Flash Net Brasil</span>
+                      <span class="journey-date-badge current" data-i18n="journey.exp1.date">2023 - Atual</span>
+                    </div>
+                    <h3 class="journey-role" data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
+                  </header>
+                  <p class="journey-desc" data-i18n="journey.exp1.desc">
+                    Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.
+                  </p>
+                  <button class="journey-link" data-modal-target="exp-flashnet-atual" type="button">
+                    <span data-i18n="journey.details">Ver detalhes</span>
+                    <i data-lucide="arrow-right"></i>
+                  </button>
+                </article>
               </div>
             </div>
 
-            <div class="timeline-item reveal">
-              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
-              <div class="timeline-card glass">
-                <div class="timeline-card-header">
-                  <div class="timeline-title-wrap">
-                    <h3 data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
-                    <h4 class="timeline-company">TOTVS</h4>
-                  </div>
-                  <span class="timeline-date" data-i18n="journey.exp2.date">2023</span>
-                </div>
-                <p data-i18n="journey.exp2.desc">Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.</p>
-                <button class="timeline-more-link" data-modal-target="exp-totvs" type="button">
-                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="journey-item reveal">
+              <div class="journey-marker">
+                <i data-lucide="hard-drive"></i>
+              </div>
+              <div class="journey-content right">
+                <article class="journey-card glass">
+                  <header class="journey-card-header">
+                    <div class="journey-meta">
+                      <span class="journey-company">TOTVS</span>
+                      <span class="journey-date-badge" data-i18n="journey.exp2.date">2023</span>
+                    </div>
+                    <h3 class="journey-role" data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
+                  </header>
+                  <p class="journey-desc" data-i18n="journey.exp2.desc">
+                    Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.
+                  </p>
+                  <button class="journey-link" data-modal-target="exp-totvs" type="button">
+                    <span data-i18n="journey.details">Ver detalhes</span>
+                    <i data-lucide="arrow-right"></i>
+                  </button>
+                </article>
               </div>
             </div>
 
-            <div class="timeline-item reveal">
-              <div class="timeline-dot" aria-hidden="true"><i data-lucide="briefcase"></i></div>
-              <div class="timeline-card glass">
-                <div class="timeline-card-header">
-                  <div class="timeline-title-wrap">
-                    <h3 data-i18n="journey.exp3.role">Analista de Qualidade</h3>
-                    <h4 class="timeline-company">Flash Net Brasil</h4>
-                  </div>
-                  <span class="timeline-date" data-i18n="journey.exp3.date">2018 - 2023</span>
-                </div>
-                <p data-i18n="journey.exp3.desc">Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.</p>
-                <button class="timeline-more-link" data-modal-target="exp-flashnet-qualidade" type="button">
-                  <span data-i18n="journey.details">Ver detalhes</span> <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="journey-item reveal">
+              <div class="journey-marker">
+                <i data-lucide="shield-check"></i>
+              </div>
+              <div class="journey-content left">
+                <article class="journey-card glass">
+                  <header class="journey-card-header">
+                    <div class="journey-meta">
+                      <span class="journey-company">Flash Net Brasil</span>
+                      <span class="journey-date-badge" data-i18n="journey.exp3.date">2018 - 2023</span>
+                    </div>
+                    <h3 class="journey-role" data-i18n="journey.exp3.role">Analista de Qualidade</h3>
+                  </header>
+                  <p class="journey-desc" data-i18n="journey.exp3.desc">
+                    Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.
+                  </p>
+                  <button class="journey-link" data-modal-target="exp-flashnet-qualidade" type="button">
+                    <span data-i18n="journey.details">Ver detalhes</span>
+                    <i data-lucide="arrow-right"></i>
+                  </button>
+                </article>
               </div>
             </div>
           </div>
         </div>
 
         <div id="education" class="tab-panel hidden" role="tabpanel">
-          <div class="timeline alternate">
-            <div class="timeline-line" aria-hidden="true"></div>
+          <div class="journey-timeline">
+            <div class="journey-line"></div>
 
-            <div class="timeline-item reveal">
-              <div class="timeline-dot" aria-hidden="true"><i data-lucide="graduation-cap"></i></div>
-              <div class="timeline-card glass">
-                <div class="timeline-card-header">
-                  <div class="timeline-title-wrap">
-                    <h3 data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
-                    <h4 class="timeline-company">PUC Minas</h4>
-                  </div>
-                  <span class="timeline-date" data-i18n="journey.edu1.date">2024 - 2025</span>
-                </div>
-                <p data-i18n="journey.edu1.desc">Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.</p>
-                <button class="timeline-more-link" data-modal-target="edu-puc" type="button">
-                  <span data-i18n="journey.subjects">Ver disciplinas</span> <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="journey-item reveal">
+              <div class="journey-marker education">
+                <i data-lucide="database"></i>
+              </div>
+              <div class="journey-content left">
+                <article class="journey-card glass">
+                  <header class="journey-card-header">
+                    <div class="journey-meta">
+                      <span class="journey-company">PUC Minas</span>
+                      <span class="journey-date-badge" data-i18n="journey.edu1.date">2024 - 2025</span>
+                    </div>
+                    <h3 class="journey-role" data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
+                  </header>
+                  <p class="journey-desc" data-i18n="journey.edu1.desc">
+                    Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.
+                  </p>
+                  <button class="journey-link" data-modal-target="edu-puc" type="button">
+                    <span data-i18n="journey.subjects">Ver disciplinas</span>
+                    <i data-lucide="arrow-right"></i>
+                  </button>
+                </article>
               </div>
             </div>
 
-            <div class="timeline-item reveal">
-              <div class="timeline-dot" aria-hidden="true"><i data-lucide="graduation-cap"></i></div>
-              <div class="timeline-card glass">
-                <div class="timeline-card-header">
-                  <div class="timeline-title-wrap">
-                    <h3 data-i18n="journey.edu2.title">Análise e Desenv. de Sistemas</h3>
-                    <h4 class="timeline-company">IFSP</h4>
-                  </div>
-                  <span class="timeline-date" data-i18n="journey.edu2.date">2016 - 2020</span>
-                </div>
-                <p data-i18n="journey.edu2.desc">Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.</p>
-                <button class="timeline-more-link" data-modal-target="edu-ifsp" type="button">
-                  <span data-i18n="journey.subjects">Ver disciplinas</span> <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="journey-item reveal">
+              <div class="journey-marker education">
+                <i data-lucide="code-2"></i>
+              </div>
+              <div class="journey-content right">
+                <article class="journey-card glass">
+                  <header class="journey-card-header">
+                    <div class="journey-meta">
+                      <span class="journey-company">IFSP</span>
+                      <span class="journey-date-badge" data-i18n="journey.edu2.date">2016 - 2020</span>
+                    </div>
+                    <h3 class="journey-role" data-i18n="journey.edu2.title">Análise e Desenv. de Sistemas</h3>
+                  </header>
+                  <p class="journey-desc" data-i18n="journey.edu2.desc">
+                    Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.
+                  </p>
+                  <button class="journey-link" data-modal-target="edu-ifsp" type="button">
+                    <span data-i18n="journey.subjects">Ver disciplinas</span>
+                    <i data-lucide="arrow-right"></i>
+                  </button>
+                </article>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
