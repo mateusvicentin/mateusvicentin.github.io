@@ -65,7 +65,7 @@ const I18N = {
     "projects.kicker": "GitHub",
     "projects.title": "Projetos",
     "projects.subtitle.prefix": "GitHub",
-    "projects.search.placeholder": "Buscar projeto por nome, tecnologia ou descrição...",
+    "projects.search.placeholder": "Buscar projeto por nome, tecnologia...",
     "projects.pagination.prev": "« Anterior",
     "projects.pagination.next": "Próxima »",
     "projects.pagination.page": "Página 1",
@@ -89,98 +89,14 @@ const I18N = {
     "journey.edu1.title": "Pós-Graduação em Engenharia de Dados",
     "journey.edu1.date": "2024 - 2025",
     "journey.edu1.desc": "Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.",
-    "journey.edu2.title": "Análise e Desenv. de Sistemas",
+    "journey.edu2.title": "Systems Analysis & Dev.",
     "journey.edu2.date": "2016 - 2020",
-    "journey.edu2.desc": "Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.",
+    "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
     "certs.title": "Certificações",
     "certs.verify": "Verificar credencial",
     "certs.c1.name": "ICC-A Telefonia IP",
     "certs.c1.date": "Concluída",
     "certs.c1.desc": "Certificação focada em implementação, configuração e arquitetura de centrais telefônicas IP e infraestrutura VoIP.",
-    "contact.title": "Vamos conversar?",
-    "contact.subtitle": "Estou sempre aberto a novos desafios e oportunidades.",
-    "contact.social.linkedin": "Conexões profissionais",
-    "contact.social.github": "Repositórios e códigos",
-    "contact.social.telegram": "Bate-papo rápido",
-    "contact.direct.title": "Direto ao ponto",
-    "contact.direct.desc": "Se preferir, envie um e-mail direto com o contexto técnico ou objetivo do projeto.",
-    "contact.direct.cta": "Enviar e-mail",
-    "dyn.loading": "Carregando...",
-    "dyn.loadingRepos": "Carregando repositórios...",
-    "dyn.loadFail": "Falha ao carregar",
-    "dyn.loadError": "Erro ao carregar.",
-    "dyn.noProjects": "Nenhum projeto encontrado.",
-    "dyn.noDesc": "Sem descrição",
-    "dyn.projectsCount": "{n} projeto(s)",
-    "dyn.pageOf": "Página {p} de {t}",
-    "aria.theme": "Alternar tema",
-    "aria.lang.toEN": "Traduzir para inglês",
-    "aria.lang.toPT": "Voltar para português",
-    "aria.openGithub": "Abrir link"
-  },
-  en: {
-    "logo.sub": "Data & Infrastructure",
-    "nav.about": "About",
-    "nav.stack": "Skills",
-    "nav.projects": "Projects",
-    "nav.journey": "Journey",
-    "nav.contact": "Contact",
-    "nav.certs": "Certifications",
-    "hero.greeting": "Hi, I'm Mateus 👋",
-    "hero.title.line1": "Data Engineer",
-    "hero.title.line2": "& Infrastructure Analyst",
-    "hero.subtitle": "Postgraduate in Data Engineering (PUC Minas) and graduated in Systems Analysis and Development (IFSP). I work as an Infrastructure Analyst focused on servers, telephony, and datacenter operations.",
-    "hero.cta.projects": "View projects",
-    "hero.cta.resume": "Deploy Resume",
-    "hero.cta.linkedin": "Open LinkedIn",
-    "hero.deploy.init": "Initializing...",
-    "hero.deploy.apply": "Applying configs...",
-    "hero.deploy.success": "Deploy Successful!",
-    "about.kicker": "Who I am",
-    "about.title": "About me",
-    "about.p1": `Postgraduate in <strong>Data Engineering</strong> (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> (IFSP). My professional journey combines a strong operational foundation in traditional IT infrastructure with modern data architectures, focusing on scalable solutions.`,
-    "about.p2": `I am passionate about solving complex problems at the intersection of <strong>Information Security</strong>, <strong>Networking</strong>, and <strong>Cloud Computing</strong>. Currently, I aim to apply my background in mission-critical operations to build robust, governed, and highly available analytical environments.`,
-    "about.card1.title": "Engineering & Pipelines",
-    "about.card1.desc": "Building efficient workflows using Python, Apache Spark, Databricks, Kafka, Airflow, and dbt, from distributed processing to data transformation.",
-    "about.card2.title": "Cloud Ecosystem",
-    "about.card2.desc": "Data modeling and governance on platforms like BigQuery, Snowflake, MongoDB, and SQL/NoSQL databases, operating on AWS and Azure architectures.",
-    "skills.kicker": "Skills",
-    "skills.title": "Skills",
-    "projects.kicker": "GitHub",
-    "projects.title": "Projects",
-    "projects.subtitle.prefix": "GitHub",
-    "projects.search.placeholder": "Search projects by name, tech, or description...",
-    "projects.pagination.prev": "« Previous",
-    "projects.pagination.next": "Next »",
-    "projects.pagination.page": "Page 1",
-    "projects.source.data": "Data",
-    "projects.source.infra": "Infra",
-    "journey.kicker": "Career",
-    "journey.title": "Professional & academic journey",
-    "journey.tabs.experience": "Experience",
-    "journey.tabs.education": "Education",
-    "journey.details": "View details",
-    "journey.subjects": "View subjects",
-    "journey.exp1.role": "Infrastructure Analyst",
-    "journey.exp1.date": "2023 - Present",
-    "journey.exp1.desc": "Responsible for critical datacenter infrastructure, servers, networking, telephony, and monitoring.",
-    "journey.exp2.role": "Infrastructure Analyst",
-    "journey.exp2.date": "2023",
-    "journey.exp2.desc": "Datacenter operations, VM provisioning, networking, firewalls, and corporate support.",
-    "journey.exp3.role": "Quality Analyst",
-    "journey.exp3.date": "2018 - 2023",
-    "journey.exp3.desc": "Connectivity quality assurance, monitoring, documentation, and SOC/LGPD support.",
-    "journey.edu1.title": "Postgraduate in Data Engineering",
-    "journey.edu1.date": "2024 - 2025",
-    "journey.edu1.desc": "Focus on data architecture, big data, distributed processing, and modern platforms.",
-    "journey.edu2.title": "Systems Analysis & Dev.",
-    "journey.edu2.date": "2016 - 2020",
-    "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
-    "certs.title": "Certifications",
-    "certs.verify": "Verify credential",
-    "certs.c1.name": "ICC-A IP Telephony",
-    "certs.c1.date": "Completed",
-    "certs.c1.desc": "Certification focused on the implementation, configuration, and architecture of IP PBX and VoIP infrastructure.",
     "contact.title": "Let’s talk?",
     "contact.subtitle": "I'm always open to new challenges and opportunities.",
     "contact.social.linkedin": "Professional network",
@@ -189,13 +105,13 @@ const I18N = {
     "contact.direct.title": "Straight to the point",
     "contact.direct.desc": "If you prefer, send a direct email with technical context and project goals.",
     "contact.direct.cta": "Send email",
-    "dyn.loading": "Loading...",
+    "dyn.loading": "Carregando...",
     "dyn.loadingRepos": "Loading repositories...",
     "dyn.loadFail": "Failed to load",
     "dyn.loadError": "Error while loading.",
     "dyn.noProjects": "No projects found.",
-    "dyn.noDesc": "No description",
-    "dyn.projectsCount": "{n} project(s)",
+    "dyn.noDesc": "Sem descrição",
+    "dyn.projectsCount": "{n} projeto(s)",
     "dyn.pageOf": "Page {p} of {t}",
     "aria.theme": "Toggle theme",
     "aria.lang.toEN": "Translate to English",
@@ -620,7 +536,7 @@ function initCursor() {
   document.addEventListener("mouseover", (e) => {
     cursor.classList.toggle(
       "cursor--active",
-      !!e.target.closest("a, button, .btn, .project-link-external, .social-btn, .timeline-more-link, .cert-card, .skill-item, .cert-verify-btn, .social-bento")
+      !!e.target.closest("a, button, .btn, .project-link-external, .social-btn, .journey-link, .timeline-more-link, .cert-card, .skill-item, .cert-verify-btn, .social-bento")
     );
   });
 }
@@ -685,7 +601,7 @@ function initModal() {
     if (lastActiveEl) lastActiveEl.focus();
   };
 
-  $$(".timeline-more-link").forEach((btn) =>
+  $$(".journey-link, .timeline-more-link").forEach((btn) =>
     btn.addEventListener("click", () => {
       const MODALS = getModalsByLang();
       open(MODALS[btn.dataset.modalTarget] || "");
@@ -779,14 +695,24 @@ async function fetchRepos() {
 
 function getInfraBaseItems() {
   return INFRA_POSTS.map((p) => ({
-    kind: "infra", title: p.title, desc: currentLang === "en" ? p.descEN : p.descPT, updated_at: p.date, url: p.url
+    kind: "infra", 
+    title: p.title, 
+    desc: currentLang === "en" ? p.descEN : p.descPT, 
+    updated_at: p.date, 
+    url: p.url,
+    tech: p.tech
   }));
 }
 
 function getActiveItems() {
   if (currentSource === "infra") return infraFiltered ?? getInfraBaseItems();
   return filteredRepos.map((repo) => ({
-    kind: "github", title: formatRepoName(repo.name), desc: repo.description || t("dyn.noDesc"), updated_at: repo.updated_at, url: repo.html_url
+    kind: "github", 
+    title: formatRepoName(repo.name), 
+    desc: repo.description || t("dyn.noDesc"), 
+    updated_at: repo.updated_at, 
+    url: repo.html_url,
+    tech: repo.language || "Code"
   }));
 }
 
@@ -814,18 +740,22 @@ function renderItems() {
   list.innerHTML = slice.map((it) => {
     return `
       <article class="project-card">
-        <div class="project-card-header">
-          <div class="project-icon">
-            <i data-lucide="${it.kind === "infra" ? "server" : "database"}"></i>
+        <div class="project-card-top">
+          <div class="folder-icon">
+            <i data-lucide="${it.kind === "infra" ? "server" : "folder"}"></i>
           </div>
-          <a href="${it.url}" target="_blank" rel="noopener noreferrer" class="project-link-external" aria-label="${t("aria.openGithub")}">
-            <i data-lucide="external-link"></i>
-          </a>
+          <div class="project-links">
+            <a href="${it.url}" target="_blank" rel="noopener noreferrer" aria-label="${t("aria.openGithub")}">
+              <i data-lucide="external-link"></i>
+            </a>
+          </div>
         </div>
+        
         <h3 class="project-title">${it.title}</h3>
         <p class="project-desc">${it.desc}</p>
-        <div class="project-footer">
-          <span class="project-date">${formatUpdated(it.updated_at)}</span>
+        
+        <div class="project-meta">
+          <span class="update-date">${formatUpdated(it.updated_at)}</span>
         </div>
       </article>
     `;
@@ -837,19 +767,6 @@ function renderItems() {
   next.disabled = currentPage === totalPages;
 
   window.lucide && window.lucide.createIcons();
-
-  if (window.matchMedia("(pointer: fine)").matches) {
-    const cards = document.querySelectorAll(".project-card");
-    cards.forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty("--mouse-x", `${x}px`);
-        card.style.setProperty("--mouse-y", `${y}px`);
-      });
-    });
-  }
 }
 
 function refreshDynamicProjectTexts() {
@@ -914,6 +831,14 @@ function initProjects() {
       }
       filteredRepos = allRepos.filter((r) => r.name.toLowerCase().includes(term) || (r.description || "").toLowerCase().includes(term));
       renderItems();
+    });
+
+    // Atalho "/" para focar na busca
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== search) {
+        e.preventDefault();
+        search.focus();
+      }
     });
   }
 
@@ -1004,4 +929,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
