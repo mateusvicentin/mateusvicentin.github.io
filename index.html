@@ -28,7 +28,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+  
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
   <script src="https://unpkg.com/lucide@latest" defer></script>
 
   <link rel="stylesheet" href="./css/style.css" />
@@ -58,7 +59,7 @@
         <a href="#skills" data-i18n="nav.stack">Habilidades</a>
         <a href="#projects" data-i18n="nav.projects">Projetos</a>
         <a href="#journey" data-i18n="nav.journey">Trajetória</a>
-        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#certifications" data-i18n="nav.certs">Qualificações</a>
         <a href="#contact" class="nav-cta" data-i18n="nav.contact">Contato</a>
       </nav>
 
@@ -81,7 +82,7 @@
         <a href="#skills" data-i18n="nav.stack">Habilidades</a>
         <a href="#projects" data-i18n="nav.projects">Projetos</a>
         <a href="#journey" data-i18n="nav.journey">Trajetória</a>
-        <a href="#certifications" data-i18n="nav.certs">Certificações</a>
+        <a href="#certifications" data-i18n="nav.certs">Qualificações</a>
         <a href="#contact" data-i18n="nav.contact">Contato</a>
       </nav>
     </div>
@@ -186,88 +187,98 @@
           <h2 class="section-title gradient-text" data-i18n="skills.title">Habilidades</h2>
         </header>
 
-        <div class="skills-panels reveal">
-          <div class="skills-category glass">
-            <h3 class="category-title">
-              <div class="category-title-icon"><i data-lucide="database"></i></div>
-              Dados & Desenvolvimento
-            </h3>
-            <div class="skills-grid-inner">
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="code-2"></i></span>
-                <span class="skill-name">Python</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="database"></i></span>
-                <span class="skill-name">SQL & PostgreSQL</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="boxes"></i></span>
-                <span class="skill-name">dbt</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="sparkles"></i></span>
-                <span class="skill-name">Spark & Pandas</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="radio"></i></span>
-                <span class="skill-name">Kafka</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="workflow"></i></span>
-                <span class="skill-name">Airflow</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="hard-drive"></i></span>
-                <span class="skill-name">MongoDB</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="server"></i></span>
-                <span class="skill-name">APIs REST</span>
-              </button>
-            </div>
+        <div class="skills-legend reveal">
+          <button class="legend-btn active" data-filter="all" aria-pressed="true">
+            <span class="dot all"></span> <span data-i18n="skills.filter.all">Todos</span>
+          </button>
+          <button class="legend-btn" data-filter="data">
+            <span class="dot data"></span> Data Eng.
+          </button>
+          <button class="legend-btn" data-filter="infra">
+            <span class="dot infra"></span> Infra & Cloud
+          </button>
+          <button class="legend-btn" data-filter="tools">
+            <span class="dot tools"></span> Tools
+          </button>
+        </div>
+
+        <div class="skills-grid-organized reveal">
+          
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-python-plain"></i> <span>Python</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-postgresql-plain"></i> <span>SQL & Postgres</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-apachespark-plain"></i> <span>Spark</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-apachekafka-plain"></i> <span>Kafka</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-pandas-plain"></i> <span>Pandas</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-apacheairflow-plain"></i> <span>Airflow</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i data-lucide="boxes"></i> <span>dbt</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i class="devicon-mongodb-plain"></i> <span>MongoDB</span>
+          </div>
+          <div class="tech-node data" data-category="data">
+            <i data-lucide="table-2"></i> <span>Data Lakes</span>
           </div>
 
-          <div class="skills-category glass">
-            <h3 class="category-title">
-              <div class="category-title-icon"><i data-lucide="cloud"></i></div>
-              Infra, Cloud & Redes
-            </h3>
-            <div class="skills-grid-inner">
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="cloudy"></i></span>
-                <span class="skill-name">AWS & Azure</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="terminal"></i></span>
-                <span class="skill-name">Linux & Bash</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="ship"></i></span>
-                <span class="skill-name">Docker</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="git-merge"></i></span>
-                <span class="skill-name">Git & CI/CD</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="blocks"></i></span>
-                <span class="skill-name">Terraform (IaC)</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="activity"></i></span>
-                <span class="skill-name">Zabbix & Grafana</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="server-cog"></i></span>
-                <span class="skill-name">Proxmox & TrueNAS</span>
-              </button>
-              <button class="skill-item" type="button">
-                <span class="skill-icon"><i data-lucide="network"></i></span>
-                <span class="skill-name">Redes & NGINX</span>
-              </button>
-            </div>
+          <div class="tech-node infra" data-category="infra">
+            <i class="devicon-amazonwebservices-plain-wordmark"></i> <span>AWS</span>
           </div>
+          <div class="tech-node infra" data-category="infra">
+            <i class="devicon-azure-plain"></i> <span>Azure</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i class="devicon-docker-plain"></i> <span>Docker</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i class="devicon-terraform-plain"></i> <span>Terraform</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i class="devicon-linux-plain"></i> <span>Linux/Bash</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i data-lucide="server"></i> <span>Proxmox</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i data-lucide="hard-drive"></i> <span>TrueNAS</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i data-lucide="activity"></i> <span>Zabbix</span>
+          </div>
+          <div class="tech-node infra" data-category="infra">
+            <i data-lucide="network"></i> <span>Redes & IP</span>
+          </div>
+
+          <div class="tech-node tools" data-category="tools">
+            <i class="devicon-git-plain"></i> <span>Git & GitHub</span>
+          </div>
+          <div class="tech-node tools" data-category="tools">
+            <i data-lucide="git-merge"></i> <span>CI/CD</span>
+          </div>
+          <div class="tech-node tools" data-category="tools">
+            <i data-lucide="bar-chart-3"></i> <span>Grafana</span>
+          </div>
+          <div class="tech-node tools" data-category="tools">
+            <i class="devicon-nginx-original"></i> <span>NGINX</span>
+          </div>
+          <div class="tech-node tools" data-category="tools">
+            <i data-lucide="layout-dashboard"></i> <span>Power BI</span>
+          </div>
+          <div class="tech-node tools" data-category="tools">
+            <i class="devicon-vscode-plain"></i> <span>VS Code</span>
+          </div>
+
         </div>
       </div>
     </section>
@@ -325,7 +336,6 @@
       <div class="container">
         <header class="section-header reveal">
           <h2 class="section-title gradient-text" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
-          <p class="section-subtitle">Minha evolução através de desafios e aprendizado contínuo.</p>
         </header>
 
         <div class="journey-tabs-container reveal">
@@ -477,86 +487,101 @@
     </section>
 
     <section id="certifications" class="section">
-      <div class="container narrow">
+      <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="certs.title">Certificações</h2>
+          <h2 class="section-title gradient-text" data-i18n="certs.title">Qualificações</h2>
         </header>
 
-        <div class="certs-list reveal" role="list">
-          <article class="cert-card glass cert-tilt" role="listitem">
-            <div class="cert-glare"></div>
-            <div class="cert-badge" aria-hidden="true">
-              <i data-lucide="award"></i>
-            </div>
-            
-            <div class="cert-details">
-              <span class="cert-org">Intelbras</span>
-              <h3 class="cert-name" data-i18n="certs.c1.name">ICC-A Telefonia IP</h3>
-              <p class="cert-desc" data-i18n="certs.c1.desc">Certificação focada em implementação, configuração e arquitetura de centrais telefônicas IP e infraestrutura VoIP.</p>
+        <div class="qualifications-grid">
+          
+          <div class="credential-group reveal">
+            <div class="group-header cert-header">
+              <div class="group-icon"><i data-lucide="award"></i></div>
+              <h3 class="group-title" data-i18n="certs.col.cert">Certificações Oficiais</h3>
             </div>
 
-            <div class="cert-footer">
-              <a class="cert-verify-btn" href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229" target="_blank" rel="noopener noreferrer" aria-label="Verificar credencial">
-                <span class="material-symbols-outlined">verified</span>
-                <span data-i18n="certs.verify">Verificar credencial</span>
-              </a>
+            <div class="group-list">
+              <div class="cred-item-row cert-theme">
+                <div class="cred-item-left">
+                  <div class="cred-item-icon"><i data-lucide="shield-check"></i></div>
+                  <div class="cred-item-info">
+                    <h4 class="cred-item-title" data-i18n="certs.c1.name">ICC-A Telefonia IP</h4>
+                    <div class="cred-item-meta">
+                      <span class="cred-item-org">Intelbras Enterprise</span>
+                      <span class="cred-item-date" data-i18n="certs.c1.date">Concluída</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229" target="_blank" rel="noopener noreferrer" class="cred-btn" aria-label="Verificar credencial">
+                  <i data-lucide="external-link"></i>
+                </a>
+              </div>
             </div>
-          </article>
+          </div>
+
+          <div class="credential-group reveal">
+            <div class="group-header course-header">
+              <div class="group-icon"><i data-lucide="book-open"></i></div>
+              <h3 class="group-title" data-i18n="certs.col.course">Cursos & Treinamentos</h3>
+            </div>
+
+
+
+              <div class="cred-item-row course-theme">
+                <div class="cred-item-left">
+                  <div class="cred-item-icon"><i data-lucide="layout-template"></i></div>
+                  <div class="cred-item-info">
+                    <h4 class="cred-item-title">Engenharia de Dados com Python</h4>
+                    <div class="cred-item-meta">
+                      <span class="cred-item-org">Udemy</span>
+                      <span class="cred-item-date">2025</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://www.udemy.com/course/engenharia-de-dados-com-python/" target="_blank" rel="noopener noreferrer" class="cred-btn" aria-label="Ver certificado">
+                  <i data-lucide="arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section">
-      <div class="container contact-container">
-        <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="contact.title">Vamos conversar?</h2>
-          <p class="section-subtitle" data-i18n="contact.subtitle">Estou sempre aberto a novos desafios e oportunidades.</p>
-        </header>
-
-        <div class="contact-bento reveal">
-          <div class="contact-main glass">
-            <div class="contact-icon">
-              <i data-lucide="mail"></i>
-            </div>
-            <h3 data-i18n="contact.direct.title">Direto ao ponto</h3>
-            <p data-i18n="contact.direct.desc">Se preferir, envie um e-mail direto com o contexto técnico ou objetivo do projeto.</p>
-            <a href="mailto:mateusvicentin8@gmail.com" class="btn primary contact-btn">
-              <span class="material-symbols-outlined">send</span>
-              <span data-i18n="contact.direct.cta">Enviar e-mail</span>
-            </a>
+    <section id="contact" class="section contact-section">
+      <div class="container contact-hub-container reveal">
+        <div class="contact-glow"></div>
+        
+        <div class="contact-card-hub">
+          <div class="hub-header">
+            <h2 class="hub-title" data-i18n="contact.title">Vamos conversar?</h2>
+            <p class="hub-sub" data-i18n="contact.sub">Minha caixa de entrada está aberta para propostas de projetos, colaborações ou discussões técnicas.</p>
           </div>
 
-          <div class="contact-socials">
-            <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
-              <div class="social-icon-wrapper"><i data-lucide="linkedin"></i></div>
-              <div class="social-text">
-                <strong>LinkedIn</strong>
-                <span data-i18n="contact.social.linkedin">Conexões profissionais</span>
+          <div class="hub-grid">
+            <button id="hubEmailBtn" class="hub-btn-email" type="button" aria-label="Copiar email">
+              <div class="hub-copy-feedback" id="hubFeedback">
+                <i data-lucide="check"></i> <span data-i18n="contact.copy.feedback">Copiado!</span>
               </div>
-              <i data-lucide="arrow-up-right" class="social-arrow"></i>
+              <span id="hubEmailText" class="hub-email-text">mateusvicentin8@gmail.com</span>
+              <div class="hub-icon-box">
+                <i data-lucide="copy"></i>
+              </div>
+            </button>
+
+            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
+              <i data-lucide="github"></i> <span data-i18n="contact.btn.github">GitHub</span>
             </a>
 
-            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
-              <div class="social-icon-wrapper"><i data-lucide="github"></i></div>
-              <div class="social-text">
-                <strong>GitHub</strong>
-                <span data-i18n="contact.social.github">Repositórios e códigos</span>
-              </div>
-              <i data-lucide="arrow-up-right" class="social-arrow"></i>
-            </a>
-
-            <a href="https://t.me/mateusvicentin" target="_blank" rel="noopener noreferrer" class="social-bento glass">
-              <div class="social-icon-wrapper"><i data-lucide="send"></i></div>
-              <div class="social-text">
-                <strong>Telegram</strong>
-                <span data-i18n="contact.social.telegram">Bate-papo rápido</span>
-              </div>
-              <i data-lucide="arrow-up-right" class="social-arrow"></i>
+            <a href="https://t.me/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
+              <i data-lucide="send"></i> <span data-i18n="contact.btn.telegram">Telegram</span>
             </a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="footer">
