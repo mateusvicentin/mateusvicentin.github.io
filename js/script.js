@@ -6,7 +6,7 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
 let currentLang = "pt";
 
-let currentSource = "github"; // "github" | "infra"
+let currentSource = "github"; 
 let infraFiltered = null;
 
 const INFRA_POSTS = [
@@ -40,8 +40,8 @@ const I18N = {
     "nav.stack": "Habilidades",
     "nav.projects": "Projetos",
     "nav.journey": "Trajetória",
+    "nav.certs": "Qualificações",
     "nav.contact": "Contato",
-    "nav.certs": "Certificações",
     "hero.greeting": "Oi, sou o Mateus 👋",
     "hero.title.line1": "Engenheiro de Dados",
     "hero.title.line2": "& Analista de Infra",
@@ -60,8 +60,9 @@ const I18N = {
     "about.card1.desc": "Construção de fluxos eficientes utilizando Python, Apache Spark, Databricks, Kafka, Airflow e dbt, do processamento distribuído à transformação de dados.",
     "about.card2.title": "Ecossistema Cloud",
     "about.card2.desc": "Modelagem e governança de dados em plataformas como BigQuery, Snowflake, MongoDB e bancos SQL/NoSQL, operando sobre arquiteturas AWS e Azure.",
-    "skills.kicker": "Stack",
     "skills.title": "Habilidades",
+    "skills.subtitle": "Visão unificada das tecnologias que domino.",
+    "skills.filter.all": "Todos",
     "projects.kicker": "GitHub",
     "projects.title": "Projetos",
     "projects.subtitle.prefix": "GitHub",
@@ -89,29 +90,128 @@ const I18N = {
     "journey.edu1.title": "Pós-Graduação em Engenharia de Dados",
     "journey.edu1.date": "2024 - 2025",
     "journey.edu1.desc": "Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.",
+    "journey.edu2.title": "Análise e Desenv. de Sistemas",
+    "journey.edu2.date": "2016 - 2020",
+    "journey.edu2.desc": "Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.",
+    
+    /* QUALIFICAÇÕES (PT) */
+    "certs.title": "Qualificações",
+    "certs.subtitle": "Meu arsenal de validações oficiais e aprendizado contínuo.",
+    "certs.col.cert": "Certificações Oficiais",
+    "certs.col.course": "Cursos & Treinamentos",
+    "certs.verify": "Verificar credencial",
+    "certs.view": "Ver certificado",
+    "certs.c1.name": "ICC-A Telefonia IP",
+    "certs.c1.date": "Concluída",
+    "certs.c2.name": "Engenharia de Dados com Apache Spark",
+
+    /* CONTATO MINIMALISTA (PT) */
+    "contact.title": "Vamos conversar?",
+    "contact.sub": "Minha caixa de entrada está aberta para propostas de projetos, colaborações ou discussões técnicas.",
+    "contact.copy.feedback": "Copiado!",
+    "contact.btn.github": "GitHub",
+    "contact.btn.telegram": "Telegram",
+    "contact.copy.aria": "Copiar endereço de e-mail",
+
+    "dyn.loading": "Carregando...",
+    "dyn.loadingRepos": "Carregando repositórios...",
+    "dyn.loadFail": "Falha ao carregar",
+    "dyn.loadError": "Erro ao carregar.",
+    "dyn.noProjects": "Nenhum projeto encontrado.",
+    "dyn.noDesc": "Sem descrição",
+    "dyn.projectsCount": "{n} projeto(s)",
+    "dyn.pageOf": "Página {p} de {t}",
+    "aria.theme": "Alternar tema",
+    "aria.lang.toEN": "Traduzir para Inglês",
+    "aria.lang.toPT": "Voltar para Português",
+    "aria.openGithub": "Abrir link"
+  },
+  en: {
+    "logo.sub": "Data Engineering & Infra",
+    "nav.about": "About",
+    "nav.stack": "Skills",
+    "nav.projects": "Projects",
+    "nav.journey": "Journey",
+    "nav.certs": "Qualifications",
+    "nav.contact": "Contact",
+    "hero.greeting": "Hi, I'm Mateus 👋",
+    "hero.title.line1": "Data Engineer",
+    "hero.title.line2": "& Infra Analyst",
+    "hero.subtitle": "Postgraduate in Data Engineering (PUC Minas) and degree in Systems Analysis and Development (IFSP). I work as an Infrastructure Analyst, focusing on servers, telephony, and datacenters.",
+    "hero.cta.projects": "See projects",
+    "hero.cta.resume": "Deploy Resume",
+    "hero.cta.linkedin": "LinkedIn Profile",
+    "hero.deploy.init": "Initializing...",
+    "hero.deploy.apply": "Applying configs...",
+    "hero.deploy.success": "Deploy Complete!",
+    "about.kicker": "Who I am",
+    "about.title": "About me",
+    "about.p1": `Postgraduate in <strong>Data Engineering</strong> (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> (IFSP). My professional journey combines a strong operational foundation in traditional IT infrastructure with modern data architectures, focusing on scalable solutions.`,
+    "about.p2": `I am passionate about solving complex problems at the intersection of <strong>Information Security</strong>, <strong>Networking</strong>, and <strong>Cloud Computing</strong>. Currently, I seek to apply my background in mission-critical operations to build analytical environments that are robust, governed, and highly available.`,
+    "about.card1.title": "Engineering & Pipelines",
+    "about.card1.desc": "Building efficient flows using Python, Apache Spark, Databricks, Kafka, Airflow, and dbt, from distributed processing to data transformation.",
+    "about.card2.title": "Cloud Ecosystem",
+    "about.card2.desc": "Data modeling and governance on platforms like BigQuery, Snowflake, MongoDB, and SQL/NoSQL databases, operating on AWS and Azure architectures.",
+    "skills.title": "Skills",
+    "skills.subtitle": "A unified view of my skills and tools.",
+    "skills.filter.all": "All",
+    "projects.kicker": "GitHub",
+    "projects.title": "Projects",
+    "projects.subtitle.prefix": "GitHub",
+    "projects.search.placeholder": "Search project by name, tech...",
+    "projects.pagination.prev": "« Previous",
+    "projects.pagination.next": "Next »",
+    "projects.pagination.page": "Page 1",
+    "projects.source.data": "Data",
+    "projects.source.infra": "Infra",
+    "journey.kicker": "Career",
+    "journey.title": "Professional and Academic Journey",
+    "journey.tabs.experience": "Experience",
+    "journey.tabs.education": "Education",
+    "journey.details": "See details",
+    "journey.subjects": "See subjects",
+    "journey.exp1.role": "Infrastructure Analyst",
+    "journey.exp1.date": "2023 - Current",
+    "journey.exp1.desc": "Responsible for critical datacenter infrastructure, servers, networks, telephony, and monitoring.",
+    "journey.exp2.role": "Infrastructure Analyst",
+    "journey.exp2.date": "2023",
+    "journey.exp2.desc": "Working in Data Center, VM provisioning, networks, firewalls, and corporate support.",
+    "journey.exp3.role": "Quality Analyst",
+    "journey.exp3.date": "2018 - 2023",
+    "journey.exp3.desc": "Ensuring connection quality, monitoring, documentation, and acting in SOC/GDPR.",
+    "journey.edu1.title": "Postgraduate in Data Engineering",
+    "journey.edu1.date": "2024 - 2025",
+    "journey.edu1.desc": "Focus on data architecture, big data, distributed processing, and modern platforms.",
     "journey.edu2.title": "Systems Analysis & Dev.",
     "journey.edu2.date": "2016 - 2020",
     "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
-    "certs.title": "Certificações",
-    "certs.verify": "Verificar credencial",
-    "certs.c1.name": "ICC-A Telefonia IP",
-    "certs.c1.date": "Concluída",
-    "certs.c1.desc": "Certificação focada em implementação, configuração e arquitetura de centrais telefônicas IP e infraestrutura VoIP.",
-    "contact.title": "Let’s talk?",
-    "contact.subtitle": "I'm always open to new challenges and opportunities.",
-    "contact.social.linkedin": "Professional network",
-    "contact.social.github": "Repositories & code",
-    "contact.social.telegram": "Quick chat",
-    "contact.direct.title": "Straight to the point",
-    "contact.direct.desc": "If you prefer, send a direct email with technical context and project goals.",
-    "contact.direct.cta": "Send email",
-    "dyn.loading": "Carregando...",
+    
+    /* QUALIFICAÇÕES (EN) */
+    "certs.title": "Qualifications",
+    "certs.subtitle": "My arsenal of official validations and continuous learning.",
+    "certs.col.cert": "Official Certifications",
+    "certs.col.course": "Courses & Training",
+    "certs.verify": "Verify credential",
+    "certs.view": "View certificate",
+    "certs.c1.name": "ICC-A IP Telephony",
+    "certs.c1.date": "Completed",
+    "certs.c2.name": "Data Engineering with Apache Spark",
+
+    /* MINIMALIST CONTACT (EN) */
+    "contact.title": "Let's talk?",
+    "contact.sub": "My inbox is open for project proposals, collaborations, or technical discussions.",
+    "contact.copy.feedback": "Copied!",
+    "contact.btn.github": "GitHub",
+    "contact.btn.telegram": "Telegram",
+    "contact.copy.aria": "Copy email address",
+
+    "dyn.loading": "Loading...",
     "dyn.loadingRepos": "Loading repositories...",
     "dyn.loadFail": "Failed to load",
     "dyn.loadError": "Error while loading.",
     "dyn.noProjects": "No projects found.",
-    "dyn.noDesc": "Sem descrição",
-    "dyn.projectsCount": "{n} projeto(s)",
+    "dyn.noDesc": "No description",
+    "dyn.projectsCount": "{n} project(s)",
     "dyn.pageOf": "Page {p} of {t}",
     "aria.theme": "Toggle theme",
     "aria.lang.toEN": "Translate to English",
@@ -251,7 +351,7 @@ function getModalsByLang() {
         <li>Monitoramento da infraestrutura via T-Cloud Watch, Grafana e Zabbix, com atuação inicial em incidentes críticos e escalonamento para times especializados.</li>
         <li>Administração de rede e segurança: regras NAT, firewall Palo Alto, Big IP, VPNs, ajustes de rotas e manutenção da disponibilidade de serviços.</li>
         <li>Gestão de acessos IAM no T-Cloud, garantindo conformidade e controles de permissão corporativos.</li>
-        <li>Suporte técnico via Cherwell, Zendesk e Slack, atuando também como “mão remota” em atividades presenciais no Data Center.</li>
+        <li>Suporte técnico via Cherwell, Zendesk, and Slack, atuando também como “mão remota” em atividades presenciais no Data Center.</li>
         <li>Foco em confiabilidade, automação e segurança, garantindo continuidade operacional e melhoria contínua de processos.</li>
       </ul>
     `,
@@ -536,7 +636,7 @@ function initCursor() {
   document.addEventListener("mouseover", (e) => {
     cursor.classList.toggle(
       "cursor--active",
-      !!e.target.closest("a, button, .btn, .project-link-external, .social-btn, .journey-link, .timeline-more-link, .cert-card, .skill-item, .cert-verify-btn, .social-bento")
+      !!e.target.closest("a, button, .btn, .project-link-external, .social-btn, .journey-link, .timeline-more-link, .cred-item-row, .tech-node, .cert-verify-btn, .hub-btn-email, .hub-btn-social")
     );
   });
 }
@@ -833,7 +933,6 @@ function initProjects() {
       renderItems();
     });
 
-    // Atalho "/" para focar na busca
     document.addEventListener("keydown", (e) => {
       if (e.key === "/" && document.activeElement !== search) {
         e.preventDefault();
@@ -848,11 +947,12 @@ function initProjects() {
     if (currentPage < totalPages) { currentPage++; renderItems(); }
   });
 
-  const skillChips = $$(".skill-item");
+  const skillChips = $$(".tech-node");
   if (skillChips.length && search) {
     skillChips.forEach(chip => {
       chip.addEventListener("click", () => {
-        const skillName = chip.querySelector(".skill-name").textContent.trim();
+        const span = chip.querySelector("span");
+        let skillName = span ? span.textContent.trim() : chip.textContent.trim();
         
         const projectsSection = $("#projects");
         if (projectsSection) {
@@ -891,41 +991,71 @@ function initScrollSpy() {
   sections.forEach(sec => observer.observe(sec));
 }
 
+function initSkillsFilter() {
+  const btns = document.querySelectorAll('.legend-btn');
+  const nodes = document.querySelectorAll('.tech-node');
+
+  if (!btns.length || !nodes.length) return;
+
+  btns[0].classList.add('active');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      nodes.forEach(node => {
+        node.classList.remove('force-hover');
+
+        if (filter === 'all') {
+          node.classList.remove('dimmed');
+        } else {
+          if (node.dataset.category === filter) {
+            node.classList.remove('dimmed');
+            node.classList.add('force-hover'); 
+          } else {
+            node.classList.add('dimmed');
+          }
+        }
+      });
+    });
+  });
+}
+
+function initClipboard() {
+  const btn = $("#hubEmailBtn");
+  const emailSpan = $("#hubEmailText");
+  const feedback = $("#hubFeedback");
+  
+  if (!btn || !emailSpan || !feedback) return;
+
+  btn.addEventListener("click", async () => {
+    const email = emailSpan.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(email);
+      
+      // Animação de sucesso
+      feedback.classList.add("active");
+      
+      // Reseta após 2 segundos
+      setTimeout(() => {
+        feedback.classList.remove("active");
+      }, 2000);
+      
+    } catch (err) {
+      console.error("Failed to copy", err);
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initI18n(); initTheme(); initNav();
   initScrollHelpers(); initReveal(); initCursor(); initTabs();
   initModal(); initProjects(); initScrollSpy();
   initDeployResume();
+  initSkillsFilter(); 
+  initClipboard(); 
   window.lucide && window.lucide.createIcons();
-
-  if (window.matchMedia("(pointer: fine)").matches) {
-    const tiltCards = document.querySelectorAll(".cert-tilt");
-    tiltCards.forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((centerY - y) / centerY) * 8;
-        const rotateY = ((x - centerX) / centerX) * 8;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        card.style.transition = `none`; 
-        
-        card.style.setProperty("--mouse-x", `${x}px`);
-        card.style.setProperty("--mouse-y", `${y}px`);
-        
-        const glarePercent = (x / rect.width) * 100;
-        card.style.setProperty("--glare-pos", `${glarePercent}%`);
-      });
-
-      card.addEventListener("mouseleave", () => {
-        card.style.transition = `transform 0.5s ease`;
-        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      });
-    });
-  }
 });
