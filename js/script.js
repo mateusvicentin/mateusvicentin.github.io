@@ -718,14 +718,16 @@ function formatRepoName(name) {
     .map((w) => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(" ");
 }
 
-function formatUpdated(dateStr) {
+function formatDate(dateStr) {
   try {
     const d = new Date(dateStr);
     const locale = currentLang === "en" ? "en-US" : "pt-BR";
     const fmt = new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short", year: "numeric" });
-    return currentLang === "en" ? `Updated ${fmt.format(d)}` : `Atualizado ${fmt.format(d)}`;
+    
+    // Transforma "26 de fev. de 2026" em "26 fev 2026"
+    return fmt.format(d).replace(/ de /g, ' ').replace('.', '');
   } catch {
-    return currentLang === "en" ? "Recently updated" : "Atualizado recentemente";
+    return "";
   }
 }
 
@@ -805,12 +807,18 @@ function getInfraBaseItems() {
 }
 
 function getActiveItems() {
-  if (currentSource === "infra") return infraFiltered ?? getInfraBaseItems();
+  if (currentSource === "infra") {
+    return infraFiltered ?? getInfraBaseItems().map(p => ({
+      ...p, 
+      created_at: p.updated_at // Mock para infra usar a mesma data provisoriamente
+    }));
+  }
   return filteredRepos.map((repo) => ({
     kind: "github", 
     title: formatRepoName(repo.name), 
     desc: repo.description || t("dyn.noDesc"), 
     updated_at: repo.updated_at, 
+    created_at: repo.created_at, // <-- Adicionamos a captura da data de criação
     url: repo.html_url,
     tech: repo.language || "Code"
   }));
@@ -836,8 +844,33 @@ function renderItems() {
 
   const totalPages = Math.ceil(items.length / PER_PAGE);
   const slice = items.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+  const now = new Date();
 
   list.innerHTML = slice.map((it) => {
+    // Tratamento das datas
+    const createdDate = new Date(it.created_at || it.updated_at);
+    const updatedDate = new Date(it.updated_at);
+    
+    // Cálculo de diferença em dias
+    const diffCreated = Math.ceil(Math.abs(now - createdDate) / (1000 * 60 * 60 * 24));
+    const diffUpdated = Math.ceil(Math.abs(now - updatedDate) / (1000 * 60 * 60 * 24));
+    
+    // Lógica das tags
+    let badgeHtml = "";
+    if (diffCreated <= 7) {
+      // Criado recentemente (Azul)
+      const badgeText = currentLang === "en" ? "New" : "Novo";
+      badgeHtml = `<span class="badge-new">${badgeText}</span>`;
+    } else if (diffUpdated <= 7) {
+      // Apenas atualizado recentemente (Laranja)
+      const badgeText = currentLang === "en" ? "Updated" : "Atualizado";
+      badgeHtml = `<span class="badge-new badge-updated">${badgeText}</span>`;
+    }
+
+    // Textos de tradução para as datas
+const labelCreated = currentLang === "en" ? "Created" : "Criado";
+    const labelUpdated = currentLang === "en" ? "Updated" : "Atualizado";
+
     return `
       <article class="project-card">
         <div class="project-card-top">
@@ -851,11 +884,24 @@ function renderItems() {
           </div>
         </div>
         
-        <h3 class="project-title">${it.title}</h3>
+        <div class="project-title-wrapper">
+          <h3 class="project-title">${it.title}</h3>
+          ${badgeHtml}
+        </div>
+        
         <p class="project-desc">${it.desc}</p>
         
         <div class="project-meta">
-          <span class="update-date">${formatUpdated(it.updated_at)}</span>
+          <div class="project-meta-dates">
+            <div class="date-badge" title="${labelCreated}">
+              <i data-lucide="calendar-plus"></i>
+              <span>${formatDate(it.created_at)}</span>
+            </div>
+            <div class="date-badge" title="${labelUpdated}">
+              <i data-lucide="clock"></i>
+              <span>${formatDate(it.updated_at)}</span>
+            </div>
+          </div>
         </div>
       </article>
     `;
