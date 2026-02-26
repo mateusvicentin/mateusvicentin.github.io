@@ -855,6 +855,7 @@ function renderItems() {
     const diffCreated = Math.ceil(Math.abs(now - createdDate) / (1000 * 60 * 60 * 24));
     const diffUpdated = Math.ceil(Math.abs(now - updatedDate) / (1000 * 60 * 60 * 24));
     
+    // Lógica das tags
     let badgeHtml = "";
     if (diffCreated <= 7) {
       // Criado recentemente (Azul)
@@ -877,10 +878,10 @@ const labelCreated = currentLang === "en" ? "Created" : "Criado";
             <i data-lucide="${it.kind === "infra" ? "server" : "folder"}"></i>
           </div>
           <div class="project-links">
-            <a href="${it.url}" target="_blank" rel="noopener noreferrer" aria-label="${t("aria.openGithub")}">
-              <i data-lucide="external-link"></i>
-            </a>
-          </div>
+          <a href="${it.url}" target="_blank" rel="noopener noreferrer" aria-label="${t("aria.openGithub")}">
+            <i data-lucide="${it.kind === 'infra' ? 'linkedin' : 'github'}"></i>
+          </a>
+         </div>
         </div>
         
         <div class="project-title-wrapper">
