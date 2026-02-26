@@ -424,6 +424,152 @@ body{
 .page-info-text { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); margin: 0 0.5rem; }
 .hidden { display: none !important; }
 
+/* Wrapper para alinhar o título e a tag lado a lado */
+.project-title-wrapper { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.6rem; 
+  margin-bottom: 0.6rem; 
+  flex-wrap: wrap;
+}
+
+.project-title-wrapper .project-title {
+  margin-bottom: 0;
+}
+
+/* Estilo da Tag "NOVO" com variáveis de cor para o efeito */
+.badge-new {
+  /* Usamos os valores RGB separados para facilitar a opacidade na animação */
+  --badge-color: 56, 189, 248; 
+  
+  background: rgba(var(--badge-color), 0.15); 
+  color: rgb(var(--badge-color)); 
+  border: 1px solid rgba(var(--badge-color), 0.3);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--pill);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  /* O inline-block é importante para o efeito de "scale" não distorcer o texto */
+  display: inline-block; 
+  animation: badge-breathe 2s ease-in-out infinite;
+}
+
+/* Ajuste de cor para o Tema Claro */
+:root[data-theme="light"] .badge-new {
+  --badge-color: 2, 132, 199; 
+  background: rgba(var(--badge-color), 0.1);
+  border-color: rgba(var(--badge-color), 0.3);
+}
+
+/* Nova animação de pulsação (Glow + Scale) */
+@keyframes badge-breathe {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--badge-color), 0.6);
+  }
+  50% {
+    transform: scale(1.05); /* Cresce levemente 5% */
+    box-shadow: 0 0 10px 3px rgba(var(--badge-color), 0.1); /* O brilho expande e fica transparente */
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--badge-color), 0);
+  }
+}
+
+/* Estilo para a Tag "ATUALIZADO" (Laranja) */
+.badge-updated {
+  --badge-color: 249, 115, 22; /* Laranja Neon */
+}
+
+/* Ajuste do Laranja para o Tema Claro */
+:root[data-theme="light"] .badge-updated {
+  --badge-color: 234, 88, 12; /* Laranja um pouco mais escuro para contraste */
+}
+
+/* Container para alinhar as duas datas no rodapé do card */
+.project-meta-dates {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Wrapper do título e tag */
+.project-title-wrapper { 
+  display: flex; 
+  align-items: flex-start; /* Alinha pelo topo */
+  justify-content: space-between; /* Joga a tag para a direita */
+  gap: 1rem; 
+  margin-bottom: 0.8rem; 
+}
+
+.project-title-wrapper .project-title {
+  margin-bottom: 0;
+  flex: 1; /* Permite que o título ocupe o espaço disponível e quebre a linha se precisar */
+  word-break: break-word;
+}
+
+.badge-new {
+  /* Mantém a cor base que já definimos antes */
+  background: rgba(var(--badge-color), 0.15); 
+  color: rgb(var(--badge-color)); 
+  border: 1px solid rgba(var(--badge-color), 0.3);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--pill);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block; 
+  flex-shrink: 0; /* Impede que a tag seja esmagada pelo título */
+  margin-top: 0.1rem;
+  animation: badge-breathe 2s ease-in-out infinite;
+}
+
+/* Novo layout para as datas no rodapé */
+.project-meta-dates {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+/* Estilo "pílula de terminal" para as datas */
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono); /* Fonte com cara de código */
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--bg2);
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.date-badge i {
+  width: 13px;
+  height: 13px;
+  color: var(--text2);
+}
+
+@media (hover: hover) {
+  .date-badge:hover {
+    color: var(--text);
+    border-color: var(--border2);
+  }
+}
+
 /* =========================================================
    JOURNEY
 ========================================================= */
