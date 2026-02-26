@@ -855,7 +855,6 @@ function renderItems() {
     const diffCreated = Math.ceil(Math.abs(now - createdDate) / (1000 * 60 * 60 * 24));
     const diffUpdated = Math.ceil(Math.abs(now - updatedDate) / (1000 * 60 * 60 * 24));
     
-    // Lógica das tags
     let badgeHtml = "";
     if (diffCreated <= 7) {
       // Criado recentemente (Azul)
