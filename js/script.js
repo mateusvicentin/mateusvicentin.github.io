@@ -15,21 +15,24 @@ const INFRA_POSTS = [
     url: "https://www.linkedin.com/posts/mateusvicentin_infraestrutura-backup-automacao-activity-7430983198022656002-uxRb",
     descPT: "Automatizado o envio de notificações sempre que uma Cloud Sync Task é realizada com sucesso, ou em casos de falhas.",
     descEN: "Automated notifications are sent whenever a Cloud Sync Task is completed successfully or in case of failures.",
-    date: "2026-02-22"
+    date: "2026-02-22",
+    tech: "TrueNAS, Telegram, Automação"
    },
    {
     title: "Documentação de Datacenters com Netbox",
     url: "https://www.linkedin.com/posts/mateusvicentin_datacenter-infraestrutura-networkinfrastructure-activity-7430294981564624896-NvOP",
     descPT: "Implementei toda documentação de equipamentos, cabos de links, cabos de energia, IPs, blocos, VLANs e toda Infraestrutura de conexão.",
     descEN: "I implemented complete documentation for equipment, link cabling, power cabling, IPs, IP blocks/subnets, VLANs, and the entire connectivity infrastructure.",
-    date: "2026-02-20"
+    date: "2026-02-20",
+    tech: "NetBox, Datacenter, Documentação"
   },
   {
     title: "Alertas de Backup do Proxmox no Telegram",
     url: "https://www.linkedin.com/posts/mateusvicentin_proxmox-virtualizacao-backup-activity-7430005608407416833-9_1u",
     descPT: "Automatizei alertas de backup no Proxmox enviando notificações pelo Telegram com status de sucesso, falha, duração e tamanho do job.",
     descEN: "I automated Proxmox backup alerts by sending Telegram notifications with the job’s success/failure status, duration, and size.",
-    date: "2026-02-19"
+    date: "2026-02-19",
+    tech: "Proxmox, Backup, Telegram"
   },
 ];
 
@@ -40,6 +43,7 @@ const I18N = {
     "nav.stack": "Habilidades",
     "nav.projects": "Projetos",
     "nav.journey": "Trajetória",
+    "nav.talks": "Palestras",
     "nav.certs": "Qualificações",
     "nav.contact": "Contato",
     "hero.greeting": "Oi, sou o Mateus 👋",
@@ -94,6 +98,12 @@ const I18N = {
     "journey.edu2.date": "2016 - 2020",
     "journey.edu2.desc": "Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.",
     
+    "talks.title": "Palestras & Eventos",
+    "talks.card.type": "Palestra técnica",
+    "talks.card.event": "COTESI • IFSP Votuporanga",
+    "talks.card.title": "Infraestrutura de Datacenter, Monitoramento, Documentação e Automação de Serviços",
+    "talks.card.desc": "Apresentação sobre operação de ambientes críticos, redundância, monitoramento, documentação de infraestrutura e uso de automação para reduzir falhas e acelerar respostas técnicas.",
+
     /* QUALIFICAÇÕES (PT) */
     "certs.title": "Qualificações",
     "certs.subtitle": "Meu arsenal de validações oficiais e aprendizado contínuo.",
@@ -103,7 +113,9 @@ const I18N = {
     "certs.view": "Ver certificado",
     "certs.c1.name": "ICC-A Telefonia IP",
     "certs.c1.date": "Concluída",
-    "certs.c2.name": "Engenharia de Dados com Apache Spark",
+    "certs.c2.name": "Virtualização Expert - Proxmox",
+    "certs.c2.org": "Made4Study",
+    "certs.c2.date": "Concluído",
 
     /* CONTATO MINIMALISTA (PT) */
     "contact.title": "Vamos conversar?",
@@ -132,6 +144,7 @@ const I18N = {
     "nav.stack": "Skills",
     "nav.projects": "Projects",
     "nav.journey": "Journey",
+    "nav.talks": "Talks",
     "nav.certs": "Qualifications",
     "nav.contact": "Contact",
     "hero.greeting": "Hi, I'm Mateus 👋",
@@ -186,6 +199,13 @@ const I18N = {
     "journey.edu2.date": "2016 - 2020",
     "journey.edu2.desc": "Solid foundation in development, databases, networking, security, and software engineering.",
     
+    "talks.title": "Talks & Events",
+    "talks.subtitle": "Technical talks, knowledge sharing, and hands-on infrastructure experience.",
+    "talks.card.type": "Technical talk",
+    "talks.card.event": "COTESI • IFSP Votuporanga",
+    "talks.card.title": "Datacenter Infrastructure, Monitoring, Documentation, and Service Automation",
+    "talks.card.desc": "A presentation about critical environment operations, redundancy, monitoring, infrastructure documentation, and automation to reduce failures and speed up technical response.",
+
     /* QUALIFICAÇÕES (EN) */
     "certs.title": "Qualifications",
     "certs.subtitle": "My arsenal of official validations and continuous learning.",
@@ -195,7 +215,9 @@ const I18N = {
     "certs.view": "View certificate",
     "certs.c1.name": "ICC-A IP Telephony",
     "certs.c1.date": "Completed",
-    "certs.c2.name": "Data Engineering with Apache Spark",
+    "certs.c2.name": "Virtualization Expert - Proxmox",
+    "certs.c2.org": "Made4Study",
+    "certs.c2.date": "Completed",
 
     /* MINIMALIST CONTACT (EN) */
     "contact.title": "Let's talk?",
@@ -731,6 +753,22 @@ function formatDate(dateStr) {
   }
 }
 
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getProjectUrl(repo) {
+  const homepage = String(repo.homepage || "").trim();
+  if (homepage && /^https?:\/\//i.test(homepage)) return homepage;
+  return repo.html_url;
+}
+
 let allRepos = [];
 let filteredRepos = [];
 let currentPage = 1;
@@ -819,7 +857,8 @@ function getActiveItems() {
     desc: repo.description || t("dyn.noDesc"), 
     updated_at: repo.updated_at, 
     created_at: repo.created_at, // <-- Adicionamos a captura da data de criação
-    url: repo.html_url,
+    url: getProjectUrl(repo),
+    repo_url: repo.html_url,
     tech: repo.language || "Code"
   }));
 }
@@ -871,26 +910,34 @@ function renderItems() {
 const labelCreated = currentLang === "en" ? "Created" : "Criado";
     const labelUpdated = currentLang === "en" ? "Updated" : "Atualizado";
 
+    const safeTitle = escapeHTML(it.title);
+    const safeDesc = escapeHTML(it.desc);
+    const safeUrl = escapeHTML(it.url || "#");
+    const safeTech = escapeHTML(it.tech || "Projeto");
+    const iconName = it.kind === "infra" ? "linkedin" : "github";
+    const actionText = currentLang === "en" ? "Open project" : "Abrir projeto";
+    const ariaLabel = `${actionText}: ${it.title}`;
+
     return `
-      <article class="project-card">
+      <a class="project-card project-card-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(ariaLabel)}">
         <div class="project-card-top">
           <div class="folder-icon">
             <i data-lucide="${it.kind === "infra" ? "server" : "folder"}"></i>
           </div>
-          <div class="project-links">
-          <a href="${it.url}" target="_blank" rel="noopener noreferrer" aria-label="${t("aria.openGithub")}">
-            <i data-lucide="${it.kind === 'infra' ? 'linkedin' : 'github'}"></i>
-          </a>
-         </div>
+          <div class="project-links" aria-hidden="true">
+            <span>
+              <i data-lucide="${iconName}"></i>
+            </span>
+          </div>
         </div>
-        
+
         <div class="project-title-wrapper">
-          <h3 class="project-title">${it.title}</h3>
+          <h3 class="project-title">${safeTitle}</h3>
           ${badgeHtml}
         </div>
-        
-        <p class="project-desc">${it.desc}</p>
-        
+
+        <p class="project-desc">${safeDesc}</p>
+
         <div class="project-meta">
           <div class="project-meta-dates">
             <div class="date-badge" title="${labelCreated}">
@@ -903,7 +950,15 @@ const labelCreated = currentLang === "en" ? "Created" : "Criado";
             </div>
           </div>
         </div>
-      </article>
+
+        <div class="project-footer">
+          <span class="project-tech">${safeTech}</span>
+          <span class="project-open">
+            ${actionText}
+            <i data-lucide="arrow-up-right"></i>
+          </span>
+        </div>
+      </a>
     `;
   }).join("");
 
@@ -971,11 +1026,11 @@ function initProjects() {
       currentPage = 1;
       if (currentSource === "infra") {
         const base = getInfraBaseItems();
-        infraFiltered = base.filter((x) => x.title.toLowerCase().includes(term) || (x.desc || "").toLowerCase().includes(term));
+        infraFiltered = base.filter((x) => x.title.toLowerCase().includes(term) || (x.desc || "").toLowerCase().includes(term) || (x.tech || "").toLowerCase().includes(term));
         renderItems();
         return;
       }
-      filteredRepos = allRepos.filter((r) => r.name.toLowerCase().includes(term) || (r.description || "").toLowerCase().includes(term));
+      filteredRepos = allRepos.filter((r) => r.name.toLowerCase().includes(term) || (r.description || "").toLowerCase().includes(term) || (r.language || "").toLowerCase().includes(term));
       renderItems();
     });
 
