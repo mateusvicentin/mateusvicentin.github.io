@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Network Topology | DEMO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;width:100%;height:100%;background:#071015;overflow:hidden}
+*{box-sizing:border-box}
+#nts, #nts * { box-sizing: border-box; }
+#nts {
+  --bg: #071015;
+  --bg2: #09141b;
+  --surface: rgba(13, 26, 34, .94);
+  --surface2: rgba(18, 35, 45, .92);
+  --surface3: rgba(25, 45, 56, .84);
+  --line: rgba(141, 186, 205, .14);
+  --line2: rgba(141, 186, 205, .25);
+  --text: #edf8fb;
+  --muted: #91aab5;
+  --faint: #5e7782;
+  --cyan: #45c8f0;
+  --teal: #2fdbb2;
+  --blue: #4388ff;
+  --violet: #a58bff;
+  --amber: #f4b94b;
+  --red: #ff6868;
+  --green: #34d98b;
+  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --font: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  width: 100%;
+  height: 100%;
+  min-height: 760px;
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--font);
+  background:
+    radial-gradient(850px 420px at -5% -15%, rgba(47,219,178,.15), transparent 68%),
+    radial-gradient(760px 420px at 105% 0%, rgba(67,136,255,.12), transparent 65%),
+    linear-gradient(180deg, #08131a 0%, #061015 100%);
+}
+#nts button, #nts input, #nts select, #nts textarea { font: inherit; }
+#nts button { color: inherit; }
+#nts svg { width: 18px; height: 18px; }
+#nts [hidden] { display: none !important; }
+#nts .nts-shell { height: 100%; min-height: 760px; display: flex; flex-direction: column; }
+#nts .nts-header {
+  height: 82px; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 13px 20px; border-bottom: 1px solid var(--line); background: rgba(7,16,21,.74); backdrop-filter: blur(18px);
+}
+#nts .nts-brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+#nts .nts-brand-mark { width: 48px; height: 48px; display: grid; place-items: center; flex: none; color: var(--teal); border: 1px solid rgba(47,219,178,.25); border-radius: 14px; background: linear-gradient(145deg, rgba(47,219,178,.14), rgba(69,200,240,.04)); box-shadow: inset 0 1px rgba(255,255,255,.04), 0 14px 28px rgba(0,0,0,.24); }
+#nts .nts-brand-mark svg { width: 30px; height: 30px; }
+#nts h1, #nts h2, #nts h3, #nts p { margin: 0; }
+#nts .nts-kicker { display: block; color: var(--teal); font-family: var(--mono); font-size: 8px; font-weight: 900; letter-spacing: 1.6px; }
+#nts .nts-brand h1 { margin-top: 3px; font-size: 20px; line-height: 1.05; letter-spacing: -.35px; }
+#nts .nts-brand p { margin-top: 4px; color: var(--muted); font-size: 10px; }
+#nts .nts-header-actions, #nts .nts-action-row, #nts .nts-editor-actions, #nts .nts-editor-left { display: flex; align-items: center; gap: 9px; }
+#nts .nts-status-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 12px; border: 1px solid var(--line2); border-radius: 999px; color: var(--muted); background: rgba(12,24,31,.78); font-size: 9px; font-weight: 800; }
+#nts .nts-status-pill i, #nts .nts-save-state i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px rgba(145,170,181,.07); }
+#nts .nts-status-pill.ok { color: var(--green); border-color: rgba(52,217,139,.28); }
+#nts .nts-status-pill.loading { color: var(--cyan); border-color: rgba(69,200,240,.28); }
+#nts .nts-status-pill.loading i { animation: ntsPulse 1.3s infinite; }
+#nts .nts-status-pill.error { color: var(--red); border-color: rgba(255,104,104,.30); }
+@keyframes ntsPulse { 50% { box-shadow: 0 0 0 7px rgba(69,200,240,0), 0 0 13px rgba(69,200,240,.55); } }
+#nts .nts-icon-btn { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: rgba(255,255,255,.025); cursor: pointer; }
+#nts .nts-icon-btn:hover { color: var(--text); border-color: var(--line2); background: rgba(255,255,255,.05); }
+#nts .nts-screen { flex: 1; min-height: 0; }
+#nts .nts-home-toolbar { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+#nts .nts-home-toolbar h2 { margin-top: 4px; font-size: 19px; }
+#nts .nts-search { min-width: 240px; height: 35px; display: flex; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--faint); background: rgba(255,255,255,.025); }
+#nts .nts-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 10px; }
+#nts .nts-search input::placeholder { color: var(--faint); }
+#nts .nts-btn { min-height: 35px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.025); color: var(--muted); font-size: 9px; font-weight: 850; cursor: pointer; }
+#nts .nts-btn:hover { color: var(--text); border-color: var(--line2); background: rgba(255,255,255,.055); }
+#nts .nts-btn.primary { color: #041411; border-color: rgba(47,219,178,.62); background: linear-gradient(180deg, #45e8bf, #2fcea9); box-shadow: 0 10px 25px rgba(47,219,178,.12); }
+#nts .nts-btn.primary:hover { filter: brightness(1.07); }
+#nts .nts-btn.danger { color: var(--red); border-color: rgba(255,104,104,.26); background: rgba(255,104,104,.06); }
+#nts .nts-home-grid { height: calc(100% - 82px); min-height: 0; display: grid; grid-template-columns: 220px minmax(0,1fr); }
+#nts .nts-library-side { min-height: 0; display: flex; flex-direction: column; padding: 16px 13px; border-right: 1px solid var(--line); background: rgba(7,16,21,.32); }
+#nts .nts-side-title { display: flex; align-items: center; justify-content: space-between; padding: 0 7px 8px; color: var(--faint); font-family: var(--mono); font-size: 8px; font-weight: 900; letter-spacing: 1.2px; }
+#nts .nts-side-title button { width: 25px; height: 25px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: transparent; cursor: pointer; }
+#nts .nts-folder-list { display: grid; gap: 4px; overflow: auto; }
+#nts .nts-folder-item { width: 100%; min-height: 38px; display: grid; grid-template-columns: 24px minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 0 9px; border: 1px solid transparent; border-radius: 10px; color: var(--muted); background: transparent; cursor: pointer; text-align: left; }
+#nts .nts-folder-item:hover { color: var(--text); background: rgba(255,255,255,.025); }
+#nts .nts-folder-item.active { color: var(--text); border-color: rgba(47,219,178,.22); background: rgba(47,219,178,.075); }
+#nts .nts-folder-item svg { width: 16px; height: 16px; color: var(--teal); }
+#nts .nts-folder-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9.5px; font-weight: 700; }
+#nts .nts-folder-item b { min-width: 22px; padding: 3px 6px; border-radius: 999px; color: var(--faint); background: rgba(255,255,255,.04); font-family: var(--mono); font-size: 7px; text-align: center; }
+#nts .nts-local-note { margin-top: auto; display: flex; gap: 9px; padding: 11px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
+#nts .nts-local-note svg { flex: none; color: var(--amber); }
+#nts .nts-local-note b, #nts .nts-local-note span { display: block; }
+#nts .nts-local-note b { font-size: 8px; }
+#nts .nts-local-note span { margin-top: 4px; color: var(--faint); font-size: 7.5px; line-height: 1.4; }
+#nts .nts-library-main { min-width: 0; min-height: 0; overflow: auto; padding: 17px 18px 28px; }
+#nts .nts-map-summary { min-height: 52px; display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+#nts .nts-summary-chip { min-width: 105px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.018); }
+#nts .nts-summary-chip b { display: block; font-family: var(--mono); font-size: 15px; }
+#nts .nts-summary-chip span { display: block; margin-top: 4px; color: var(--faint); font-size: 7px; letter-spacing: .6px; text-transform: uppercase; }
+#nts .nts-map-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 12px; }
+#nts .nts-map-card { position: relative; min-height: 186px; overflow: hidden; padding: 15px; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(150deg, rgba(255,255,255,.028), transparent 38%), var(--surface); cursor: pointer; transition: transform .14s ease, border-color .14s ease; }
+#nts .nts-map-card:hover { transform: translateY(-2px); border-color: var(--line2); }
+#nts .nts-map-card::after { content: ""; position: absolute; width: 190px; height: 190px; right: -95px; bottom: -120px; border-radius: 50%; background: radial-gradient(circle, rgba(47,219,178,.12), transparent 68%); pointer-events: none; }
+#nts .nts-map-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+#nts .nts-map-card-icon { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(69,200,240,.20); border-radius: 11px; color: var(--cyan); background: rgba(69,200,240,.07); }
+#nts .nts-map-card-menu { width: 28px; height: 28px; border: 1px solid transparent; border-radius: 8px; color: var(--faint); background: transparent; cursor: pointer; font-size: 18px; line-height: 1; }
+#nts .nts-map-card-menu:hover { border-color: var(--line); color: var(--text); background: rgba(255,255,255,.04); }
+#nts .nts-map-card h3 { margin-top: 13px; overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-map-card p { min-height: 28px; margin-top: 6px; overflow: hidden; color: var(--muted); font-size: 8px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+#nts .nts-map-card-meta { display: flex; align-items: center; gap: 7px; margin-top: 13px; }
+#nts .nts-map-card-meta span { padding: 5px 7px; border: 1px solid var(--line); border-radius: 7px; color: var(--faint); background: rgba(255,255,255,.018); font-family: var(--mono); font-size: 7px; }
+#nts .nts-map-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--faint); font-size: 7px; }
+#nts .nts-map-card-foot b { color: var(--teal); font-weight: 800; }
+#nts .nts-empty { min-height: 390px; display: grid; place-items: center; align-content: center; text-align: center; }
+#nts .nts-empty-icon { width: 76px; height: 76px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 22px; color: var(--teal); background: rgba(47,219,178,.05); }
+#nts .nts-empty-icon svg { width: 44px; height: 44px; fill: rgba(47,219,178,.12); }
+#nts .nts-empty h3 { margin-top: 16px; font-size: 15px; }
+#nts .nts-empty p { margin: 7px 0 14px; color: var(--muted); font-size: 9px; }
+#nts .nts-editor-topbar { height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px 14px; border-bottom: 1px solid var(--line); background: rgba(7,16,21,.58); }
+#nts .nts-map-title-block span { display: block; color: var(--teal); font-family: var(--mono); font-size: 7px; font-weight: 900; letter-spacing: 1px; }
+#nts .nts-map-title-block input { width: min(360px, 28vw); margin-top: 2px; padding: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 14px; font-weight: 800; }
+#nts .nts-save-state { display: inline-flex; align-items: center; gap: 7px; color: var(--faint); font-size: 8px; }
+#nts .nts-save-state.saved { color: var(--green); }
+#nts .nts-save-state.dirty { color: var(--amber); }
+#nts .nts-mode-switch { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.18); }
+#nts .nts-mode-switch button { min-width: 62px; min-height: 27px; border: 1px solid transparent; border-radius: 7px; color: var(--faint); background: transparent; font-family: var(--mono); font-size: 7px; font-weight: 900; cursor: pointer; }
+#nts .nts-mode-switch button.active { color: #061410; border-color: rgba(47,219,178,.5); background: var(--teal); }
+#nts .nts-workspace { height: calc(100% - 58px); min-height: 0; display: grid; grid-template-columns: 74px minmax(0,1fr) 286px; }
+#nts .nts-tools { z-index: 5; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 7px; border-right: 1px solid var(--line); background: rgba(7,16,21,.67); }
+#nts .nts-tool { width: 59px; min-height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 1px solid transparent; border-radius: 11px; color: var(--faint); background: transparent; cursor: pointer; }
+#nts .nts-tool svg { width: 19px; height: 19px; }
+#nts .nts-tool span { font-size: 7px; font-weight: 800; }
+#nts .nts-tool:hover { color: var(--text); background: rgba(255,255,255,.035); }
+#nts .nts-tool.active { color: var(--teal); border-color: rgba(47,219,178,.22); background: rgba(47,219,178,.075); }
+#nts .nts-tool-sep { width: 38px; height: 1px; margin: 3px 0; background: var(--line); }
+#nts .nts-canvas-viewport { position: relative; min-width: 0; min-height: 0; overflow: hidden; cursor: default; background-color: #080f1d; background-image: radial-gradient(rgba(112,146,171,.18) 1px, transparent 1px), linear-gradient(rgba(92,125,152,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(92,125,152,.045) 1px, transparent 1px); background-size: 22px 22px, 110px 110px, 110px 110px; }
+#nts .nts-canvas-viewport.pan-mode { cursor: grab; }
+#nts .nts-canvas-viewport.panning { cursor: grabbing; }
+#nts .nts-canvas-stage { position: absolute; left: 0; top: 0; width: 2400px; height: 1400px; transform-origin: 0 0; }
+#nts .nts-links-svg, #nts .nts-node-layer, #nts .nts-edge-label-layer { position: absolute; inset: 0; width: 2400px; height: 1400px; }
+#nts .nts-node-layer, #nts .nts-edge-label-layer { pointer-events: none; }
+#nts .nts-link-hit { fill: none; stroke: transparent; stroke-width: 18; pointer-events: stroke; cursor: pointer; }
+#nts .nts-link-line { fill: none; stroke: var(--cyan); stroke-width: 2; stroke-dasharray: 8 6; opacity: .78; filter: url(#nts-glow); pointer-events: none; }
+#nts .nts-link-line.up { stroke: var(--teal); }
+#nts .nts-link-line.down { stroke: var(--blue); }
+#nts .nts-link-line.off { stroke: var(--red); opacity: .72; }
+#nts .nts-link-line.selected { stroke-width: 3.5; opacity: 1; }
+#nts .nts-edge-label { position: absolute; min-width: 96px; transform: translate(-50%,-50%); padding: 5px 7px; border: 1px solid rgba(69,200,240,.15); border-radius: 7px; color: var(--text); background: rgba(7,16,28,.93); box-shadow: 0 7px 18px rgba(0,0,0,.24); pointer-events: auto; cursor: pointer; text-align: center; }
+#nts .nts-edge-label.selected { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(47,219,178,.12), 0 7px 18px rgba(0,0,0,.28); }
+#nts .nts-edge-label b { display: block; overflow: hidden; color: var(--muted); font-size: 6.5px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-edge-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 3px; }
+#nts .nts-edge-metrics span { min-width: 0; font-family: var(--mono); font-size: 7.5px; font-weight: 900; white-space: nowrap; }
+#nts .nts-edge-metrics small { display: block; margin-top: 1px; color: var(--faint); font-family: var(--font); font-size: 5.5px; font-weight: 700; text-transform: uppercase; }
+#nts .nts-node { position: absolute; width: 126px; min-height: 86px; transform: translate(-50%,-50%); padding: 10px 9px 8px; border: 1px solid rgba(124,163,183,.16); border-radius: 12px; background: linear-gradient(150deg, rgba(255,255,255,.035), transparent 38%), rgba(15,25,31,.96); box-shadow: 0 14px 34px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.025); pointer-events: auto; cursor: grab; user-select: none; }
+#nts .nts-node:active { cursor: grabbing; }
+#nts .nts-node:hover { border-color: rgba(69,200,240,.34); }
+#nts .nts-node.selected { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(47,219,178,.14), 0 14px 34px rgba(0,0,0,.30); }
+#nts .nts-node.connect-source { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(244,185,75,.15), 0 14px 34px rgba(0,0,0,.30); }
+#nts .nts-node-head { display: flex; align-items: center; justify-content: center; }
+#nts .nts-node-icon { width: 34px; height: 28px; display: grid; place-items: center; color: var(--teal); filter: drop-shadow(0 0 8px rgba(47,219,178,.32)); }
+#nts .nts-node-icon svg { width: 32px; height: 27px; }
+#nts .nts-node.offline .nts-node-icon { color: var(--red); filter: drop-shadow(0 0 8px rgba(255,104,104,.25)); }
+#nts .nts-node.unknown .nts-node-icon { color: var(--muted); filter: none; }
+#nts .nts-node-title { margin-top: 6px; overflow: hidden; font-size: 9px; font-weight: 900; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-sub { margin-top: 4px; overflow: hidden; color: var(--muted); font-family: var(--mono); font-size: 7px; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-status { width: max-content; min-width: 32px; margin: 7px auto 0; padding: 3px 7px; border-radius: 999px; color: var(--green); background: rgba(52,217,139,.13); font-family: var(--mono); font-size: 5.8px; font-weight: 900; text-align: center; }
+#nts .nts-node.offline .nts-node-status { color: var(--red); background: rgba(255,104,104,.12); }
+#nts .nts-node.unknown .nts-node-status { color: var(--muted); background: rgba(145,170,181,.08); }
+#nts .nts-connect-tip { position: absolute; left: 50%; top: 13px; z-index: 9; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; padding: 8px 10px; border: 1px solid rgba(244,185,75,.28); border-radius: 999px; color: var(--amber); background: rgba(21,20,13,.94); box-shadow: 0 12px 28px rgba(0,0,0,.25); font-size: 8px; font-weight: 800; }
+#nts .nts-connect-tip i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: ntsPulse 1.3s infinite; }
+#nts .nts-connect-tip button { border: 0; color: var(--muted); background: transparent; font-size: 7px; cursor: pointer; }
+#nts .nts-zoom-controls { position: absolute; left: 13px; bottom: 13px; z-index: 8; display: flex; align-items: center; overflow: hidden; border: 1px solid var(--line2); border-radius: 10px; background: rgba(8,17,25,.92); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+#nts .nts-zoom-controls button, #nts .nts-zoom-controls span { min-width: 34px; height: 32px; display: grid; place-items: center; border: 0; border-right: 1px solid var(--line); color: var(--muted); background: transparent; font-family: var(--mono); font-size: 9px; }
+#nts .nts-zoom-controls button:last-child { border-right: 0; }
+#nts .nts-zoom-controls button { cursor: pointer; }
+#nts .nts-zoom-controls button:hover { color: var(--text); background: rgba(255,255,255,.04); }
+#nts .nts-zoom-controls span { min-width: 52px; }
+#nts .nts-live-stamp { position: absolute; right: 13px; bottom: 13px; z-index: 8; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--faint); background: rgba(8,17,25,.90); font-family: var(--mono); font-size: 6.5px; }
+#nts .nts-inspector { min-height: 0; overflow: auto; padding: 14px; border-left: 1px solid var(--line); background: rgba(7,16,21,.77); }
+#nts .nts-inspector-empty { min-height: 300px; display: grid; place-items: center; align-content: center; padding: 20px; text-align: center; }
+#nts .nts-inspector-icon { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 17px; color: var(--faint); background: rgba(255,255,255,.018); }
+#nts .nts-inspector-icon svg { width: 34px; height: 34px; fill: rgba(145,170,181,.08); }
+#nts .nts-inspector-empty h3 { margin-top: 13px; font-size: 13px; }
+#nts .nts-inspector-empty p { margin-top: 6px; color: var(--faint); font-size: 8px; line-height: 1.45; }
+#nts .nts-inspector-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 13px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+#nts .nts-inspector-head span { display: block; color: var(--teal); font-family: var(--mono); font-size: 7px; font-weight: 900; letter-spacing: 1px; }
+#nts .nts-inspector-head h3 { margin-top: 4px; font-size: 13px; }
+#nts .nts-form { display: grid; gap: 10px; }
+#nts .nts-field { display: grid; gap: 5px; }
+#nts .nts-field > span { color: var(--faint); font-size: 7px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
+#nts .nts-field input, #nts .nts-field select, #nts .nts-field textarea { width: 100%; min-height: 35px; padding: 0 10px; border: 1px solid var(--line); border-radius: 9px; outline: 0; color: var(--text); background: rgba(255,255,255,.025); font-size: 8.5px; }
+#nts .nts-field textarea { min-height: 70px; padding-top: 9px; resize: vertical; }
+#nts .nts-field input:focus, #nts .nts-field select:focus, #nts .nts-field textarea:focus { border-color: rgba(69,200,240,.45); box-shadow: 0 0 0 2px rgba(69,200,240,.08); }
+#nts .nts-field select option { background: #0c1820; }
+#nts .nts-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#nts .nts-form-actions { display: flex; gap: 8px; margin-top: 4px; padding-top: 11px; border-top: 1px solid var(--line); }
+#nts .nts-form-actions .nts-btn { flex: 1; }
+#nts .nts-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 12px; }
+#nts .nts-readout > div { padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.018); }
+#nts .nts-readout span, #nts .nts-readout b { display: block; }
+#nts .nts-readout span { color: var(--faint); font-size: 6.5px; text-transform: uppercase; }
+#nts .nts-readout b { margin-top: 5px; overflow: hidden; color: var(--cyan); font-family: var(--mono); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-modal { position: absolute; inset: 0; z-index: 100; display: grid; place-items: center; }
+#nts .nts-modal-backdrop { position: absolute; inset: 0; background: rgba(1,8,12,.72); backdrop-filter: blur(5px); }
+#nts .nts-modal-card { position: relative; z-index: 2; width: min(620px, calc(100% - 30px)); max-height: calc(100% - 30px); overflow: auto; border: 1px solid var(--line2); border-radius: 17px; background: #0b1820; box-shadow: 0 25px 80px rgba(0,0,0,.48); }
+#nts .nts-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 17px 18px 14px; border-bottom: 1px solid var(--line); }
+#nts .nts-modal-head h3 { margin-top: 4px; font-size: 16px; }
+#nts .nts-modal-head p { margin-top: 6px; color: var(--muted); font-size: 8px; }
+#nts .nts-modal-close { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: transparent; cursor: pointer; }
+#nts .nts-modal-body { padding: 16px 18px; }
+#nts .nts-modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 13px 18px 17px; border-top: 1px solid var(--line); }
+#nts .nts-picker-results { max-height: 190px; overflow: auto; margin-top: 7px; border: 1px solid var(--line); border-radius: 10px; background: rgba(4,12,17,.45); }
+#nts .nts-picker-result { width: 100%; min-height: 36px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 10px; border: 0; border-bottom: 1px solid var(--line); color: var(--muted); background: transparent; cursor: pointer; text-align: left; }
+#nts .nts-picker-result:last-child { border-bottom: 0; }
+#nts .nts-picker-result:hover, #nts .nts-picker-result.active { color: var(--text); background: rgba(47,219,178,.06); }
+#nts .nts-picker-result span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
+#nts .nts-picker-result small { color: var(--faint); font-family: var(--mono); font-size: 6px; }
+#nts .nts-picker-empty { padding: 14px; color: var(--faint); font-size: 8px; text-align: center; }
+#nts .nts-inline-info { display: flex; gap: 8px; padding: 9px 10px; border: 1px solid rgba(69,200,240,.16); border-radius: 9px; color: var(--muted); background: rgba(69,200,240,.045); font-size: 7.5px; line-height: 1.45; }
+#nts .nts-toast { position: absolute; right: 18px; bottom: 18px; z-index: 150; min-width: 220px; max-width: 420px; padding: 11px 13px; border: 1px solid var(--line2); border-radius: 11px; color: var(--text); background: rgba(11,24,32,.96); box-shadow: 0 16px 45px rgba(0,0,0,.34); font-size: 8px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .18s ease, transform .18s ease; }
+#nts .nts-toast.show { opacity: 1; transform: translateY(0); }
+#nts .nts-toast.error { border-color: rgba(255,104,104,.35); color: #ffd1d1; }
+#nts .nts-card-popover { position: fixed; z-index: 80; min-width: 150px; overflow: hidden; border: 1px solid var(--line2); border-radius: 10px; background: #0d1b23; box-shadow: 0 16px 45px rgba(0,0,0,.38); }
+#nts .nts-card-popover button { width: 100%; min-height: 34px; padding: 0 11px; border: 0; border-bottom: 1px solid var(--line); color: var(--muted); background: transparent; font-size: 8px; text-align: left; cursor: pointer; }
+#nts .nts-card-popover button:last-child { border-bottom: 0; }
+#nts .nts-card-popover button:hover { color: var(--text); background: rgba(255,255,255,.04); }
+#nts .nts-card-popover button.danger { color: var(--red); }
+#nts.live-view .nts-tools, #nts.live-view .nts-inspector { display: none; }
+#nts.live-view .nts-workspace { grid-template-columns: minmax(0,1fr); }
+#nts.live-view .nts-node { cursor: default; }
+#nts.live-view .nts-editor-topbar .nts-btn.primary { display: none; }
+@media (max-width: 1050px) {
+  #nts .nts-workspace { grid-template-columns: 68px minmax(0,1fr) 250px; }
+  #nts .nts-editor-actions .nts-btn.ghost:nth-of-type(2) { display: none; }
+}
+@media (max-width: 800px) {
+  #nts { min-height: 680px; }
+  #nts .nts-brand p, #nts .nts-status-pill { display: none; }
+  #nts .nts-home-toolbar { align-items: flex-start; flex-direction: column; }
+  #nts .nts-action-row { width: 100%; flex-wrap: wrap; }
+  #nts .nts-search { flex: 1; min-width: 180px; }
+  #nts .nts-home-grid { height: calc(100% - 124px); grid-template-columns: 1fr; }
+  #nts .nts-library-side { display: none; }
+  #nts .nts-workspace { grid-template-columns: 58px minmax(0,1fr); }
+  #nts .nts-inspector { position: absolute; right: 0; top: 140px; bottom: 0; width: 270px; z-index: 20; box-shadow: -15px 0 40px rgba(0,0,0,.28); }
+  #nts .nts-editor-actions .nts-btn { display: none; }
+  #nts .nts-tool { width: 48px; }
+}
+
+/* V2 — seleção de interface e velocidade diretamente no host */
+#nts .nts-modal-card { width: min(780px, calc(100% - 30px)); }
+#nts .nts-host-wizard { gap: 12px; }
+#nts .nts-wizard-card { padding: 13px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.014); }
+#nts .nts-wizard-title { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+#nts .nts-wizard-title > b { width: 25px; height: 25px; display: grid; place-items: center; flex: none; border: 1px solid rgba(47,219,178,.28); border-radius: 8px; color: var(--teal); background: rgba(47,219,178,.08); font-family: var(--mono); font-size: 9px; }
+#nts .nts-wizard-title span, #nts .nts-wizard-title small { display: block; }
+#nts .nts-wizard-title span { color: var(--text); font-size: 8px; font-weight: 900; letter-spacing: .7px; }
+#nts .nts-wizard-title small { margin-top: 3px; color: var(--faint); font-size: 7px; }
+#nts .nts-host-search-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: end; gap: 8px; }
+#nts .nts-host-search-row .nts-btn { min-height: 34px; }
+#nts .nts-interface-card { border-color: rgba(69,200,240,.18); background: radial-gradient(420px 150px at 100% 0, rgba(69,200,240,.07), transparent 70%), rgba(255,255,255,.014); }
+#nts .nts-interface-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+#nts .nts-selected-host { min-width: 0; }
+#nts .nts-selected-host span, #nts .nts-selected-host b { display: block; }
+#nts .nts-selected-host span { color: var(--faint); font-family: var(--mono); font-size: 6.5px; letter-spacing: .8px; }
+#nts .nts-selected-host b { margin-top: 4px; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-speed-preview { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 10px; }
+#nts .nts-speed-preview > div { min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 11px; background: rgba(5,14,20,.48); }
+#nts .nts-speed-preview span, #nts .nts-speed-preview b, #nts .nts-speed-preview small { display: block; }
+#nts .nts-speed-preview span { color: var(--faint); font-family: var(--mono); font-size: 6.5px; font-weight: 900; letter-spacing: .65px; }
+#nts .nts-speed-preview b { margin-top: 7px; color: var(--cyan); font-family: var(--mono); font-size: 14px; }
+#nts .nts-speed-preview > div:nth-child(2) b { color: var(--teal); }
+#nts .nts-speed-preview > div:nth-child(3) b { color: var(--amber); }
+#nts .nts-speed-preview small { margin-top: 5px; overflow: hidden; color: var(--faint); font-size: 6px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-advanced-items { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.10); }
+#nts .nts-advanced-items summary { padding: 9px 10px; color: var(--muted); font-size: 7.5px; font-weight: 800; cursor: pointer; }
+#nts .nts-advanced-items[open] summary { border-bottom: 1px solid var(--line); }
+#nts .nts-advanced-items .nts-form { padding: 10px; }
+#nts .nts-security-note { justify-content: center; text-align: center; }
+#nts .nts-node { width: 142px; min-height: 94px; }
+#nts .nts-node-interface { margin-top: 5px; overflow: hidden; color: var(--cyan); font-family: var(--mono); font-size: 6px; font-weight: 800; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-traffic { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 7px; }
+#nts .nts-node-traffic span { min-width: 0; padding: 4px 3px; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; color: var(--cyan); background: rgba(69,200,240,.045); font-family: var(--mono); font-size: 5.7px; font-weight: 800; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-traffic span:last-child { color: var(--teal); background: rgba(47,219,178,.045); }
+#nts .nts-node-traffic i { margin-right: 2px; font-style: normal; }
+#nts .nts-readout-four { grid-template-columns: 1fr 1fr; }
+@media (max-width: 680px) {
+  #nts .nts-host-search-row, #nts .nts-speed-preview { grid-template-columns: 1fr; }
+  #nts .nts-interface-toolbar { align-items: stretch; flex-direction: column; }
+}
+
+#nts .nts-picker-count { padding: 7px 10px 5px; color: var(--faint); font-family: var(--mono); font-size: 8px; letter-spacing: .5px; }
+#nts .nts-picker-result mark { color: var(--cyan); background: rgba(69,200,240,.12); border-radius: 3px; padding: 0 2px; }
+#nts #nts-refresh-hosts:disabled { opacity: .55; cursor: wait; }
+
+
+/* V4 - usabilidade, interface completa e fluxo animado */
+#nts .nts-canvas-viewport { background-color:#071120; background-image: radial-gradient(rgba(112,146,171,.16) 1px, transparent 1px), linear-gradient(rgba(92,125,152,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(92,125,152,.05) 1px, transparent 1px), radial-gradient(700px 260px at 50% -5%, rgba(69,200,240,.08), transparent 70%); background-size: 22px 22px, 110px 110px, 110px 110px, auto; }
+#nts .nts-canvas-stage { transition: transform .18s ease-out; }
+#nts .nts-link-line { stroke-width: 2.4; stroke-dasharray: 10 7; opacity: .92; }
+#nts .nts-link-line.down { animation: ntsFlowDown 1.1s linear infinite; }
+#nts .nts-link-line.up { animation: ntsFlowUp 1.1s linear infinite; }
+#nts .nts-link-line.off { animation-play-state: paused; stroke-dasharray: 6 8; opacity: .55; }
+@keyframes ntsFlowDown { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -34; } }
+@keyframes ntsFlowUp { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 34; } }
+#nts .nts-edge-label { min-width: 138px; max-width: 220px; padding: 8px 10px; border-radius: 10px; box-shadow: 0 10px 24px rgba(0,0,0,.28); }
+#nts .nts-edge-label b { font-size: 7px; color: var(--text); }
+#nts .nts-edge-metrics { gap: 9px; margin-top: 6px; }
+#nts .nts-edge-metrics span { font-size: 8px; }
+#nts .nts-edge-metrics small { font-size: 6px; }
+#nts .nts-node { width: 172px; min-height: 136px; padding: 12px 12px 10px; border-radius: 14px; background: linear-gradient(150deg, rgba(255,255,255,.045), transparent 40%), rgba(11,21,31,.97); box-shadow: 0 18px 38px rgba(0,0,0,.32), inset 0 1px rgba(255,255,255,.035); }
+#nts .nts-node-head { justify-content: space-between; margin-bottom: 6px; }
+#nts .nts-node-kind { padding: 4px 7px; border: 1px solid rgba(69,200,240,.2); border-radius: 999px; color: var(--faint); background: rgba(255,255,255,.03); font-family: var(--mono); font-size: 6px; font-weight: 900; letter-spacing: .8px; }
+#nts .nts-node-icon { width: 32px; height: 25px; }
+#nts .nts-node-title { margin-top: 2px; overflow: hidden; font-size: 12px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-host { margin-top: 3px; overflow: hidden; color: var(--teal); font-family: var(--mono); font-size: 6.5px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-sub { margin-top: 6px; overflow: hidden; color: var(--muted); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-interface { display: -webkit-box; min-height: 28px; margin-top: 8px; overflow: hidden; color: #d8edf8; font-size: 7px; line-height: 1.35; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+#nts .nts-node-traffic { grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 9px; }
+#nts .nts-node-traffic span { min-width:0; padding: 7px 6px; border:1px solid rgba(69,200,240,.12); border-radius: 9px; background: rgba(255,255,255,.025); font-size: 7.5px; }
+#nts .nts-node-traffic span i { margin-right: 4px; }
+#nts .nts-node-traffic span small { display:block; margin-top: 3px; color: var(--faint); font-size: 5.5px; text-transform: uppercase; letter-spacing: .6px; }
+#nts .nts-node-foot { display:flex; align-items:flex-end; justify-content:space-between; gap:8px; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,.06); }
+#nts .nts-node-cap span { display:block; color:var(--faint); font-size:5.8px; font-family:var(--mono); letter-spacing:.7px; }
+#nts .nts-node-cap b { display:block; margin-top:3px; color:var(--amber); font-family:var(--mono); font-size:8px; }
+#nts .nts-node-status { min-width: 66px; text-align:center; padding:6px 8px; border-radius:999px; font-size:7px; font-weight:900; letter-spacing:.55px; }
+#nts .nts-node-status.online { color:#081510; background:rgba(47,219,178,.92); }
+#nts .nts-node-status.offline { color:#fff1f1; background:rgba(255,104,104,.20); border:1px solid rgba(255,104,104,.38); }
+#nts .nts-node-status.unknown { color:#ecf7fa; background:rgba(145,170,181,.16); border:1px solid rgba(145,170,181,.24); }
+#nts .nts-interface-meta { display:grid; gap:4px; margin-top:10px; padding:10px 11px; border:1px solid rgba(69,200,240,.16); border-radius:10px; background:rgba(69,200,240,.045); }
+#nts .nts-interface-meta b { overflow:hidden; color:var(--text); font-size:8px; text-overflow:ellipsis; white-space:nowrap; }
+#nts .nts-interface-meta span { display:-webkit-box; overflow:hidden; color:var(--muted); font-size:6.8px; line-height:1.45; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+#nts .nts-readout-four { grid-template-columns: repeat(2,minmax(0,1fr)); }
+#nts .nts-readout > div b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#nts .nts-inspector { background: rgba(7,16,24,.84); }
+#nts .nts-tools { gap: 8px; }
+#nts .nts-tool { min-height: 52px; border-radius: 13px; }
+#nts .nts-tool span { font-size: 7px; }
+#nts .nts-zoom-controls button { min-width: 34px; min-height: 34px; }
+#nts .nts-zoom-controls span { min-width: 58px; }
+#nts .nts-picker-results { max-height: 230px; }
+#nts .nts-picker-result { min-height: 42px; padding: 0 12px; }
+#nts .nts-picker-result span { font-size: 8.3px; }
+#nts .nts-picker-result mark { color:#081218; background:rgba(47,219,178,.92); }
+
+
+/* V5 - cards compactos, mais espaço e ligação por interface */
+#nts .nts-shell { min-height: 700px; }
+#nts .nts-header { height: 74px; padding: 10px 16px; }
+#nts .nts-editor-topbar { height: 52px; padding: 8px 12px; }
+#nts .nts-workspace { grid-template-columns: 60px minmax(0,1fr) 236px; }
+#nts .nts-tools { padding: 8px 5px; }
+#nts .nts-tool { width: 48px; min-height: 46px; gap: 4px; }
+#nts .nts-tool span { font-size: 6px; }
+#nts .nts-inspector { padding: 12px; background: rgba(7,16,24,.78); }
+#nts .nts-canvas-viewport { background-size: 24px 24px, 120px 120px, 120px 120px, auto; }
+#nts .nts-node { width: 126px; min-height: 70px; padding: 10px 10px 8px; border-radius: 12px; display: grid; gap: 6px; background: linear-gradient(180deg, rgba(11,25,39,.98), rgba(7,16,24,.97)); box-shadow: 0 12px 28px rgba(0,0,0,.28); }
+#nts .nts-node-title { margin:0; overflow:hidden; font-size: 10px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-sub { margin:0; overflow:hidden; color: var(--muted); font-family: var(--mono); font-size: 6.5px; text-overflow: ellipsis; white-space: nowrap; }
+#nts .nts-node-status { display:inline-flex; align-items:center; justify-content:center; min-width: 0; padding: 5px 8px; border-radius: 999px; font-size: 6.3px; font-weight: 900; letter-spacing: .55px; }
+#nts .nts-node-status.online { color:#081510; background: rgba(47,219,178,.96); }
+#nts .nts-node-status.offline { color:#fff3f3; background: rgba(255,95,95,.2); border: 1px solid rgba(255,95,95,.42); }
+#nts .nts-node-status.unknown { color:#ecf7fa; background: rgba(145,170,181,.16); border: 1px solid rgba(145,170,181,.24); }
+#nts .nts-node-connect-btn { position:absolute; top:-8px; right:-8px; width:24px; height:24px; display:grid; place-items:center; border:1px solid rgba(69,200,240,.24); border-radius:999px; color:#041411; background: linear-gradient(135deg, rgba(47,219,178,.98), rgba(69,200,240,.9)); font-size:14px; font-weight:900; box-shadow: 0 8px 16px rgba(0,0,0,.22); cursor:pointer; opacity:0; transform:scale(.92); transition:opacity .15s ease, transform .15s ease; }
+#nts .nts-node:hover .nts-node-connect-btn, #nts .nts-node.selected .nts-node-connect-btn { opacity:1; transform:scale(1); }
+#nts .nts-node-hovercard { position:absolute; left:50%; bottom:calc(100% + 10px); z-index:9; width:190px; display:none; gap:7px; padding:10px; border:1px solid rgba(69,200,240,.18); border-radius:12px; background: rgba(6,13,20,.97); box-shadow: 0 18px 34px rgba(0,0,0,.34); transform: translateX(-50%); }
+#nts .nts-node:hover .nts-node-hovercard { display:grid; }
+#nts .nts-node-hovercard div { display:grid; gap:2px; }
+#nts .nts-node-hovercard span { color: var(--faint); font-family: var(--mono); font-size: 6px; letter-spacing: .7px; text-transform: uppercase; }
+#nts .nts-node-hovercard b { color: var(--text); font-size: 9px; }
+#nts .nts-node-hover-interfaces small { display:-webkit-box; overflow:hidden; color: var(--muted); font-size: 6.5px; line-height:1.35; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+#nts .nts-link-grid { grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; }
+#nts .nts-link-side { display:grid; gap:10px; padding:12px; border:1px solid rgba(255,255,255,.06); border-radius:12px; background: rgba(255,255,255,.018); }
+#nts .nts-edge-label { min-width: 128px; max-width: 190px; padding: 7px 9px; }
+#nts .nts-edge-label b { font-size: 6.5px; }
+#nts .nts-edge-metrics span { font-size: 7px; }
+#nts .nts-edge-metrics small { font-size: 5.6px; }
+#nts .nts-readout-four { grid-template-columns: repeat(2,minmax(0,1fr)); }
+#nts .nts-readout > div b { font-size: 8.5px; }
+#nts .nts-connect-tip { max-width: 280px; }
+
+
+/* V6 - ajuste visual após testes reais */
+#nts .nts-workspace { grid-template-columns: 54px minmax(0,1fr) 210px; }
+#nts.nts-no-selection .nts-workspace { grid-template-columns: 54px minmax(0,1fr) 0; }
+#nts.nts-no-selection .nts-inspector { width:0; padding:0; border:0; overflow:hidden; }
+#nts .nts-node { width: 142px; min-height: 72px; padding: 10px 11px 9px; gap: 5px; }
+#nts .nts-node-title { display:-webkit-box; min-height:25px; overflow:hidden; font-size:10px; line-height:1.25; white-space:normal; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+#nts .nts-node-sub { font-size:6.3px; }
+#nts .nts-node-connect-btn { top:50%; right:-11px; width:23px; height:23px; transform:translateY(-50%) scale(.92); }
+#nts .nts-node:hover .nts-node-connect-btn, #nts .nts-node.selected .nts-node-connect-btn { transform:translateY(-50%) scale(1); }
+#nts .nts-node-hovercard { left:50%; bottom:calc(100% + 7px); width:176px; gap:8px; padding:9px; transform:translateX(-50%); }
+#nts .nts-node-hovercard::after { content:""; position:absolute; left:50%; top:100%; transform:translateX(-50%); border:6px solid transparent; border-top-color:rgba(6,13,20,.97); }
+#nts .nts-node-hover-metrics { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+#nts .nts-node-hover-metrics > div { padding:7px; border:1px solid rgba(69,200,240,.12); border-radius:8px; background:rgba(255,255,255,.022); }
+#nts .nts-node-hovercard span { font-size:5.7px; }
+#nts .nts-node-hovercard b { font-size:8px; }
+#nts .nts-node-hover-interfaces { padding-top:7px; border-top:1px solid rgba(255,255,255,.06); }
+#nts .nts-node-hover-empty { display:grid; gap:4px; text-align:center; }
+#nts .nts-node-hover-empty b { color:var(--muted); }
+#nts .nts-node-hover-empty span { color:var(--faint); line-height:1.35; }
+#nts .nts-edge-label { min-width:110px; max-width:155px; padding:6px 8px; }
+#nts .nts-edge-label b { display:-webkit-box; font-size:6px; line-height:1.25; white-space:normal; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+#nts .nts-edge-metrics { display:flex; justify-content:center; gap:10px; margin-top:5px; }
+#nts .nts-edge-metrics span { display:inline-flex; align-items:center; gap:3px; font-size:6.5px; }
+#nts .nts-edge-metrics span i { color:var(--teal); font-style:normal; }
+#nts .nts-edge-metrics small { display:none; }
+
+
+/* V7 - armazenamento central e correção de tráfego da ligação */
+#nts #nts-storage-pill.ok { color: var(--green); border-color: rgba(61,220,151,.30); }
+#nts #nts-storage-pill.warn { color: var(--amber); border-color: rgba(242,184,75,.34); }
+#nts #nts-storage-pill.loading { color: var(--cyan); border-color: rgba(69,200,240,.30); }
+#nts .nts-header-actions { flex-wrap: wrap; justify-content: flex-end; }
+
+
+/* V9 - correção do modo AO VIVO
+   V6 adicionou nts-no-selection depois da regra live-view e sobrescrevia
+   o grid de 1 coluna. Como o AO VIVO limpa a seleção, o canvas acabava
+   preso na coluna de 54px e o mapa parecia desaparecer. */
+#nts.live-view.nts-no-selection .nts-workspace,
+#nts.live-view .nts-workspace {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+#nts.live-view .nts-tools,
+#nts.live-view .nts-inspector {
+  display: none !important;
+}
+#nts.live-view .nts-canvas-viewport {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+#nts.live-view .nts-canvas-stage {
+  will-change: transform;
+}
+
+
+/* V10 - AO VIVO estritamente somente leitura */
+#nts.live-view #nts-save-map,
+#nts.live-view #nts-export-map,
+#nts.live-view #nts-save-state { display:none !important; }
+#nts.live-view #nts-map-title { pointer-events:none; user-select:none; cursor:default; }
+#nts.live-view .nts-node { cursor:default !important; }
+#nts.live-view .nts-node:active { cursor:default !important; }
+#nts.live-view .nts-node-connect-btn { display:none !important; }
+#nts.live-view .nts-edge-label { cursor:default; }
+#nts.live-view .nts-link-hit { cursor:default; }
+#nts.live-view .nts-connect-tip { display:none !important; }
+
+.demo-only-pill{
+ position:fixed;z-index:9999;right:14px;bottom:14px;padding:7px 12px;border:1px solid rgba(47,219,178,.3);
+ border-radius:999px;color:#6ee7bf;background:rgba(6,15,20,.9);font:900 9px Inter,sans-serif;letter-spacing:.12em
+}
+#nts{height:100vh!important;min-height:100vh!important;border-radius:0!important}
+</style>
+</head>
+<body>
+<div id="nts">
+  <div class="nts-shell">
+    <header class="nts-header">
+      <div class="nts-brand">
+        <div class="nts-brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M10 14h11M27 14h11M15 24h18M10 34h11M27 34h11" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="14" r="3" fill="currentColor"/><circle cx="41" cy="14" r="3" fill="currentColor"/><circle cx="12" cy="24" r="3" fill="currentColor"/><circle cx="36" cy="24" r="3" fill="currentColor"/><circle cx="7" cy="34" r="3" fill="currentColor"/><circle cx="41" cy="34" r="3" fill="currentColor"/></svg>
+        </div>
+        <div>
+          <span class="nts-kicker">PORTFÓLIO · NETWORK WORKSPACE</span>
+          <h1>Network Topology</h1>
+          <p>Crie, organize e visualize mapas de rede em ambiente DEMO.</p>
+        </div>
+      </div>
+      <div class="nts-header-actions">
+        <div id="nts-storage-pill" class="nts-status-pill idle"><i></i><span id="nts-storage-text">Mapas DEMO</span></div>
+        <div id="nts-zabbix-pill" class="nts-status-pill idle"><i></i><span id="nts-zabbix-text">DEMO pronta</span></div>
+        <button id="nts-fullscreen" class="nts-icon-btn" title="Tela cheia" aria-label="Tela cheia">
+          <svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section id="nts-home" class="nts-screen">
+      <div class="nts-home-toolbar">
+        <div>
+          <span class="nts-kicker">BIBLIOTECA DE MAPAS</span>
+          <h2>Suas topologias</h2>
+        </div>
+        <div class="nts-action-row">
+          <label class="nts-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.5 16.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="nts-map-search" type="search" placeholder="Pesquisar mapa..." /></label>
+          <button id="nts-import-map" class="nts-btn ghost"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Importar</button>
+          <button id="nts-create-map" class="nts-btn primary"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Novo mapa</button>
+          <input id="nts-import-file" type="file" accept="application/json,.json" hidden />
+        </div>
+      </div>
+
+      <div class="nts-home-grid">
+        <aside class="nts-library-side">
+          <div class="nts-side-title"><span>LISTAS</span><button id="nts-add-folder" title="Nova lista">+</button></div>
+          <nav id="nts-folder-list" class="nts-folder-list"></nav>
+          <div class="nts-local-note">
+            <svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="16" r="1.4" fill="currentColor"/></svg>
+            <div><b>Ambiente DEMO</b><span>Os mapas desta demonstração usam somente informações de exemplo.</span></div>
+          </div>
+        </aside>
+        <main class="nts-library-main">
+          <div id="nts-map-summary" class="nts-map-summary"></div>
+          <div id="nts-map-grid" class="nts-map-grid"></div>
+          <div id="nts-empty-home" class="nts-empty" hidden>
+            <div class="nts-empty-icon"><svg viewBox="0 0 48 48"><circle cx="13" cy="16" r="6"/><circle cx="35" cy="14" r="6"/><circle cx="31" cy="35" r="6"/><path d="M18 16l11-2M17 21l10 10M34 20l-2 9" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+            <h3>Nenhum mapa nesta lista</h3><p>Crie uma topologia e adicione hosts do Zabbix manualmente.</p>
+            <button class="nts-btn primary" data-action="create-map">Criar primeiro mapa</button>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section id="nts-editor" class="nts-screen" hidden>
+      <div class="nts-editor-topbar">
+        <div class="nts-editor-left">
+          <button id="nts-back-home" class="nts-icon-btn" title="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nts-map-title-block"><span id="nts-map-folder">—</span><input id="nts-map-title" value="Mapa" /></div>
+          <div id="nts-save-state" class="nts-save-state saved"><i></i><span>Salvo</span></div>
+        </div>
+        <div class="nts-editor-actions">
+          <div class="nts-mode-switch"><button id="nts-mode-edit" class="active">EDITAR</button><button id="nts-mode-live">AO VIVO</button></div>
+          <button id="nts-refresh-live" class="nts-btn ghost"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6.2 9A7 7 0 0 1 18 6l2 1M18 15a7 7 0 0 1-12 3l-2-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Atualizar</button>
+          <button id="nts-export-map" class="nts-btn ghost">Exportar</button>
+          <button id="nts-save-map" class="nts-btn primary">Salvar mapa</button>
+        </div>
+      </div>
+
+      <div class="nts-workspace">
+        <aside id="nts-tools" class="nts-tools">
+          <button class="nts-tool active" data-tool="select" title="Selecionar"><svg viewBox="0 0 24 24"><path d="m5 3 13 10-7 1-3 7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Selecionar</span></button>
+          <button class="nts-tool" data-tool="pan" title="Mover mapa"><svg viewBox="0 0 24 24"><path d="M8 11V6a2 2 0 0 1 4 0v4M12 10V5a2 2 0 0 1 4 0v6M16 10V7a2 2 0 0 1 4 0v7c0 5-3 8-8 8h-1c-3 0-5-2-7-5l-2-3a2 2 0 0 1 3-2l3 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mover</span></button>
+          <div class="nts-tool-sep"></div>
+          <button class="nts-tool" data-tool="add" title="Adicionar host"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="12" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 9h6M7 13h6M20 9v8M16 13h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Host</span></button>
+          <button class="nts-tool" data-tool="connect" title="Criar ligação"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 11 6-4M9 13l6 4" stroke="currentColor" stroke-width="1.8"/></svg><span>Conectar</span></button>
+          <div class="nts-tool-sep"></div>
+          <button class="nts-tool" data-tool="layout" title="Organizar automaticamente"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span>Organizar</span></button>
+          <button class="nts-tool" data-tool="fit" title="Enquadrar"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Enquadrar</span></button>
+        </aside>
+
+        <main id="nts-canvas-viewport" class="nts-canvas-viewport">
+          <div id="nts-canvas-stage" class="nts-canvas-stage">
+            <svg id="nts-links-svg" class="nts-links-svg" width="2400" height="1400" viewBox="0 0 2400 1400"><defs><filter id="nts-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g id="nts-link-layer"></g></svg>
+            <div id="nts-edge-label-layer" class="nts-edge-label-layer"></div>
+            <div id="nts-node-layer" class="nts-node-layer"></div>
+          </div>
+          <div id="nts-connect-tip" class="nts-connect-tip" hidden><i></i><span>Selecione o primeiro host</span><button>Cancelar</button></div>
+          <div class="nts-zoom-controls"><button id="nts-zoom-out">−</button><span id="nts-zoom-label">100%</span><button id="nts-zoom-in">+</button><button id="nts-fit-map" title="Enquadrar">⌗</button></div>
+          <div id="nts-live-stamp" class="nts-live-stamp">Sem consulta realizada</div>
+        </main>
+
+        <aside id="nts-inspector" class="nts-inspector">
+          <div class="nts-inspector-empty"><div class="nts-inspector-icon"><svg viewBox="0 0 40 40"><path d="M7 10h26M7 20h26M7 30h26" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="10" r="4"/><circle cx="27" cy="20" r="4"/><circle cx="17" cy="30" r="4"/></svg></div><h3>Propriedades</h3><p>Selecione um host ou uma ligação para editar os detalhes.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <div id="nts-modal" class="nts-modal" hidden><div class="nts-modal-backdrop" data-modal-close></div><div class="nts-modal-card"><div id="nts-modal-content"></div></div></div>
+    <div id="nts-toast" class="nts-toast"></div>
+  </div>
+</div>
+<div class="demo-only-pill">DEMO</div>
+<script>
+(function(){
+  const root=document.querySelector('#nts');
+  const $=(s,c=root)=>c.querySelector(s);
+  const $$=(s,c=root)=>[...c.querySelectorAll(s)];
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const now=()=>new Date().toISOString();
+  const uid=p=>(p||'id')+'-'+Math.random().toString(36).slice(2,9);
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+  const state={
+    folder:'all', search:'', currentMapId:null, selection:null, tool:'select',
+    mode:'edit', zoom:.82, pan:{x:80,y:45}, connectFrom:null,
+    folders:['Backbone','POPs','Datacenter','Laboratório'],
+    maps:[
+      {
+        id:'map-backbone', name:'Backbone DEMO', folder:'Backbone',
+        description:'Visão de backbone com tráfego bidirecional e status dos equipamentos.',
+        updatedAt:now(),
+        nodes:[
+          {id:'edge01',label:'EDGE-01',ip:'10.10.10.1',x:290,y:430,status:'online',down:18.6,up:1.4,iface:'xe-0/0/0'},
+          {id:'core01',label:'CORE-01',ip:'10.10.20.1',x:650,y:260,status:'online',down:11.2,up:.82,iface:'et-0/0/1'},
+          {id:'core02',label:'CORE-02',ip:'10.10.20.2',x:650,y:610,status:'online',down:8.9,up:.71,iface:'et-0/0/2'},
+          {id:'pop01',label:'POP-A',ip:'10.20.1.1',x:1050,y:245,status:'online',down:6.4,up:.44,iface:'uplink-01'},
+          {id:'pop02',label:'POP-B',ip:'10.20.2.1',x:1050,y:625,status:'online',down:5.1,up:.38,iface:'uplink-02'},
+          {id:'svc01',label:'SERVICES-01',ip:'10.30.1.10',x:1450,y:430,status:'online',down:4.8,up:.31,iface:'bond0'},
+          {id:'lab01',label:'LAB-SW-01',ip:'10.40.1.2',x:1050,y:900,status:'offline',down:0,up:0,iface:'sfp1'}
+        ],
+        links:[
+          {id:'l1',source:'edge01',target:'core01',label:'TRANSIT-A',down:10.8,up:.76},
+          {id:'l2',source:'edge01',target:'core02',label:'TRANSIT-B',down:8.1,up:.61},
+          {id:'l3',source:'core01',target:'pop01',label:'BACKBONE-01',down:6.2,up:.43},
+          {id:'l4',source:'core02',target:'pop02',label:'BACKBONE-02',down:5.0,up:.37},
+          {id:'l5',source:'pop01',target:'svc01',label:'SERVICES-A',down:3.0,up:.22},
+          {id:'l6',source:'pop02',target:'svc01',label:'SERVICES-B',down:1.8,up:.13},
+          {id:'l7',source:'core02',target:'lab01',label:'LAB-LINK',down:0,up:0}
+        ]
+      },
+      {
+        id:'map-pop', name:'POPs Regionais', folder:'POPs',
+        description:'Mapa demonstrativo de distribuição entre POPs e agregadores.',
+        updatedAt:now(),
+        nodes:[
+          {id:'r1',label:'AGG-01',ip:'10.50.0.1',x:480,y:420,status:'online',down:7.8,up:.55,iface:'uplink'},
+          {id:'r2',label:'POP-NORTE',ip:'10.50.1.1',x:900,y:260,status:'online',down:3.1,up:.23,iface:'10G-1'},
+          {id:'r3',label:'POP-SUL',ip:'10.50.2.1',x:900,y:570,status:'online',down:2.9,up:.21,iface:'10G-2'},
+          {id:'r4',label:'POP-LESTE',ip:'10.50.3.1',x:1320,y:410,status:'online',down:2.2,up:.16,iface:'10G-3'}
+        ],
+        links:[
+          {id:'p1',source:'r1',target:'r2',label:'UPLINK-N',down:3.1,up:.23},
+          {id:'p2',source:'r1',target:'r3',label:'UPLINK-S',down:2.9,up:.21},
+          {id:'p3',source:'r2',target:'r4',label:'RING-A',down:1.2,up:.09},
+          {id:'p4',source:'r3',target:'r4',label:'RING-B',down:1.0,up:.07}
+        ]
+      }
+    ]
+  };
+
+  function fmtGb(v){
+    v=Number(v||0);
+    return v>=1?v.toLocaleString('pt-BR',{maximumFractionDigits:2})+' Gb/s':
+      Math.round(v*1000).toLocaleString('pt-BR')+' Mb/s';
+  }
+  function formatDate(){
+    return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+  function icon(){
+    return '<svg viewBox="0 0 24 24"><path d="M5 7h14v10H5zM8 10h8M8 14h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+  }
+  function currentMap(){return state.maps.find(m=>m.id===state.currentMapId)||null}
+  function findNode(id){return currentMap()?.nodes.find(n=>n.id===id)||null}
+
+  function toast(msg,error=false){
+    const t=$('#nts-toast'); if(!t)return;
+    t.textContent=msg; t.classList.toggle('error',error); t.classList.add('show');
+    clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2200);
+  }
+  function setStatus(kind,msg){
+    const pill=$('#nts-zabbix-pill'),txt=$('#nts-zabbix-text');
+    if(pill){pill.className='nts-status-pill '+kind}
+    if(txt)txt.textContent=msg;
+  }
+
+  function renderHome(){
+    const q=state.search.trim().toLowerCase();
+    let maps=state.maps.filter(m=>(state.folder==='all'||m.folder===state.folder)&&(!q||`${m.name} ${m.description}`.toLowerCase().includes(q)));
+    const folders=['all',...state.folders];
+    $('#nts-folder-list').innerHTML=folders.map(f=>{
+      const count=f==='all'?state.maps.length:state.maps.filter(m=>m.folder===f).length;
+      return `<button class="nts-folder-item ${state.folder===f?'active':''}" data-folder="${esc(f)}">${icon()}<span>${f==='all'?'Todos os mapas':esc(f)}</span><b>${count}</b></button>`;
+    }).join('');
+    $('#nts-map-summary').innerHTML=[
+      ['MAPAS',state.maps.length],['HOSTS',state.maps.reduce((s,m)=>s+m.nodes.length,0)],['LIGAÇÕES',state.maps.reduce((s,m)=>s+m.links.length,0)]
+    ].map(x=>`<div class="nts-summary-chip"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('');
+    $('#nts-map-grid').innerHTML=maps.map(m=>`<article class="nts-map-card" data-map-id="${esc(m.id)}">
+      <div class="nts-map-card-top"><div class="nts-map-card-icon">${icon()}</div><button class="nts-map-card-menu" type="button">⋯</button></div>
+      <h3>${esc(m.name)}</h3><p>${esc(m.description)}</p>
+      <div class="nts-map-card-meta"><span>${m.nodes.length} hosts</span><span>${m.links.length} ligações</span></div>
+      <div class="nts-map-card-foot"><span>${esc(m.folder)}</span><b>DEMO</b></div>
+    </article>`).join('');
+    $('#nts-map-grid').hidden=!maps.length;
+    $('#nts-empty-home').hidden=!!maps.length;
+  }
+
+  function openHome(){
+    state.currentMapId=null; state.selection=null; state.connectFrom=null;
+    $('#nts-editor').hidden=true; $('#nts-home').hidden=false;
+    root.classList.remove('live-view','nts-no-selection');
+    setStatus('ok','DEMO pronta');
+    renderHome();
+  }
+  function openEditor(id){
+    const m=state.maps.find(x=>x.id===id); if(!m)return;
+    state.currentMapId=id; state.selection=null; state.connectFrom=null; state.tool='select'; state.mode='edit';
+    state.zoom=.82; state.pan={x:80,y:45};
+    $('#nts-home').hidden=true; $('#nts-editor').hidden=false;
+    $('#nts-map-title').value=m.name; $('#nts-map-folder').textContent=m.folder.toUpperCase();
+    setTool('select'); setMode('edit'); renderCanvas(); renderInspector(); fitMap();
+    simulateRefresh();
+  }
+  function linkPath(a,b){
+    const dx=b.x-a.x,dy=b.y-a.y;
+    const curve=Math.min(120,Math.max(38,Math.abs(dx)*.18));
+    const c1x=a.x+(dx>=0?curve:-curve),c2x=b.x-(dx>=0?curve:-curve);
+    const c1y=a.y+dy*.12,c2y=b.y-dy*.12;
+    return {d:`M ${a.x} ${a.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${b.x} ${b.y}`,mx:(a.x+b.x)/2,my:(a.y+b.y)/2};
+  }
+  function renderCanvas(){
+    const m=currentMap(); if(!m)return;
+    const linkLayer=$('#nts-link-layer'),labelLayer=$('#nts-edge-label-layer'),nodeLayer=$('#nts-node-layer');
+    linkLayer.innerHTML='';labelLayer.innerHTML='';nodeLayer.innerHTML='';
+
+    m.links.forEach(l=>{
+      const a=m.nodes.find(n=>n.id===l.source),b=m.nodes.find(n=>n.id===l.target); if(!a||!b)return;
+      const p=linkPath(a,b), selected=state.selection?.type==='link'&&state.selection.id===l.id;
+      const off=a.status==='offline'||b.status==='offline';
+      const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.dataset.linkId=l.id;
+      g.innerHTML=`<path class="nts-link-hit" d="${p.d}"></path>
+        <path class="nts-link-line down ${off?'off':''} ${selected?'selected':''}" d="${p.d}" transform="translate(0,4)"></path>
+        <path class="nts-link-line up ${off?'off':''} ${selected?'selected':''}" d="${p.d}" transform="translate(0,-4)"></path>`;
+      linkLayer.appendChild(g);
+      const lab=document.createElement('div');
+      lab.className='nts-edge-label'+(selected?' selected':''); lab.dataset.linkId=l.id;
+      lab.style.left=p.mx+'px';lab.style.top=p.my+'px';
+      lab.innerHTML=`<b>${esc(l.label)}</b><div class="nts-edge-metrics"><span><i>↓</i>${fmtGb(l.down)}</span><span><i>↑</i>${fmtGb(l.up)}</span></div>`;
+      labelLayer.appendChild(lab);
+    });
+
+    m.nodes.forEach(n=>{
+      const selected=state.selection?.type==='node'&&state.selection.id===n.id;
+      const el=document.createElement('div');
+      el.className=`nts-node ${n.status} ${selected?'selected':''} ${state.connectFrom===n.id?'connect-source':''}`;
+      el.style.left=n.x+'px';el.style.top=n.y+'px';el.dataset.nodeId=n.id;
+      el.innerHTML=`<button class="nts-node-connect-btn" type="button" data-node-connect="${esc(n.id)}">+</button>
+        <div class="nts-node-title">${esc(n.label)}</div>
+        <div class="nts-node-sub">${esc(n.ip)}</div>
+        <div class="nts-node-status ${n.status}">${n.status==='online'?'ONLINE':'OFFLINE'}</div>
+        <div class="nts-node-hovercard">
+          <div class="nts-node-hover-metrics">
+            <div><span>Download total</span><b>${fmtGb(n.down)}</b></div>
+            <div><span>Upload total</span><b>${fmtGb(n.up)}</b></div>
+          </div>
+          <div class="nts-node-hover-interfaces"><span>Interface DEMO</span><small>${esc(n.iface)}</small></div>
+        </div>`;
+      nodeLayer.appendChild(el);
+    });
+    applyTransform();
+  }
+  function applyTransform(){
+    $('#nts-canvas-stage').style.transform=`translate(${state.pan.x}px,${state.pan.y}px) scale(${state.zoom})`;
+    $('#nts-zoom-label').textContent=Math.round(state.zoom*100)+'%';
+  }
+  function fitMap(){
+    const m=currentMap(); if(!m||!m.nodes.length)return;
+    const xs=m.nodes.map(n=>n.x),ys=m.nodes.map(n=>n.y);
+    const minX=Math.min(...xs)-120,maxX=Math.max(...xs)+120,minY=Math.min(...ys)-100,maxY=Math.max(...ys)+100;
+    const vp=$('#nts-canvas-viewport'),vw=vp.clientWidth||1200,vh=vp.clientHeight||700;
+    state.zoom=clamp(Math.min(vw/(maxX-minX),vh/(maxY-minY))*.88,.35,1.35);
+    state.pan={x:(vw-(minX+maxX)*state.zoom)/2,y:(vh-(minY+maxY)*state.zoom)/2};
+    applyTransform();
+  }
+  function setTool(tool){
+    state.tool=tool;
+    $$('.nts-tool').forEach(b=>b.classList.toggle('active',b.dataset.tool===tool));
+    $('#nts-connect-tip').hidden=tool!=='connect';
+    if(tool!=='connect')state.connectFrom=null;
+    if(tool==='add')addHostDemo();
+    if(tool==='layout')autoLayout();
+    if(tool==='fit')fitMap();
+  }
+  function setMode(mode){
+    state.mode=mode;
+    $('#nts-mode-edit').classList.toggle('active',mode==='edit');
+    $('#nts-mode-live').classList.toggle('active',mode==='live');
+    root.classList.toggle('live-view',mode==='live');
+    if(mode==='live'){state.selection=null;renderInspector();simulateRefresh();}
+    renderCanvas();
+  }
+  function renderInspector(){
+    const box=$('#nts-inspector');
+    const m=currentMap();
+    if(!state.selection){
+      root.classList.add('nts-no-selection');
+      box.innerHTML='<div class="nts-inspector-empty"><div class="nts-inspector-icon">'+icon()+'</div><h3>Propriedades</h3><p>Selecione um host ou uma ligação para visualizar os detalhes.</p></div>';
+      return;
+    }
+    root.classList.remove('nts-no-selection');
+    if(state.selection.type==='node'){
+      const n=findNode(state.selection.id);if(!n)return;
+      box.innerHTML=`<div class="nts-inspector-head"><div><span>HOST DEMO</span><h3>${esc(n.label)}</h3></div></div>
+        <div class="nts-readout nts-readout-four">
+          <div><span>Status</span><b>${n.status.toUpperCase()}</b></div>
+          <div><span>IP DEMO</span><b>${esc(n.ip)}</b></div>
+          <div><span>Download</span><b>${fmtGb(n.down)}</b></div>
+          <div><span>Upload</span><b>${fmtGb(n.up)}</b></div>
+        </div>
+        <div class="nts-form">
+          <label class="nts-field"><span>Nome</span><input id="demo-node-name" value="${esc(n.label)}"></label>
+          <label class="nts-field"><span>Interface</span><input value="${esc(n.iface)}" readonly></label>
+          <div class="nts-inline-info">Todos os valores desta tela pertencem somente ao ambiente DEMO.</div>
+        </div>`;
+    } else {
+      const l=m.links.find(x=>x.id===state.selection.id);if(!l)return;
+      box.innerHTML=`<div class="nts-inspector-head"><div><span>LIGAÇÃO DEMO</span><h3>${esc(l.label)}</h3></div></div>
+        <div class="nts-readout"><div><span>Download</span><b>${fmtGb(l.down)}</b></div><div><span>Upload</span><b>${fmtGb(l.up)}</b></div></div>
+        <div class="nts-inline-info">Ligação demonstrativa entre dois hosts do mapa.</div>`;
+    }
+  }
+  function select(type,id){
+    if(state.mode==='live')return;
+    state.selection={type,id};renderCanvas();renderInspector();
+  }
+  function simulateRefresh(){
+    const m=currentMap();if(!m)return;
+    setStatus('loading','Atualizando DEMO...');
+    setTimeout(()=>{
+      m.nodes.forEach((n,i)=>{
+        if(n.status!=='offline'){
+          n.down=Math.max(.05,n.down*(.94+Math.random()*.12));
+          n.up=Math.max(.02,n.up*(.93+Math.random()*.14));
+        }
+      });
+      m.links.forEach(l=>{
+        const a=m.nodes.find(n=>n.id===l.source),b=m.nodes.find(n=>n.id===l.target);
+        l.down=Math.max(0,(a?.down||0)*(.38+Math.random()*.18));
+        l.up=Math.max(0,(a?.up||0)*(.38+Math.random()*.18));
+      });
+      setStatus('ok','DEMO atualizada');
+      $('#nts-live-stamp').textContent='DEMO · '+formatDate();
+      renderCanvas();renderInspector();
+    },430);
+  }
+  function autoLayout(){
+    const m=currentMap();if(!m)return;
+    const cols=Math.ceil(Math.sqrt(m.nodes.length));
+    m.nodes.forEach((n,i)=>{n.x=360+(i%cols)*360;n.y=260+Math.floor(i/cols)*300});
+    renderCanvas();fitMap();toast('Organização DEMO aplicada.');
+  }
+  function addHostDemo(){
+    if(state.mode==='live')return;
+    const m=currentMap();if(!m)return;
+    const i=m.nodes.length+1;
+    m.nodes.push({id:uid('n'),label:'HOST-DEMO-'+String(i).padStart(2,'0'),ip:`10.90.0.${i}`,x:520+(i%4)*270,y:380+Math.floor(i/4)*240,status:'online',down:1.1+Math.random()*2.6,up:.12+Math.random()*.4,iface:'uplink-demo'});
+    renderCanvas();toast('Host DEMO adicionado.');
+  }
+  function createMap(){
+    const content=$('#nts-modal-content');
+    content.innerHTML=`<div class="nts-modal-head"><div><span class="nts-kicker">NOVO MAPA DEMO</span><h3>Criar topologia</h3><p>Crie um mapa apenas para esta sessão de demonstração.</p></div><button class="nts-modal-close" data-modal-close>×</button></div>
+      <div class="nts-modal-body"><div class="nts-form"><label class="nts-field"><span>Nome</span><input id="demo-map-name" value="Novo mapa DEMO"></label><label class="nts-field"><span>Lista</span><select id="demo-map-folder">${state.folders.map(f=>`<option>${esc(f)}</option>`).join('')}</select></label></div></div>
+      <div class="nts-modal-foot"><button class="nts-btn ghost" data-modal-close>Cancelar</button><button class="nts-btn primary" id="demo-create-confirm">Criar mapa</button></div>`;
+    $('#nts-modal').hidden=false;
+  }
+  function addFolder(){
+    const name='Lista DEMO '+(state.folders.length+1);
+    state.folders.push(name);state.folder=name;renderHome();toast('Lista DEMO criada.');
+  }
+  function closeModal(){$('#nts-modal').hidden=true;$('#nts-modal-content').innerHTML='';}
+
+  root.addEventListener('click',e=>{
+    const folder=e.target.closest('[data-folder]');if(folder){state.folder=folder.dataset.folder;renderHome();return;}
+    const card=e.target.closest('[data-map-id]');if(card&&$('#nts-home').contains(card)){openEditor(card.dataset.mapId);return;}
+    if(e.target.closest('[data-action="create-map"]')||e.target.closest('#nts-create-map')){createMap();return;}
+    if(e.target.closest('#nts-add-folder')){addFolder();return;}
+    if(e.target.closest('#nts-import-map')){toast('Importação desativada na versão DEMO.');return;}
+    if(e.target.closest('#nts-back-home')){openHome();return;}
+    if(e.target.closest('#nts-refresh-live')){simulateRefresh();return;}
+    if(e.target.closest('#nts-save-map')){toast('Mapa DEMO salvo durante esta sessão.');return;}
+    if(e.target.closest('#nts-export-map')){toast('Exportação desativada na versão DEMO.');return;}
+    if(e.target.closest('#nts-mode-edit')){setMode('edit');return;}
+    if(e.target.closest('#nts-mode-live')){setMode('live');return;}
+    if(e.target.closest('#nts-fullscreen')){
+      if(!document.fullscreenElement)root.requestFullscreen?.(); else document.exitFullscreen?.();return;
+    }
+    if(e.target.closest('#nts-zoom-in')){state.zoom=clamp(state.zoom+.1,.3,1.6);applyTransform();return;}
+    if(e.target.closest('#nts-zoom-out')){state.zoom=clamp(state.zoom-.1,.3,1.6);applyTransform();return;}
+    if(e.target.closest('#nts-fit-map')){fitMap();return;}
+    const tool=e.target.closest('[data-tool]');if(tool){setTool(tool.dataset.tool);return;}
+    const connect=e.target.closest('[data-node-connect]');
+    if(connect&&state.mode==='edit'){
+      e.stopPropagation();
+      if(!state.connectFrom){state.connectFrom=connect.dataset.nodeConnect;state.tool='connect';$('#nts-connect-tip').hidden=false;$('#nts-connect-tip span').textContent='Agora selecione o segundo host';renderCanvas();}
+      return;
+    }
+    const node=e.target.closest('[data-node-id]');
+    if(node&&state.mode==='edit'){
+      if(state.connectFrom&&state.connectFrom!==node.dataset.nodeId){
+        const m=currentMap(),a=findNode(state.connectFrom),b=findNode(node.dataset.nodeId);
+        if(a&&b&&!m.links.some(l=>(l.source===a.id&&l.target===b.id)||(l.source===b.id&&l.target===a.id))){
+          m.links.push({id:uid('l'),source:a.id,target:b.id,label:'LINK-DEMO',down:1.4,up:.18});
+          toast('Ligação DEMO criada.');
+        }
+        state.connectFrom=null;state.tool='select';$('#nts-connect-tip').hidden=true;setTool('select');renderCanvas();
+      }else select('node',node.dataset.nodeId);
+      return;
+    }
+    const edge=e.target.closest('[data-link-id]');if(edge&&state.mode==='edit'){select('link',edge.dataset.linkId);return;}
+    if(e.target.closest('[data-modal-close]')){closeModal();return;}
+    if(e.target.closest('#demo-create-confirm')){
+      const name=$('#demo-map-name')?.value.trim()||'Novo mapa DEMO';
+      const folder=$('#demo-map-folder')?.value||'Outros';
+      const id=uid('map');
+      state.maps.push({id,name,folder,description:'Mapa criado na sessão DEMO.',updatedAt:now(),nodes:[],links:[]});
+      closeModal();renderHome();openEditor(id);return;
+    }
+  });
+
+  $('#nts-map-search').addEventListener('input',e=>{state.search=e.target.value;renderHome();});
+  $('#nts-map-title').addEventListener('change',e=>{const m=currentMap();if(m&&state.mode==='edit'){m.name=e.target.value.trim()||m.name;toast('Nome atualizado na sessão DEMO.');}});
+  window.addEventListener('resize',()=>{if(state.currentMapId)fitMap();});
+
+  renderHome();
+  setStatus('ok','DEMO pronta');
+})();
+</script>
+</body>
+</html>

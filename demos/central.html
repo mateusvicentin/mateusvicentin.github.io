@@ -1,0 +1,1900 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Central de Assinantes | Portfolio Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;min-height:100%;background:#050a0e;color:#fff}
+body{overflow:auto}
+*{box-sizing:border-box}
+.demo-disclaimer{
+ position:fixed;z-index:9999;right:14px;bottom:14px;
+ display:flex;align-items:center;gap:7px;padding:7px 10px;
+ border:1px solid rgba(54,217,133,.22);border-radius:999px;
+ color:#79e8ae;background:rgba(5,13,17,.88);backdrop-filter:blur(12px);
+ font:800 9px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;
+ box-shadow:0 10px 28px rgba(0,0,0,.32)
+}
+.demo-disclaimer i{width:7px;height:7px;border-radius:50%;background:#39d98a;box-shadow:0 0 10px #39d98a}
+#fbx-access, #fbx-access * { box-sizing: border-box; }
+#fbx-access {
+  --bg: #071015;
+  --bg-soft: #0b151c;
+  --surface: rgba(14, 27, 35, .88);
+  --surface-2: rgba(19, 36, 46, .82);
+  --line: rgba(142, 184, 204, .14);
+  --line-strong: rgba(142, 184, 204, .24);
+  --text: #ecf7fa;
+  --muted: #89a3af;
+  --faint: #58717d;
+  --cyan: #45c8f0;
+  --teal: #3dd9c5;
+  --violet: #a98cff;
+  --amber: #f2b84b;
+  --red: #ff6b6b;
+  --green: #3ddc97;
+  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --font: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  width: 100%;
+  min-height: 100%;
+  color: var(--text);
+  font-family: var(--font);
+  background:
+    radial-gradient(900px 480px at 8% -12%, rgba(61,217,197,.16), transparent 62%),
+    radial-gradient(720px 420px at 100% 4%, rgba(169,140,255,.12), transparent 62%),
+    linear-gradient(180deg, #081218 0%, var(--bg) 52%, #061015 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 18px;
+}
+
+#fbx-access .access-shell {
+  width: min(100%, 1920px);
+  margin: 0 auto;
+}
+
+#fbx-access .access-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 84px;
+  padding: 8px 4px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+#fbx-access .brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+#fbx-access .brand-logo {
+  width: 176px;
+  height: 58px;
+  object-fit: contain;
+  object-position: left center;
+  flex: none;
+  filter: drop-shadow(0 8px 22px rgba(0,0,0,.34));
+}
+
+#fbx-access .brand-mark {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: var(--teal);
+  border: 1px solid rgba(61,217,197,.28);
+  border-radius: 15px;
+  background:
+    linear-gradient(145deg, rgba(61,217,197,.16), rgba(69,200,240,.05)),
+    rgba(12,24,31,.88);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 14px 36px rgba(0,0,0,.25);
+}
+
+#fbx-access .brand-mark svg { width: 32px; height: 32px; }
+#fbx-access .eyebrow,
+#fbx-access .section-kicker {
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+#fbx-access h1,
+#fbx-access h2,
+#fbx-access h3,
+#fbx-access p { margin: 0; }
+
+#fbx-access .brand h1 {
+  margin-top: 4px;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -.4px;
+}
+
+#fbx-access .brand p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+#fbx-access .header-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: none;
+}
+
+#fbx-access .telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(11,22,29,.78);
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+#fbx-access .telemetry-pill.ok { color: var(--green); border-color: rgba(61,220,151,.3); }
+#fbx-access .telemetry-pill.warn { color: var(--amber); border-color: rgba(242,184,75,.34); }
+#fbx-access .telemetry-pill.off { color: var(--red); border-color: rgba(255,107,107,.35); }
+
+#fbx-access .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px rgba(137,163,175,.08);
+}
+#fbx-access .telemetry-pill.ok .pulse { animation: fbxPulse 1.8s infinite; }
+
+@keyframes fbxPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(61,220,151,.08), 0 0 9px rgba(61,220,151,.45); }
+  50% { box-shadow: 0 0 0 6px rgba(61,220,151,0), 0 0 14px rgba(61,220,151,.65); }
+}
+
+#fbx-access .clock {
+  min-width: 116px;
+  text-align: right;
+}
+#fbx-access .clock strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 1.2px;
+}
+#fbx-access .clock span {
+  display: block;
+  margin-top: 5px;
+  color: var(--faint);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+#fbx-access .hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(360px, .8fr);
+  gap: 14px;
+  padding-top: 16px;
+}
+
+#fbx-access .total-card,
+#fbx-access .protocol-card,
+#fbx-access .city-card,
+#fbx-access .insight-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(150deg, rgba(255,255,255,.025), transparent 35%),
+    var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 16px 45px rgba(0,0,0,.14);
+}
+
+#fbx-access .total-card {
+  min-height: 222px;
+  padding: 20px 22px 14px;
+  border-radius: 18px;
+}
+#fbx-access .total-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -80px -140px 35%;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,217,197,.14), transparent 68%);
+  pointer-events: none;
+}
+
+#fbx-access .card-kicker,
+#fbx-access .protocol-head,
+#fbx-access .protocol-foot,
+#fbx-access .city-top,
+#fbx-access .city-total-row,
+#fbx-access .metric-title,
+#fbx-access .city-footer,
+#fbx-access .insight-head,
+#fbx-access .composition-list > div,
+#fbx-access .freshness-lines > div,
+#fbx-access .access-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#fbx-access .card-kicker {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+#fbx-access .live-tag,
+#fbx-access .mini-badge {
+  padding: 4px 8px;
+  border: 1px solid rgba(61,217,197,.22);
+  border-radius: 999px;
+  color: var(--teal);
+  background: rgba(61,217,197,.08);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .9px;
+}
+
+#fbx-access .total-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 17px;
+}
+#fbx-access .total-value {
+  font-family: var(--mono);
+  font-size: clamp(42px, 4vw, 66px);
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: -3px;
+}
+#fbx-access .total-label {
+  margin-top: 8px;
+  color: var(--faint);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+#fbx-access .total-change,
+#fbx-access .city-delta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 31px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
+  background: rgba(137,163,175,.08);
+  border: 1px solid var(--line);
+}
+#fbx-access .is-up { color: var(--green) !important; border-color: rgba(61,220,151,.22) !important; background: rgba(61,220,151,.08) !important; }
+#fbx-access .is-down { color: var(--red) !important; border-color: rgba(255,107,107,.22) !important; background: rgba(255,107,107,.08) !important; }
+#fbx-access .is-flat { color: var(--muted) !important; }
+
+#fbx-access .spark-wrap {
+  position: relative;
+  z-index: 1;
+  height: 78px;
+  margin-top: 5px;
+}
+#fbx-access #total-spark { width: 100%; height: 62px; display: block; overflow: visible; }
+#fbx-access .spark-line {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2.6;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(61,217,197,.35));
+}
+#fbx-access .spark-area { fill: url(#sparkFill); }
+#fbx-access .spark-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 8px;
+}
+
+#fbx-access .protocol-grid {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+}
+#fbx-access .protocol-card {
+  min-height: 68px;
+  padding: 13px 15px;
+  border-radius: 14px;
+}
+#fbx-access .protocol-card::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 0;
+  width: 3px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+#fbx-access .protocol-v4 { --accent: var(--cyan); }
+#fbx-access .protocol-v6 { --accent: var(--violet); }
+#fbx-access .protocol-radio { --accent: var(--amber); }
+
+#fbx-access .protocol-head {
+  justify-content: flex-start;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+#fbx-access .protocol-icon {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  font-family: var(--mono);
+  font-weight: 900;
+}
+#fbx-access .protocol-icon svg { width: 16px; height: 16px; }
+#fbx-access .protocol-card > strong {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  font-family: var(--mono);
+  font-size: 24px;
+  line-height: 1;
+}
+#fbx-access .protocol-foot {
+  margin-top: 9px;
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .protocol-foot span:last-child {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-weight: 800;
+}
+
+#fbx-access .section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 4px 12px;
+}
+#fbx-access .section-head h2 {
+  margin-top: 5px;
+  font-size: 17px;
+  letter-spacing: -.2px;
+}
+#fbx-access .legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  color: var(--faint);
+  font-size: 9px;
+}
+#fbx-access .legend span { display: inline-flex; align-items: center; gap: 6px; }
+#fbx-access .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+#fbx-access .dot.ok { background: var(--green); box-shadow: 0 0 7px rgba(61,220,151,.55); }
+#fbx-access .dot.warn { background: var(--amber); box-shadow: 0 0 7px rgba(242,184,75,.5); }
+#fbx-access .dot.off { background: var(--red); box-shadow: 0 0 7px rgba(255,107,107,.5); }
+
+#fbx-access .city-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+#fbx-access .city-card {
+  min-height: 263px;
+  padding: 17px;
+  border-radius: 16px;
+  transition: transform .15s ease, border-color .15s ease;
+}
+#fbx-access .city-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+}
+#fbx-access .city-card::before {
+  content: attr(data-city);
+  position: absolute;
+  right: -2px;
+  top: -19px;
+  font-family: var(--mono);
+  font-size: 72px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: rgba(236,247,250,.025);
+  pointer-events: none;
+}
+#fbx-access .city-code {
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 1.5px;
+}
+#fbx-access .city-card h3 {
+  margin-top: 4px;
+  font-size: 14px;
+}
+#fbx-access .city-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(137,163,175,.06);
+  border: 1px solid var(--line);
+  font-size: 8px;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+#fbx-access .city-state i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+#fbx-access .city-state.ok { color: var(--green); border-color: rgba(61,220,151,.2); }
+#fbx-access .city-state.warn { color: var(--amber); border-color: rgba(242,184,75,.24); }
+#fbx-access .city-state.off { color: var(--red); border-color: rgba(255,107,107,.24); }
+
+#fbx-access .city-total-row {
+  align-items: flex-end;
+  margin: 18px 0 17px;
+}
+#fbx-access .city-total-row strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 28px;
+  line-height: 1;
+}
+#fbx-access .city-total-row div > span {
+  display: block;
+  margin-top: 6px;
+  color: var(--faint);
+  font-size: 8px;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+#fbx-access .city-delta { min-width: 62px; min-height: 27px; font-size: 9px; }
+
+#fbx-access .metric-list { display: grid; gap: 12px; }
+#fbx-access .metric-title {
+  color: var(--muted);
+  font-size: 9px;
+}
+#fbx-access .metric-title b {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+#fbx-access .metric-row.unavailable { opacity: .48; }
+#fbx-access .metric-bar {
+  height: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(236,247,250,.055);
+}
+#fbx-access .metric-bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(69,200,240,.52), var(--cyan));
+  transition: width .35s ease;
+}
+#fbx-access .metric-row:nth-child(2) .metric-bar i {
+  background: linear-gradient(90deg, rgba(169,140,255,.52), var(--violet));
+}
+#fbx-access .metric-bar.radio i {
+  background: linear-gradient(90deg, rgba(242,184,75,.45), var(--amber));
+}
+#fbx-access .city-footer {
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .city-footer b {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+#fbx-access .insights-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, .9fr) minmax(320px, 1.05fr) minmax(280px, .85fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+#fbx-access .insight-card {
+  min-height: 185px;
+  padding: 16px;
+  border-radius: 16px;
+}
+#fbx-access .insight-head h3 {
+  margin-top: 4px;
+  font-size: 13px;
+}
+#fbx-access .composition {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 15px;
+}
+#fbx-access .donut {
+  width: 108px;
+  height: 108px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--cyan) 0 50%, var(--violet) 50% 100%);
+  position: relative;
+}
+#fbx-access .donut::after {
+  content: "";
+  position: absolute;
+  inset: 13px;
+  border-radius: 50%;
+  background: #0d1b23;
+  border: 1px solid var(--line);
+}
+#fbx-access .donut-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+#fbx-access .donut-center b {
+  display: block;
+  font-family: var(--mono);
+  font-size: 16px;
+}
+#fbx-access .donut-center span {
+  display: block;
+  margin-top: 3px;
+  color: var(--faint);
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+#fbx-access .composition-list { display: grid; gap: 10px; }
+#fbx-access .composition-list > div {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 9px;
+}
+#fbx-access .composition-list > div:last-child { border-bottom: 0; padding-bottom: 0; }
+#fbx-access .composition-list span { display: inline-flex; align-items: center; gap: 7px; }
+#fbx-access .composition-list b { color: var(--text); font-family: var(--mono); font-size: 10px; }
+#fbx-access .swatch {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 3px;
+}
+#fbx-access .swatch.v4 { background: var(--cyan); }
+#fbx-access .swatch.v6 { background: var(--violet); }
+#fbx-access .swatch.radio { background: var(--amber); }
+
+#fbx-access .ranking {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+#fbx-access .rank-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255,255,255,.018);
+}
+#fbx-access .rank-no {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: var(--teal);
+  background: rgba(61,217,197,.08);
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 800;
+}
+#fbx-access .rank-body { min-width: 0; }
+#fbx-access .rank-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 8px;
+}
+#fbx-access .rank-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(236,247,250,.05);
+  overflow: hidden;
+}
+#fbx-access .rank-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(61,217,197,.45), var(--teal));
+}
+#fbx-access .rank-value {
+  min-width: 62px;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+#fbx-access .freshness-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 17px 0;
+}
+#fbx-access .freshness-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(69,200,240,.08);
+  border: 1px solid rgba(69,200,240,.16);
+}
+#fbx-access .freshness-icon::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--cyan);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: fbxSpin 1.3s linear infinite;
+}
+#fbx-access .freshness-icon.ok::before {
+  width: 12px;
+  height: 7px;
+  border: 0;
+  border-left: 2px solid var(--green);
+  border-bottom: 2px solid var(--green);
+  border-radius: 0;
+  transform: rotate(-45deg);
+  animation: none;
+}
+#fbx-access .freshness-icon.warn::before,
+#fbx-access .freshness-icon.off::before {
+  content: "!";
+  width: auto;
+  height: auto;
+  border: 0;
+  color: var(--amber);
+  font-family: var(--mono);
+  font-weight: 900;
+  animation: none;
+}
+#fbx-access .freshness-icon.off::before { color: var(--red); }
+@keyframes fbxSpin { to { transform: rotate(360deg); } }
+
+#fbx-access .freshness-main b {
+  display: block;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+#fbx-access .freshness-main div > span {
+  display: block;
+  margin-top: 4px;
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .freshness-lines { display: grid; gap: 8px; }
+#fbx-access .freshness-lines > div {
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .freshness-lines b {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 8px;
+}
+
+#fbx-access .access-footer {
+  margin-top: 12px;
+  padding: 11px 4px 2px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 8px;
+}
+
+@media (max-width: 1180px) {
+  #fbx-access .hero-grid { grid-template-columns: 1fr; }
+  #fbx-access .protocol-grid { grid-template-columns: repeat(3, minmax(0,1fr)); grid-template-rows: none; }
+  #fbx-access .protocol-card { min-height: 92px; }
+  #fbx-access .protocol-card > strong { position: static; display: block; margin-top: 10px; }
+  #fbx-access .city-grid { grid-template-columns: 1fr 1fr; }
+  #fbx-access .city-card:last-child { grid-column: 1 / -1; }
+  #fbx-access .insights-grid { grid-template-columns: 1fr 1fr; }
+  #fbx-access .freshness-card { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  #fbx-access { padding: 10px; }
+  #fbx-access .access-header { align-items: flex-start; flex-direction: column; }
+  #fbx-access .header-meta { width: 100%; justify-content: space-between; }
+  #fbx-access .protocol-grid,
+  #fbx-access .city-grid,
+  #fbx-access .insights-grid { grid-template-columns: 1fr; }
+  #fbx-access .city-card:last-child,
+  #fbx-access .freshness-card { grid-column: auto; }
+  #fbx-access .section-head { align-items: flex-start; flex-direction: column; }
+  #fbx-access .legend { justify-content: flex-start; }
+  #fbx-access .access-footer { align-items: flex-start; flex-direction: column; }
+}
+#fbx-access .brand-mark { display:none !important; }
+
+
+/* ============================================================
+   V6 — CONTAGENS INDEPENDENTES + RANKING REFORMULADO
+   IPv4 e IPv6 representam sessões diferentes e não são somados.
+   ============================================================ */
+#fbx-access .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 16px;
+}
+#fbx-access .summary-card {
+  --accent: var(--cyan);
+  position: relative;
+  min-height: 178px;
+  overflow: hidden;
+  padding: 17px 18px 15px;
+  border: 1px solid color-mix(in srgb, var(--accent) 21%, var(--line));
+  border-radius: 17px;
+  background:
+    radial-gradient(430px 180px at 105% -35%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 68%),
+    linear-gradient(150deg, rgba(255,255,255,.028), transparent 38%),
+    var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 16px 45px rgba(0,0,0,.14);
+}
+#fbx-access .summary-v4 { --accent: var(--cyan); }
+#fbx-access .summary-v6 { --accent: var(--violet); }
+#fbx-access .summary-radio { --accent: var(--amber); }
+#fbx-access .summary-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent 88%);
+}
+#fbx-access .summary-head,
+#fbx-access .summary-label,
+#fbx-access .summary-value-row,
+#fbx-access .distribution-labels,
+#fbx-access .city-protocol-head,
+#fbx-access .rank-heading,
+#fbx-access .rank-details,
+#fbx-access .adoption-main,
+#fbx-access .adoption-cities > div {
+  display: flex;
+  align-items: center;
+}
+#fbx-access .summary-head,
+#fbx-access .summary-value-row,
+#fbx-access .distribution-labels,
+#fbx-access .rank-heading,
+#fbx-access .adoption-main,
+#fbx-access .adoption-cities > div {
+  justify-content: space-between;
+}
+#fbx-access .summary-label { gap: 10px; }
+#fbx-access .summary-label > div > span {
+  display: block;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+#fbx-access .summary-label h2 {
+  margin-top: 2px;
+  font-size: 15px;
+  letter-spacing: .1px;
+}
+#fbx-access .summary-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 10px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 900;
+}
+#fbx-access .summary-icon svg { width: 18px; height: 18px; }
+#fbx-access .summary-value-row { align-items: flex-end; margin-top: 14px; }
+#fbx-access .summary-value-row > strong {
+  font-family: var(--mono);
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: .95;
+  letter-spacing: -1.8px;
+}
+#fbx-access .summary-delta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 66px;
+  min-height: 28px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--muted);
+  background: rgba(137,163,175,.07);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 850;
+}
+#fbx-access .summary-card > p {
+  margin-top: 7px;
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .protocol-distribution {
+  display: flex;
+  gap: 3px;
+  height: 6px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(236,247,250,.04);
+}
+#fbx-access .protocol-distribution i {
+  display: block;
+  min-width: 2px;
+  height: 100%;
+  background: var(--accent);
+}
+#fbx-access .protocol-distribution .seg-vot { opacity: 1; }
+#fbx-access .protocol-distribution .seg-fnd { opacity: .68; }
+#fbx-access .protocol-distribution .seg-sjrp { opacity: .38; }
+#fbx-access .distribution-labels { gap: 10px; margin-top: 7px; }
+#fbx-access .distribution-labels span {
+  min-width: 0;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7px;
+  white-space: nowrap;
+}
+#fbx-access .distribution-labels b { color: var(--text); font-size: 8px; }
+#fbx-access .distribution-labels.two-cols { justify-content: flex-start; gap: 24px; }
+
+#fbx-access .city-card {
+  min-height: 238px;
+  padding: 16px;
+}
+#fbx-access .city-protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 17px;
+}
+#fbx-access .city-protocol {
+  --pcolor: var(--cyan);
+  min-width: 0;
+  padding: 11px 10px 10px;
+  border: 1px solid color-mix(in srgb, var(--pcolor) 16%, var(--line));
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--pcolor) 7%, transparent), transparent 55%),
+    rgba(255,255,255,.016);
+}
+#fbx-access .city-protocol.city-v4 { --pcolor: var(--cyan); }
+#fbx-access .city-protocol.city-v6 { --pcolor: var(--violet); }
+#fbx-access .city-protocol.city-radio { --pcolor: var(--amber); }
+#fbx-access .city-protocol.unavailable { opacity: .42; }
+#fbx-access .city-protocol-head { justify-content: space-between; gap: 6px; }
+#fbx-access .city-protocol-head span {
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+#fbx-access .city-protocol-head i {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--pcolor);
+  background: color-mix(in srgb, var(--pcolor) 10%, transparent);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 900;
+}
+#fbx-access .city-protocol > strong {
+  display: block;
+  min-height: 24px;
+  margin-top: 12px;
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: clamp(14px, 1.35vw, 20px);
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fbx-access .city-protocol.unavailable > strong {
+  margin-top: 13px;
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 8px;
+  letter-spacing: 0;
+}
+#fbx-access .city-protocol .metric-bar { margin-top: 12px; }
+#fbx-access .city-protocol .metric-bar i { background: var(--pcolor); }
+#fbx-access .city-footer { margin-top: 17px; padding-top: 12px; }
+
+#fbx-access .insights-grid {
+  grid-template-columns: minmax(280px, .9fr) minmax(390px, 1.35fr) minmax(280px, .85fr);
+}
+#fbx-access .insight-card { min-height: 215px; }
+#fbx-access .adoption-main { align-items: flex-end; margin-top: 21px; gap: 12px; }
+#fbx-access .adoption-main > div > strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 31px;
+  line-height: 1;
+  letter-spacing: -1.1px;
+}
+#fbx-access .adoption-main > div > span {
+  display: block;
+  margin-top: 6px;
+  color: var(--faint);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+#fbx-access .adoption-note {
+  color: var(--muted);
+  font-size: 8px;
+  text-align: right;
+}
+#fbx-access .adoption-track {
+  height: 8px;
+  margin-top: 15px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(236,247,250,.035);
+}
+#fbx-access .adoption-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(169,140,255,.42), var(--violet));
+  box-shadow: 0 0 12px rgba(169,140,255,.22);
+}
+#fbx-access .adoption-cities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+#fbx-access .adoption-cities > div {
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(255,255,255,.018);
+}
+#fbx-access .adoption-cities span { color: var(--faint); font-size: 8px; }
+#fbx-access .adoption-cities b { color: var(--text); font-family: var(--mono); font-size: 9px; }
+
+#fbx-access .ranking { gap: 9px; margin-top: 13px; }
+#fbx-access .rank-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 11px;
+  min-height: 54px;
+  padding: 10px 11px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background:
+    linear-gradient(110deg, rgba(61,217,197,.055), transparent 40%),
+    rgba(255,255,255,.018);
+  transition: transform .14s ease, border-color .14s ease;
+}
+#fbx-access .rank-row:hover { transform: translateY(-1px); border-color: var(--line-strong); }
+#fbx-access .rank-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--teal);
+  opacity: .85;
+}
+#fbx-access .rank-row.rank-1 {
+  border-color: rgba(61,217,197,.24);
+  background:
+    radial-gradient(260px 100px at 100% 0, rgba(61,217,197,.09), transparent 72%),
+    rgba(255,255,255,.022);
+}
+#fbx-access .rank-no {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1px;
+  border: 1px solid rgba(61,217,197,.18);
+  border-radius: 10px;
+  color: var(--teal);
+  background: rgba(61,217,197,.08);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 900;
+}
+#fbx-access .rank-no small { font-size: 7px; opacity: .6; }
+#fbx-access .rank-body { min-width: 0; }
+#fbx-access .rank-heading { gap: 10px; }
+#fbx-access .rank-heading b {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fbx-access .rank-heading span {
+  flex: none;
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 800;
+}
+#fbx-access .rank-track { height: 5px; margin-top: 7px; }
+#fbx-access .rank-details { flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+#fbx-access .rank-details > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--faint);
+  background: rgba(255,255,255,.012);
+  font-size: 7px;
+}
+#fbx-access .rank-details b { font-family: var(--mono); font-size: 8px; }
+#fbx-access .rank-details .r-v4 b { color: var(--cyan); }
+#fbx-access .rank-details .r-v6 b { color: var(--violet); }
+#fbx-access .rank-details .r-radio b { color: var(--amber); }
+
+@media (max-width: 1100px) {
+  #fbx-access .summary-grid { grid-template-columns: 1fr; }
+  #fbx-access .summary-card { min-height: 160px; }
+  #fbx-access .insights-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  #fbx-access .city-protocol-grid { grid-template-columns: 1fr; }
+  #fbx-access .city-card { min-height: auto; }
+  #fbx-access .distribution-labels { flex-wrap: wrap; justify-content: flex-start; }
+  #fbx-access .rank-heading { align-items: flex-start; flex-direction: column; gap: 3px; }
+}
+
+
+/* ============================================================
+   V7 — ADOÇÃO IPV6 REFORMULADA / SEM RANKING
+   ============================================================ */
+#fbx-access .insights-grid-v7 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 2.15fr) minmax(270px, .85fr) !important;
+  gap: 12px !important;
+}
+#fbx-access .adoption-v7 {
+  min-height: 238px !important;
+  padding: 17px 18px 15px !important;
+  overflow: hidden;
+  background:
+    radial-gradient(520px 220px at 0% 0%, rgba(169,140,255,.12), transparent 68%),
+    radial-gradient(420px 180px at 100% 110%, rgba(69,200,240,.07), transparent 70%),
+    var(--surface) !important;
+  border-color: rgba(169,140,255,.21) !important;
+}
+#fbx-access .adoption-v7-layout {
+  display: grid;
+  grid-template-columns: 174px minmax(220px, .82fr) minmax(330px, 1.35fr);
+  align-items: center;
+  gap: 20px;
+  margin-top: 18px;
+}
+#fbx-access .coverage-gauge {
+  --coverage-angle: 0deg;
+  position: relative;
+  width: 148px;
+  height: 148px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -90deg, var(--violet) 0deg, var(--violet) var(--coverage-angle), rgba(169,140,255,.10) var(--coverage-angle), rgba(169,140,255,.10) 360deg);
+  box-shadow: 0 0 42px rgba(169,140,255,.10), inset 0 0 0 1px rgba(169,140,255,.12);
+}
+#fbx-access .coverage-gauge::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: inherit;
+  background: #0b1820;
+  border: 1px solid rgba(169,140,255,.18);
+  box-shadow: inset 0 0 32px rgba(0,0,0,.32);
+}
+#fbx-access .coverage-gauge::after {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border-radius: inherit;
+  border: 1px dashed rgba(169,140,255,.14);
+}
+#fbx-access .coverage-gauge-core {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+#fbx-access .coverage-gauge-core strong {
+  display: block;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 29px;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+#fbx-access .coverage-gauge-core span {
+  display: block;
+  margin-top: 7px;
+  color: var(--violet);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1.25px;
+  line-height: 1.35;
+}
+#fbx-access .coverage-overview {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+#fbx-access .coverage-count-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+#fbx-access .coverage-count {
+  min-width: 0;
+  padding: 12px 13px 11px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.018);
+}
+#fbx-access .coverage-count span,
+#fbx-access .coverage-gap-row span {
+  display: block;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 850;
+  letter-spacing: 1px;
+}
+#fbx-access .coverage-count b {
+  display: block;
+  margin-top: 7px;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fbx-access .coverage-count-v6 { border-color: rgba(169,140,255,.20); background: rgba(169,140,255,.055); }
+#fbx-access .coverage-count-v6 b { color: var(--violet); }
+#fbx-access .coverage-count-v4 { border-color: rgba(69,200,240,.20); background: rgba(69,200,240,.05); }
+#fbx-access .coverage-count-v4 b { color: var(--cyan); }
+#fbx-access .coverage-gap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.014);
+}
+#fbx-access .coverage-gap-row b {
+  display: block;
+  margin-top: 5px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+#fbx-access .coverage-gap-row p {
+  max-width: 160px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.35;
+  text-align: right;
+}
+#fbx-access .coverage-city-grid {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+#fbx-access .coverage-city {
+  min-width: 0;
+  padding: 10px 11px 9px;
+  border: 1px solid rgba(169,140,255,.15);
+  border-radius: 11px;
+  background: linear-gradient(90deg, rgba(169,140,255,.055), rgba(255,255,255,.012));
+}
+#fbx-access .coverage-city-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#fbx-access .coverage-city-head span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .45px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fbx-access .coverage-city-head b {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+#fbx-access .coverage-city-track {
+  height: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(236,247,250,.055);
+}
+#fbx-access .coverage-city-track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(169,140,255,.50), var(--violet));
+  box-shadow: 0 0 10px rgba(169,140,255,.24);
+  transition: width .35s ease;
+}
+#fbx-access .coverage-city small {
+  display: block;
+  margin-top: 6px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7.5px;
+}
+#fbx-access .coverage-footnote {
+  margin-top: 13px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 7.5px;
+  line-height: 1.35;
+}
+#fbx-access .freshness-v7 { min-height: 238px !important; }
+
+@media (max-width: 1250px) {
+  #fbx-access .adoption-v7-layout { grid-template-columns: 150px minmax(210px,.8fr) minmax(270px,1.2fr); gap: 14px; }
+  #fbx-access .coverage-gauge { width: 132px; height: 132px; }
+}
+@media (max-width: 1020px) {
+  #fbx-access .insights-grid-v7 { grid-template-columns: 1fr !important; }
+  #fbx-access .adoption-v7-layout { grid-template-columns: 160px minmax(220px,.85fr) minmax(310px,1.2fr); }
+}
+@media (max-width: 760px) {
+  #fbx-access .adoption-v7-layout { grid-template-columns: 1fr; }
+  #fbx-access .coverage-overview { width: 100%; }
+  #fbx-access .coverage-city-grid { width: 100%; }
+  #fbx-access .coverage-gap-row { align-items: flex-start; flex-direction: column; }
+  #fbx-access .coverage-gap-row p { max-width: none; text-align: left; }
+}
+
+
+/* V8 — Adoção IPv6 em largura total; bloco Qualidade dos Dados removido. */
+#fbx-access .insights-grid-v8 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+}
+#fbx-access .insights-grid-v8 .adoption-v7 {
+  width: 100% !important;
+  min-height: 225px !important;
+}
+#fbx-access .insights-grid-v8 .adoption-v7-layout {
+  grid-template-columns: 180px minmax(250px, .85fr) minmax(420px, 1.45fr) !important;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 1050px) {
+  #fbx-access .insights-grid-v8 .adoption-v7-layout {
+    grid-template-columns: 155px minmax(220px, .9fr) minmax(300px, 1.2fr) !important;
+  }
+}
+@media (max-width: 760px) {
+  #fbx-access .insights-grid-v8 .adoption-v7-layout { grid-template-columns: 1fr !important; }
+}
+
+
+/* V9 — variação desde a métrica anterior e adoção IPv6 interativa */
+#fbx-access .summary-delta {
+  position: relative;
+  min-width: 80px;
+  margin-bottom: 11px;
+}
+#fbx-access .summary-delta::after {
+  content: "ÚLTIMA MÉTRICA";
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 5.8px;
+  font-weight: 850;
+  letter-spacing: .72px;
+  white-space: nowrap;
+}
+#fbx-access .summary-delta.is-up {
+  color: var(--green);
+  border-color: color-mix(in srgb, var(--green) 35%, var(--line));
+  background: color-mix(in srgb, var(--green) 10%, transparent);
+}
+#fbx-access .summary-delta.is-down {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 38%, var(--line));
+  background: color-mix(in srgb, var(--red) 11%, transparent);
+}
+#fbx-access .summary-delta.is-flat {
+  color: var(--muted);
+}
+#fbx-access .coverage-interactive-head {
+  align-items: flex-end;
+  gap: 18px;
+}
+#fbx-access .coverage-head-help {
+  margin-top: 5px !important;
+  color: var(--faint);
+  font-size: 8px;
+}
+#fbx-access .coverage-scope-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: rgba(0,0,0,.15);
+}
+#fbx-access .coverage-scope-switch button {
+  min-width: 48px;
+  min-height: 27px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .55px;
+  cursor: pointer;
+}
+#fbx-access .coverage-scope-switch button:hover {
+  color: var(--text);
+  background: rgba(255,255,255,.04);
+}
+#fbx-access .coverage-scope-switch button.active {
+  color: #fff;
+  border-color: rgba(169,140,255,.34);
+  background: rgba(169,140,255,.19);
+}
+#fbx-access .coverage-gauge-core small {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
+#fbx-access button.coverage-city {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .14s ease, border-color .14s ease, background .14s ease;
+}
+#fbx-access button.coverage-city:hover {
+  transform: translateY(-1px);
+  border-color: rgba(169,140,255,.42);
+  background: linear-gradient(90deg, rgba(169,140,255,.11), rgba(255,255,255,.018));
+}
+#fbx-access button.coverage-city.active {
+  border-color: rgba(169,140,255,.60);
+  background: linear-gradient(90deg, rgba(169,140,255,.17), rgba(69,200,240,.055));
+  box-shadow: inset 3px 0 0 var(--violet);
+}
+@media (max-width: 760px) {
+  #fbx-access .coverage-interactive-head { align-items: flex-start; flex-direction: column; }
+  #fbx-access .coverage-scope-switch { width: 100%; }
+  #fbx-access .coverage-scope-switch button { flex: 1; min-width: 0; }
+}
+
+
+#fbx-access .brand-mark svg{width:31px;height:31px}
+#fbx-access .brand-mark{color:var(--teal)}
+
+</style>
+</head>
+<body>
+<div id="fbx-access">
+<div class="access-shell">
+<header class="access-header">
+<div class="brand">
+<div class="brand-mark"><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M5 8.5 12 4l7 4.5v7L12 20l-7-4.5v-7Z" stroke="currentColor" stroke-width="1.6"></path><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg></div>
+<div>
+<div class="eyebrow">PORTFOLIO · NOC</div>
+<h1>Central de Assinantes</h1>
+<p>Sessões PPPoE por cidade, protocolo e plataforma</p>
+</div>
+</div>
+<div class="header-meta">
+<div class="telemetry-pill" id="telemetry-pill">
+<span class="pulse"></span>
+<span id="telemetry-label">Interface iniciada · aguardando Zabbix</span>
+</div>
+<div class="clock">
+<strong id="access-clock">--:--:--</strong>
+<span id="access-date">--</span>
+</div>
+</div>
+</header>
+<section class="summary-grid">
+<article class="summary-card summary-v4">
+<div class="summary-head">
+<div class="summary-label">
+<span class="summary-icon">4</span>
+<div><span>SESSÕES ATIVAS</span><h2>IPv4</h2></div>
+</div>
+<span class="live-tag">AO VIVO</span>
+</div>
+<div class="summary-value-row">
+<strong id="total-ipv4">—</strong>
+<span class="summary-delta" id="delta-ipv4">—</span>
+</div>
+<p>Total independente de sessões IPv4 nos três concentradores · variação desde a atualização anterior</p>
+<div aria-label="Distribuição IPv4 por cidade" class="protocol-distribution">
+<i class="seg-vot" id="dist-v4-vot"></i>
+<i class="seg-fnd" id="dist-v4-fnd"></i>
+<i class="seg-sjrp" id="dist-v4-sjrp"></i>
+</div>
+<div class="distribution-labels">
+<span>VOT <b id="summary-vot4">—</b></span>
+<span>FND <b id="summary-fnd4">—</b></span>
+<span>SJRP <b id="summary-sjrp4">—</b></span>
+</div>
+</article>
+<article class="summary-card summary-v6">
+<div class="summary-head">
+<div class="summary-label">
+<span class="summary-icon">6</span>
+<div><span>SESSÕES ATIVAS</span><h2>IPv6</h2></div>
+</div>
+<span class="live-tag">AO VIVO</span>
+</div>
+<div class="summary-value-row">
+<strong id="total-ipv6">—</strong>
+<span class="summary-delta" id="delta-ipv6">—</span>
+</div>
+<p>Total independente de sessões IPv6 nos três concentradores · variação desde a atualização anterior</p>
+<div aria-label="Distribuição IPv6 por cidade" class="protocol-distribution">
+<i class="seg-vot" id="dist-v6-vot"></i>
+<i class="seg-fnd" id="dist-v6-fnd"></i>
+<i class="seg-sjrp" id="dist-v6-sjrp"></i>
+</div>
+<div class="distribution-labels">
+<span>VOT <b id="summary-vot6">—</b></span>
+<span>FND <b id="summary-fnd6">—</b></span>
+<span>SJRP <b id="summary-sjrp6">—</b></span>
+</div>
+</article>
+<article class="summary-card summary-radio">
+<div class="summary-head">
+<div class="summary-label">
+<span class="summary-icon">
+<svg aria-hidden="true" fill="none" viewbox="0 0 24 24">
+<path d="M5.6 10.5a9 9 0 0 1 12.8 0M8.5 13.4a5 5 0 0 1 7 0M11 16.2a1.5 1.5 0 0 1 2 0" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+<circle cx="12" cy="19" fill="currentColor" r="1.2"></circle>
+</svg>
+</span>
+<div><span>CLIENTES ATIVOS</span><h2>Rádio</h2></div>
+</div>
+<span class="live-tag">AO VIVO</span>
+</div>
+<div class="summary-value-row">
+<strong id="total-radio">—</strong>
+<span class="summary-delta" id="delta-radio">—</span>
+</div>
+<p>Total independente dos concentradores de rádio monitorados · variação desde a atualização anterior</p>
+<div aria-label="Distribuição de rádio por cidade" class="protocol-distribution radio-distribution">
+<i class="seg-vot" id="dist-radio-vot"></i>
+<i class="seg-fnd" id="dist-radio-fnd"></i>
+</div>
+<div class="distribution-labels two-cols">
+<span>VOT <b id="summary-vot-radio">—</b></span>
+<span>FND <b id="summary-fnd-radio">—</b></span>
+</div>
+</article>
+</section>
+<section class="section-head">
+<div>
+<span class="section-kicker">DISTRIBUIÇÃO OPERACIONAL</span>
+<h2>Concentradores por cidade</h2>
+</div>
+<div class="legend">
+<span><i class="dot ok"></i> Atualizado</span>
+<span><i class="dot warn"></i> Atrasado</span>
+<span><i class="dot off"></i> Sem dados</span>
+</div>
+</section>
+<section class="city-grid">
+<article class="city-card" data-city="vot">
+<div class="city-top">
+<div><span class="city-code">VOT</span><h3>Aurora do Vale</h3></div>
+<span class="city-state" id="state-vot"><i></i><b>—</b></span>
+</div>
+<div class="city-protocol-grid">
+<div class="city-protocol city-v4">
+<div class="city-protocol-head"><span>IPv4</span><i>4</i></div>
+<strong id="vot-ipv4">—</strong>
+<div class="metric-bar"><i id="bar-vot-ipv4"></i></div>
+</div>
+<div class="city-protocol city-v6">
+<div class="city-protocol-head"><span>IPv6</span><i>6</i></div>
+<strong id="vot-ipv6">—</strong>
+<div class="metric-bar"><i id="bar-vot-ipv6"></i></div>
+</div>
+<div class="city-protocol city-radio">
+<div class="city-protocol-head"><span>Rádio</span><i>R</i></div>
+<strong id="vot-radio">—</strong>
+<div class="metric-bar radio"><i id="bar-vot-radio"></i></div>
+</div>
+</div>
+<div class="city-footer"><span>Cobertura IPv6 sobre IPv4</span><b id="ratio-vot">—</b></div>
+</article>
+<article class="city-card" data-city="fnd">
+<div class="city-top">
+<div><span class="city-code">FND</span><h3>Bela Horizonte Norte</h3></div>
+<span class="city-state" id="state-fnd"><i></i><b>—</b></span>
+</div>
+<div class="city-protocol-grid">
+<div class="city-protocol city-v4">
+<div class="city-protocol-head"><span>IPv4</span><i>4</i></div>
+<strong id="fnd-ipv4">—</strong>
+<div class="metric-bar"><i id="bar-fnd-ipv4"></i></div>
+</div>
+<div class="city-protocol city-v6">
+<div class="city-protocol-head"><span>IPv6</span><i>6</i></div>
+<strong id="fnd-ipv6">—</strong>
+<div class="metric-bar"><i id="bar-fnd-ipv6"></i></div>
+</div>
+<div class="city-protocol city-radio">
+<div class="city-protocol-head"><span>Rádio</span><i>R</i></div>
+<strong id="fnd-radio">—</strong>
+<div class="metric-bar radio"><i id="bar-fnd-radio"></i></div>
+</div>
+</div>
+<div class="city-footer"><span>Cobertura IPv6 sobre IPv4</span><b id="ratio-fnd">—</b></div>
+</article>
+<article class="city-card" data-city="sjrp">
+<div class="city-top">
+<div><span class="city-code">SJRP</span><h3>Serra Alta</h3></div>
+<span class="city-state" id="state-sjrp"><i></i><b>—</b></span>
+</div>
+<div class="city-protocol-grid">
+<div class="city-protocol city-v4">
+<div class="city-protocol-head"><span>IPv4</span><i>4</i></div>
+<strong id="sjrp-ipv4">—</strong>
+<div class="metric-bar"><i id="bar-sjrp-ipv4"></i></div>
+</div>
+<div class="city-protocol city-v6">
+<div class="city-protocol-head"><span>IPv6</span><i>6</i></div>
+<strong id="sjrp-ipv6">—</strong>
+<div class="metric-bar"><i id="bar-sjrp-ipv6"></i></div>
+</div>
+<div class="city-protocol city-radio unavailable">
+<div class="city-protocol-head"><span>Rádio</span><i>R</i></div>
+<strong>Não monitorado</strong>
+<div class="metric-bar radio"><i style="width:0"></i></div>
+</div>
+</div>
+<div class="city-footer"><span>Cobertura IPv6 sobre IPv4</span><b id="ratio-sjrp">—</b></div>
+</article>
+</section>
+<section class="insights-grid insights-grid-v8">
+<article class="insight-card adoption-card adoption-v7">
+<div class="insight-head coverage-interactive-head">
+<div>
+<span class="section-kicker">ADOÇÃO IPV6</span>
+<h3>Relação IPv6 sobre a base IPv4</h3>
+<p class="coverage-head-help">Clique em uma cidade para analisar separadamente</p>
+</div>
+<div aria-label="Selecionar escopo da cobertura IPv6" class="coverage-scope-switch">
+<button class="active" data-coverage-scope="all" type="button">GERAL</button>
+<button data-coverage-scope="vot" type="button">VOT</button>
+<button data-coverage-scope="fnd" type="button">FND</button>
+<button data-coverage-scope="sjrp" type="button">SJRP</button>
+</div>
+</div>
+<div class="adoption-v7-layout">
+<div class="coverage-gauge" id="coverage-gauge">
+<div class="coverage-gauge-core">
+<small id="coverage-scope-label">GERAL</small>
+<strong id="coverage-total">—</strong>
+<span>COBERTURA IPV6</span>
+</div>
+</div>
+<div class="coverage-overview">
+<div class="coverage-count-grid">
+<div class="coverage-count coverage-count-v6">
+<span>SESSÕES IPV6</span>
+<b id="coverage-ipv6">—</b>
+</div>
+<div class="coverage-count coverage-count-v4">
+<span>SESSÕES IPV4</span>
+<b id="coverage-ipv4">—</b>
+</div>
+</div>
+<div class="coverage-gap-row">
+<div>
+<span>DIFERENÇA ENTRE CONTAGENS</span>
+<b id="coverage-gap">—</b>
+</div>
+<p id="coverage-detail">Aguardando dados das duas bases</p>
+</div>
+</div>
+<div class="coverage-city-grid">
+<button class="coverage-city coverage-city-vot" data-coverage-scope="vot" type="button">
+<div class="coverage-city-head"><span>AURORA DO VALE</span><b id="coverage-vot">—</b></div>
+<div class="coverage-city-track"><i id="coverage-vot-bar"></i></div>
+<small id="coverage-vot-detail">— IPv6 / — IPv4</small>
+</button>
+<button class="coverage-city coverage-city-fnd" data-coverage-scope="fnd" type="button">
+<div class="coverage-city-head"><span>BELA HORIZONTE NORTE</span><b id="coverage-fnd">—</b></div>
+<div class="coverage-city-track"><i id="coverage-fnd-bar"></i></div>
+<small id="coverage-fnd-detail">— IPv6 / — IPv4</small>
+</button>
+<button class="coverage-city coverage-city-sjrp" data-coverage-scope="sjrp" type="button">
+<div class="coverage-city-head"><span>SERRA ALTA</span><b id="coverage-sjrp">—</b></div>
+<div class="coverage-city-track"><i id="coverage-sjrp-bar"></i></div>
+<small id="coverage-sjrp-detail">— IPv6 / — IPv4</small>
+</button>
+</div>
+</div>
+<div class="coverage-footnote">A porcentagem compara a quantidade de sessões IPv6 com a quantidade de sessões IPv4. Os protocolos não são somados.</div>
+</article>
+</section>
+<footer class="access-footer">
+<span>Dados provenientes do Zabbix · IPv4, IPv6 e Rádio exibidos como contagens independentes</span>
+<span id="render-stamp">Última renderização: —</span>
+</footer>
+</div>
+</div>
+<div class="demo-disclaimer"><i></i>DEMO</div>
+<script>
+const DEMO_API_BASE="https://mateus-portfolio-api.mateusvicentin.workers.dev";
+
+const $ = (s,ctx=document)=>ctx.querySelector(s);
+const fmt = n => Number(n||0).toLocaleString('pt-BR');
+let currentData=null;
+
+function setText(id,v){const e=document.getElementById(id); if(e)e.textContent=v;}
+function setWidth(id,p){const e=document.getElementById(id); if(e)e.style.width=Math.max(0,Math.min(100,p))+'%';}
+function setDelta(id,v){
+  const e=document.getElementById(id); if(!e)return;
+  e.classList.remove('is-up','is-down','is-flat');
+  const n=Number(v||0);
+  e.textContent=(n>0?'▲ +':n<0?'▼ ':'')+fmt(n);
+  e.classList.add(n>0?'is-up':n<0?'is-down':'is-flat');
+}
+function fakeDelta(total, salt){const x=((Number(total)+salt*17)%37)-18; return x===0?3:x;}
+function updateClock(){
+  const d=new Date();
+  setText('access-clock',d.toLocaleTimeString('pt-BR'));
+  setText('access-date',d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase());
+}
+function setCityLabels(cities){
+  const codes=['vot','fnd','sjrp'];
+  cities.forEach((c,i)=>{
+    const key=codes[i]; if(!key)return;
+    const card=document.querySelector(`.city-card[data-city="${key}"]`);
+    if(card){
+      const code=card.querySelector('.city-code'); const name=card.querySelector('h3');
+      if(code)code.textContent=c.code; if(name)name.textContent=c.name;
+    }
+    const cov=document.querySelector(`.coverage-city[data-coverage-scope="${key}"] .coverage-city-head span`);
+    if(cov)cov.textContent=c.name.toUpperCase();
+    document.querySelectorAll(`[data-coverage-scope="${key}"]`).forEach(btn=>{
+      if(btn.closest('.coverage-scope-switch')) btn.textContent=c.code;
+    });
+  });
+  const distLabels=[...document.querySelectorAll('.distribution-labels span')];
+  // 3 IPv4 + 3 IPv6 + 2 radio
+  if(distLabels.length>=8){
+    [0,1,2].forEach(i=>{distLabels[i].childNodes[0].nodeValue=cities[i].code+' ';});
+    [3,4,5].forEach((j,i)=>{distLabels[j].childNodes[0].nodeValue=cities[i].code+' ';});
+    [6,7].forEach((j,i)=>{distLabels[j].childNodes[0].nodeValue=cities[i].code+' ';});
+  }
+}
+function renderCoverage(scope='all'){
+  if(!currentData)return;
+  const codes=['vot','fnd','sjrp'];
+  let ipv4=currentData.totals.ipv4, ipv6=currentData.totals.ipv6, label='GERAL';
+  if(scope!=='all'){
+    const i=codes.indexOf(scope); const c=currentData.cities[i];
+    if(c){ipv4=c.ipv4;ipv6=c.ipv6;label=c.code;}
+  }
+  const pct=ipv4?ipv6/ipv4*100:0;
+  setText('coverage-scope-label',label);
+  setText('coverage-total',pct.toFixed(1)+'%');
+  setText('coverage-ipv6',fmt(ipv6));
+  setText('coverage-ipv4',fmt(ipv4));
+  setText('coverage-gap',fmt(Math.abs(ipv4-ipv6)));
+  setText('coverage-detail',`${fmt(ipv6)} IPv6 comparadas a ${fmt(ipv4)} IPv4`);
+  const gauge=document.getElementById('coverage-gauge');
+  if(gauge)gauge.style.setProperty('--coverage-angle',Math.max(0,Math.min(100,pct))*3.6+'deg');
+  document.querySelectorAll('.coverage-scope-switch button').forEach(b=>b.classList.toggle('active',b.dataset.coverageScope===scope));
+}
+function render(data){
+  currentData=data;
+  const cities=(data.cities||[]).slice(0,3);
+  setCityLabels(cities);
+  const totals=data.totals||{};
+  const pill=document.getElementById('telemetry-pill');
+  if(pill){pill.classList.add('ok');}
+  setText('telemetry-label','Telemetria simulada · API conectada');
+
+  setText('total-ipv4',fmt(totals.ipv4)); setDelta('delta-ipv4',fakeDelta(totals.ipv4,1));
+  setText('total-ipv6',fmt(totals.ipv6)); setDelta('delta-ipv6',fakeDelta(totals.ipv6,2));
+  setText('total-radio',fmt(totals.radio)); setDelta('delta-radio',fakeDelta(totals.radio,3));
+
+  const keys=['vot','fnd','sjrp'];
+  const max4=Math.max(...cities.map(c=>c.ipv4||0),1);
+  cities.forEach((c,i)=>{
+    const k=keys[i];
+    setText(`${k}-ipv4`,fmt(c.ipv4)); setText(`${k}-ipv6`,fmt(c.ipv6));
+    if(document.getElementById(`${k}-radio`)) setText(`${k}-radio`,c.radio?fmt(c.radio):'—');
+    setText(`ratio-${k}`,Number(c.ipv6CoveragePct||0).toFixed(1)+'%');
+    setWidth(`bar-${k}-ipv4`,(c.ipv4/max4)*100);
+    setWidth(`bar-${k}-ipv6`,(c.ipv6/max4)*100);
+    if(document.getElementById(`bar-${k}-radio`)) setWidth(`bar-${k}-radio`,Math.min(100,(c.radio||0)*6));
+    const state=document.getElementById(`state-${k}`);
+    if(state){state.className='city-state ok'; const b=state.querySelector('b'); if(b)b.textContent='ATUALIZADO';}
+  });
+
+  const total4=Math.max(Number(totals.ipv4||0),1), total6=Math.max(Number(totals.ipv6||0),1), totalR=Math.max(Number(totals.radio||0),1);
+  cities.forEach((c,i)=>{
+    const k=keys[i];
+    setWidth(`dist-v4-${k}`,(c.ipv4/total4)*100);
+    setWidth(`dist-v6-${k}`,(c.ipv6/total6)*100);
+    if(i<2) setWidth(`dist-radio-${k}`,(c.radio/totalR)*100);
+  });
+  setText('summary-vot4',fmt(cities[0]?.ipv4)); setText('summary-fnd4',fmt(cities[1]?.ipv4)); setText('summary-sjrp4',fmt(cities[2]?.ipv4));
+  setText('summary-vot6',fmt(cities[0]?.ipv6)); setText('summary-fnd6',fmt(cities[1]?.ipv6)); setText('summary-sjrp6',fmt(cities[2]?.ipv6));
+  setText('summary-vot-radio',fmt(cities[0]?.radio)); setText('summary-fnd-radio',fmt(cities[1]?.radio));
+
+  cities.forEach((c,i)=>{
+    const k=keys[i], pct=Number(c.ipv6CoveragePct||0);
+    setText(`coverage-${k}`,pct.toFixed(1)+'%');
+    setWidth(`coverage-${k}-bar`,pct);
+    setText(`coverage-${k}-detail`,`${fmt(c.ipv6)} IPv6 / ${fmt(c.ipv4)} IPv4`);
+  });
+  setText('render-stamp','Última renderização: '+new Date(data.generatedAt||Date.now()).toLocaleString('pt-BR'));
+  renderCoverage('all');
+}
+async function load(){
+  try{
+    const r=await fetch(DEMO_API_BASE+'/api/subscribers',{headers:{Accept:'application/json'}});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    render(await r.json());
+  }catch(e){
+    setText('telemetry-label','API indisponível');
+    const pill=document.getElementById('telemetry-pill'); if(pill){pill.classList.remove('ok');pill.classList.add('off');}
+  }
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-coverage-scope]');
+  if(b){renderCoverage(b.dataset.coverageScope||'all');}
+});
+updateClock();setInterval(updateClock,1000);load();
+
+</script>
+</body>
+</html>

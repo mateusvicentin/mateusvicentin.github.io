@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://mateusvicentin.com.br/sitemap.xml

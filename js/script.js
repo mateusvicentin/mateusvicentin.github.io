@@ -8,6 +8,7 @@ let currentLang = "pt";
 
 let currentSource = "github"; 
 let infraFiltered = null;
+let dashboardFiltered = null;
 
 const INFRA_POSTS = [
    {
@@ -34,6 +35,49 @@ const INFRA_POSTS = [
     date: "2026-02-19",
     tech: "Proxmox, Backup, Telegram"
   },
+];
+
+const DASHBOARD_POSTS = [
+  {
+    id: "central-assinantes",
+    titlePT: "Central de Assinantes",
+    titleEN: "Subscriber Center",
+    descPT: "Visão consolidada de sessões IPv4, IPv6 e rádio, com distribuição por cidade, evolução dos acessos e acompanhamento da adoção de IPv6.",
+    descEN: "Consolidated IPv4, IPv6 and radio sessions with city distribution, access evolution and IPv6 adoption monitoring.",
+    image: "./assets/images/dashboards/central-assinantes-demo.png",
+    tech: "Grafana • Zabbix • IPv4/IPv6",
+    date: "2026-08-12"
+  },
+  {
+    id: "fiberops",
+    titlePT: "FiberOps",
+    titleEN: "FiberOps",
+    descPT: "Operação de OLT, PON, CTO e ONU em um único fluxo, com status, potência óptica RX, LAN, diagnóstico, histórico e comparação entre clientes da mesma CTO.",
+    descEN: "OLT, PON, CTO and ONU operations in one workflow with status, optical RX, LAN, diagnostics, history and CTO comparison.",
+    image: "./assets/images/dashboards/fiberops-demo.png",
+    tech: "Grafana • Zabbix • SNMP",
+    date: "2026-08-12"
+  },
+  {
+    id: "flow-analytics",
+    titlePT: "Flow Analytics",
+    titleEN: "Flow Analytics",
+    descPT: "Análise de tráfego IPFIX com download e upload, origens e destinos, caches/CDNs, ranking de serviços, histórico e descoberta automática de novos ASNs.",
+    descEN: "IPFIX analytics with download/upload, origins/destinations, caches/CDNs, service ranking, history and automatic ASN discovery.",
+    image: "./assets/images/dashboards/flow-analytics-demo.png",
+    tech: "Grafana • IPFIX • Analytics",
+    date: "2026-08-12"
+  },
+  {
+    id: "network-topology",
+    titlePT: "Network Topology",
+    titleEN: "Network Topology",
+    descPT: "Workspace visual para criar e organizar mapas de rede, posicionar hosts, conectar equipamentos, acompanhar tráfego dos links e alternar entre edição e visualização ao vivo.",
+    descEN: "Visual workspace to create network maps, place hosts, connect equipment, monitor link traffic and switch between edit and live views.",
+    image: "./assets/images/dashboards/network-topology-demo.png",
+    tech: "Grafana • Zabbix • Topologia",
+    date: "2026-08-12"
+  }
 ];
 
 const I18N = {
@@ -76,6 +120,7 @@ const I18N = {
     "projects.pagination.page": "Página 1",
     "projects.source.data": "Dados",
     "projects.source.infra": "Infra",
+    "projects.source.dashboards": "Dashboards",
     "journey.kicker": "Carreira",
     "journey.title": "Trajetória profissional e acadêmica",
     "journey.tabs.experience": "Experiência",
@@ -177,6 +222,7 @@ const I18N = {
     "projects.pagination.page": "Page 1",
     "projects.source.data": "Data",
     "projects.source.infra": "Infra",
+    "projects.source.dashboards": "Dashboards",
     "journey.kicker": "Career",
     "journey.title": "Professional and Academic Journey",
     "journey.tabs.experience": "Experience",
@@ -844,7 +890,25 @@ function getInfraBaseItems() {
   }));
 }
 
+function getDashboardBaseItems() {
+  return DASHBOARD_POSTS.map((p) => ({
+    kind: "dashboard",
+    id: p.id,
+    title: currentLang === "en" ? p.titleEN : p.titlePT,
+    desc: currentLang === "en" ? p.descEN : p.descPT,
+    updated_at: p.date,
+    created_at: p.date,
+    image: p.image,
+    tech: p.tech
+  }));
+}
+
+function getProjectPageSize() { return currentSource === "dashboards" ? 4 : PER_PAGE; }
+
 function getActiveItems() {
+  if (currentSource === "dashboards") {
+    return dashboardFiltered ?? getDashboardBaseItems();
+  }
   if (currentSource === "infra") {
     return infraFiltered ?? getInfraBaseItems().map(p => ({
       ...p, 
@@ -872,6 +936,7 @@ function renderItems() {
 
   if (!list || !counter || !pageInfo || !prev || !next) return;
   const items = getActiveItems();
+  list.classList.toggle("dashboard-grid-active", currentSource === "dashboards");
 
   if (!items.length) {
     list.innerHTML = `<p>${t("dyn.noProjects")}</p>`;
@@ -881,11 +946,37 @@ function renderItems() {
     return;
   }
 
-  const totalPages = Math.ceil(items.length / PER_PAGE);
-  const slice = items.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+  const pageSize = getProjectPageSize();
+  const totalPages = Math.ceil(items.length / pageSize);
+  const slice = items.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const now = new Date();
 
   list.innerHTML = slice.map((it) => {
+    if (it.kind === "dashboard") {
+      const safeTitle = escapeHTML(it.title);
+      const safeDesc = escapeHTML(it.desc);
+      const safeTech = escapeHTML(it.tech);
+      const safeImage = escapeHTML(it.image);
+      const openText = currentLang === "en" ? "Open demo" : "Abrir demo";
+      const privacyText = "DEMO";
+      return `
+        <button class="project-card dashboard-project-card" type="button" data-dashboard-id="${escapeHTML(it.id)}">
+          <span class="dashboard-card-media">
+            <img src="${safeImage}" alt="${safeTitle}" loading="lazy">
+            <span class="dashboard-card-badge"><i data-lucide="activity"></i> DEMO</span>
+          </span>
+          <span class="dashboard-card-body">
+            <span class="project-title-wrapper"><span class="project-title">${safeTitle}</span></span>
+            <span class="project-desc">${safeDesc}</span>
+            <span class="dashboard-privacy"><i data-lucide="monitor-play"></i>${privacyText}</span>
+            <span class="project-footer">
+              <span class="project-tech">${safeTech}</span>
+              <span class="project-open">${openText}<i data-lucide="maximize-2"></i></span>
+            </span>
+          </span>
+        </button>
+      `;
+    }
     // Tratamento das datas
     const createdDate = new Date(it.created_at || it.updated_at);
     const updatedDate = new Date(it.updated_at);
@@ -975,7 +1066,7 @@ function refreshDynamicProjectTexts() {
   const list = $("#projectList");
   const pageInfo = $("#pageInfo");
   if (counter && (!allRepos.length && currentSource === "github")) counter.textContent = t("dyn.loadingRepos");
-  if (list && (currentSource === "infra" || allRepos.length)) renderItems();
+  if (list && (currentSource === "infra" || currentSource === "dashboards" || allRepos.length)) renderItems();
   else if (pageInfo) pageInfo.textContent = currentLang === "en" ? "Page 1" : "Página 1";
 }
 
@@ -986,23 +1077,28 @@ function initProjects() {
   const counter = $("#projectCount");
   const btnGithub = $("#sourceGithub");
   const btnInfra = $("#sourceInfra");
+  const btnDashboards = $("#sourceDashboards");
 
   function syncSourceButtons() {
-    if (!btnGithub || !btnInfra) return;
+    if (!btnGithub || !btnInfra || !btnDashboards) return;
     const isGit = currentSource === "github";
+    const isInfra = currentSource === "infra";
+    const isDash = currentSource === "dashboards";
     btnGithub.classList.toggle("active", isGit);
-    btnInfra.classList.toggle("active", !isGit);
+    btnInfra.classList.toggle("active", isInfra);
+    btnDashboards.classList.toggle("active", isDash);
     btnGithub.setAttribute("aria-selected", isGit ? "true" : "false");
-    btnInfra.setAttribute("aria-selected", !isGit ? "true" : "false");
+    btnInfra.setAttribute("aria-selected", isInfra ? "true" : "false");
+    btnDashboards.setAttribute("aria-selected", isDash ? "true" : "false");
   }
 
   function setSource(nextSource) {
-    currentSource = nextSource === "infra" ? "infra" : "github";
-    currentPage = 1; infraFiltered = null;
+    currentSource = ["infra", "dashboards"].includes(nextSource) ? nextSource : "github";
+    currentPage = 1; infraFiltered = null; dashboardFiltered = null;
     if (search) search.value = "";
     syncSourceButtons();
 
-    if (currentSource === "infra") renderItems();
+    if (currentSource === "infra" || currentSource === "dashboards") renderItems();
     else {
       if (!allRepos.length) {
         if (counter) counter.textContent = t("dyn.loadingRepos");
@@ -1016,14 +1112,21 @@ function initProjects() {
 
   if (btnGithub) btnGithub.addEventListener("click", () => setSource("github"));
   if (btnInfra) btnInfra.addEventListener("click", () => setSource("infra"));
+  if (btnDashboards) btnDashboards.addEventListener("click", () => setSource("dashboards"));
 
   syncSourceButtons();
-  if (counter) counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: INFRA_POSTS.length }) : t("dyn.loadingRepos");
+  if (counter) counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: INFRA_POSTS.length }) : currentSource === "dashboards" ? t("dyn.projectsCount", { n: DASHBOARD_POSTS.length }) : t("dyn.loadingRepos");
 
   if (search) {
     search.addEventListener("input", () => {
       const term = search.value.toLowerCase();
       currentPage = 1;
+      if (currentSource === "dashboards") {
+        const base = getDashboardBaseItems();
+        dashboardFiltered = base.filter((x) => x.title.toLowerCase().includes(term) || (x.desc || "").toLowerCase().includes(term) || (x.tech || "").toLowerCase().includes(term));
+        renderItems();
+        return;
+      }
       if (currentSource === "infra") {
         const base = getInfraBaseItems();
         infraFiltered = base.filter((x) => x.title.toLowerCase().includes(term) || (x.desc || "").toLowerCase().includes(term) || (x.tech || "").toLowerCase().includes(term));
@@ -1044,7 +1147,7 @@ function initProjects() {
 
   if (prev) prev.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderItems(); } });
   if (next) next.addEventListener("click", () => {
-    const totalPages = Math.ceil(getActiveItems().length / PER_PAGE);
+    const totalPages = Math.ceil(getActiveItems().length / getProjectPageSize());
     if (currentPage < totalPages) { currentPage++; renderItems(); }
   });
 
@@ -1154,9 +1257,103 @@ function initClipboard() {
 document.addEventListener("DOMContentLoaded", () => {
   initI18n(); initTheme(); initNav();
   initScrollHelpers(); initReveal(); initCursor(); initTabs();
-  initModal(); initProjects(); initScrollSpy();
+  initModal(); initProjects();
+  initDashboardViewer(); initScrollSpy();
   initDeployResume();
   initSkillsFilter(); 
   initClipboard(); 
   window.lucide && window.lucide.createIcons();
 });
+
+
+const DASHBOARD_DEMO_PAGES = {
+  "central-assinantes": "./demos/central.html",
+  "fiberops": "./demos/fiberops.html",
+  "flow-analytics": "./demos/flow.html",
+  "network-topology": "./demos/topology.html"
+};
+
+function initDashboardViewer() {
+  const viewer = document.getElementById("dashboardViewer");
+  const stage = document.getElementById("dashboardViewerStage");
+  const canvas = document.getElementById("dashboardViewerCanvas");
+  const title = document.getElementById("dashboardViewerTitle");
+  const notice = document.getElementById("dashboardViewerNotice");
+  const status = document.getElementById("dashboardApiStatus");
+  const refresh = document.getElementById("dashboardRefresh");
+  const fullscreen = document.getElementById("dashboardFullscreen");
+  if (!viewer || !stage || !canvas) return;
+
+  let currentId = null;
+  let frame = null;
+
+  function setStatus(text, state = "ok") {
+    if (!status) return;
+    status.classList.remove("ok", "loading", "error");
+    status.classList.add(state);
+    const s = status.querySelector("span");
+    if (s) s.textContent = text;
+  }
+
+  function mountFrame(id) {
+    const src = DASHBOARD_DEMO_PAGES[id];
+    if (!src) return;
+    setStatus(currentLang === "en" ? "Loading demo" : "Carregando demo", "loading");
+    canvas.innerHTML = "";
+    frame = document.createElement("iframe");
+    frame.className = "dashboard-real-frame";
+    frame.src = src;
+    frame.title = "Dashboard demo";
+    frame.loading = "eager";
+    frame.addEventListener("load", () => setStatus("DEMO API", "ok"));
+    canvas.appendChild(frame);
+  }
+
+  function openDashboard(id) {
+    const current = DASHBOARD_POSTS.find(x => x.id === id);
+    if (!current || !DASHBOARD_DEMO_PAGES[id]) return;
+    currentId = id;
+    title.textContent = currentLang === "en" ? current.titleEN : current.titlePT;
+    notice.textContent = currentLang === "en"
+      ? "Interactive portfolio DEMO. The original Grafana JSON is not delivered to the browser."
+      : "DEMO interativa para portfólio. O JSON original do Grafana não é enviado ao navegador.";
+    viewer.classList.add("open");
+    viewer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("dashboard-viewer-open");
+    stage.scrollTo({ top: 0, left: 0 });
+    mountFrame(id);
+    window.lucide && window.lucide.createIcons();
+  }
+
+  function closeViewer() {
+    viewer.classList.remove("open");
+    viewer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("dashboard-viewer-open");
+    canvas.innerHTML = "";
+    frame = null;
+    currentId = null;
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  }
+
+  document.addEventListener("click", e => {
+    const card = e.target.closest("[data-dashboard-id]");
+    if (card) openDashboard(card.dataset.dashboardId);
+    if (e.target.closest("[data-dashboard-close]")) closeViewer();
+  });
+
+  refresh?.addEventListener("click", () => {
+    if (!currentId || !frame) return;
+    setStatus(currentLang === "en" ? "Refreshing" : "Atualizando", "loading");
+    frame.contentWindow?.location.reload();
+  });
+
+  fullscreen?.addEventListener("click", () => {
+    if (!document.fullscreenElement) viewer.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && viewer.classList.contains("open")) closeViewer();
+  });
+}
+
