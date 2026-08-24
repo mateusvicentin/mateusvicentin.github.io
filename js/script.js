@@ -77,6 +77,16 @@ const DASHBOARD_POSTS = [
     image: "./assets/images/dashboards/network-topology-demo.png",
     tech: "Grafana • Zabbix • Topologia",
     date: "2026-08-12"
+  },
+  {
+    id: "heimdall",
+    titlePT: "Heimdall NOC",
+    titleEN: "Heimdall NOC",
+    descPT: "Central operacional para priorização de alarmes, acompanhamento de tráfego, histórico, auditoria, dashboards e gestão da rotina do NOC.",
+    descEN: "Operational center for alarm prioritization, traffic monitoring, history, auditing, dashboards and NOC workflow management.",
+    image: "./assets/images/dashboards/heimdall-demo.png",
+    tech: "Grafana • Zabbix • NOC",
+    date: "2026-08-23"
   }
 ];
 
@@ -903,7 +913,7 @@ function getDashboardBaseItems() {
   }));
 }
 
-function getProjectPageSize() { return currentSource === "dashboards" ? 4 : PER_PAGE; }
+function getProjectPageSize() { return currentSource === "dashboards" ? 6 : PER_PAGE; }
 
 function getActiveItems() {
   if (currentSource === "dashboards") {
@@ -1270,7 +1280,8 @@ const DASHBOARD_DEMO_PAGES = {
   "central-assinantes": "./demos/central.html",
   "fiberops": "./demos/fiberops.html",
   "flow-analytics": "./demos/flow.html",
-  "network-topology": "./demos/topology.html"
+  "network-topology": "./demos/topology.html",
+  "heimdall": "./demos/heimdall.html"
 };
 
 function initDashboardViewer() {
