@@ -10,7 +10,8 @@ let currentSource = "github";
 let infraFiltered = null;
 let dashboardFiltered = null;
 
-const INFRA_POSTS = [
+// Reserva: a lista publicada vem de data/infra-posts.json (edite por tools/posts.html)
+let INFRA_POSTS = [
    {
     title: "Notificação de Backup TrueNAS no Telegram",
     url: "https://www.linkedin.com/posts/mateusvicentin_infraestrutura-backup-automacao-activity-7430983198022656002-uxRb",
@@ -100,6 +101,8 @@ const I18N = {
     "nav.talks": "Palestras",
     "nav.certs": "Qualificações",
     "nav.contact": "Contato",
+    "path.net": "Rede",
+    "path.mon": "Monitoramento",
     "hero.greeting": "Oi, sou o Mateus 👋",
     "hero.title.line1": "Engenheiro de Dados",
     "hero.title.line2": "& Analista de Infra",
@@ -112,8 +115,8 @@ const I18N = {
     "hero.deploy.success": "Deploy Concluído!",
     "about.kicker": "Quem sou",
     "about.title": "Sobre mim",
-    "about.p1": `Pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Minha jornada profissional combina uma forte base operacional em infraestrutura de TI tradicional com arquiteturas modernas de dados, focando em soluções escaláveis.`,
-    "about.p2": `Sou apaixonado por resolver problemas complexos na interseção entre <strong>Segurança da Informação</strong>, <strong>Redes</strong> e <strong>Computação em Nuvem</strong>. Atualmente, busco aplicar minha bagagem em operações de missão crítica na construção de ambientes analíticos que sejam robustos, governados e de alta disponibilidade.`,
+    "about.p1": `<strong>Analista de Infraestrutura</strong>, pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e tecnólogo em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Sou responsável pela infraestrutura de datacenter: cuido dos servidores da configuração completa à manutenção contínua, da virtualização, do storage e dos backups, da telefonia IP e do monitoramento do ambiente. Quando a operação exige, também atuo diretamente nos equipamentos de rede, criando regras e rotas para aplicações e serviços.`,
+    "about.p2": `Tenho experiência em operações de <strong>ISP</strong> e de <strong>cloud corporativa</strong>, sempre com foco em disponibilidade, segurança, documentação e automação. Com a base em engenharia de dados (Python, Spark, Kafka, Airflow e dbt), desenvolvo integrações e dashboards que transformam dados de monitoramento em visibilidade para a operação.`,
     "about.card1.title": "Engenharia & Pipelines",
     "about.card1.desc": "Construção de fluxos eficientes utilizando Python, Apache Spark, Databricks, Kafka, Airflow e dbt, do processamento distribuído à transformação de dados.",
     "about.card2.title": "Ecossistema Cloud",
@@ -202,6 +205,8 @@ const I18N = {
     "nav.talks": "Talks",
     "nav.certs": "Qualifications",
     "nav.contact": "Contact",
+    "path.net": "Network",
+    "path.mon": "Monitoring",
     "hero.greeting": "Hi, I'm Mateus 👋",
     "hero.title.line1": "Data Engineer",
     "hero.title.line2": "& Infra Analyst",
@@ -214,8 +219,8 @@ const I18N = {
     "hero.deploy.success": "Deploy Complete!",
     "about.kicker": "Who I am",
     "about.title": "About me",
-    "about.p1": `Postgraduate in <strong>Data Engineering</strong> (PUC Minas) and graduated in <strong>Systems Analysis and Development</strong> (IFSP). My professional journey combines a strong operational foundation in traditional IT infrastructure with modern data architectures, focusing on scalable solutions.`,
-    "about.p2": `I am passionate about solving complex problems at the intersection of <strong>Information Security</strong>, <strong>Networking</strong>, and <strong>Cloud Computing</strong>. Currently, I seek to apply my background in mission-critical operations to build analytical environments that are robust, governed, and highly available.`,
+    "about.p1": `<strong>Infrastructure Analyst</strong>, postgraduate in <strong>Data Engineering</strong> (PUC Minas) and technologist in <strong>Systems Analysis and Development</strong> (IFSP). I am responsible for the datacenter infrastructure: I look after the servers from full configuration to ongoing maintenance, virtualization, storage and backups, IP telephony and environment monitoring. When operations require it, I also work directly on network equipment, creating rules and routes for applications and services.`,
+    "about.p2": `I have experience in <strong>ISP</strong> and <strong>corporate cloud</strong> operations, always focused on availability, security, documentation and automation. With a data engineering background (Python, Spark, Kafka, Airflow and dbt), I build integrations and dashboards that turn monitoring data into visibility for operations.`,
     "about.card1.title": "Engineering & Pipelines",
     "about.card1.desc": "Building efficient flows using Python, Apache Spark, Databricks, Kafka, Airflow, and dbt, from distributed processing to data transformation.",
     "about.card2.title": "Cloud Ecosystem",
@@ -304,15 +309,15 @@ function getModalsByLang() {
       "exp-flashnet-atual": `
         <h2>Infrastructure Analyst - Flash Net Brasil</h2>
         <ul>
-          <li>Responsible for the maintenance, operation, and evolution of critical datacenter infrastructure, ensuring high availability and security.</li>
-          <li>Full power management: batteries, generators, and monitoring.</li>
-          <li>Administration of physical and virtual servers with Proxmox: VM creation, snapshots, updates, and maintenance.</li>
-          <li>Network and firewall management (iptables), access via JumpServer, and NGINX for reverse proxy and load balancing.</li>
-          <li>Use of TrueNAS for network storage focusing on redundancy and performance.</li>
-          <li>Responsible for telephony infrastructure (Issabel, PBX, PABX, and VoIP): configuration, integration, and support.</li>
-          <li>Continuous monitoring with Zabbix, Grafana, and Home Assistant, including dashboard creation and metrics analysis.</li>
-          <li>Detailed infrastructure documentation in NetBox: inventory, topology, and power systems.</li>
-          <li>Cabling organization, rack assembly, and standardization.</li>
+          <li>I manage physical servers and virtualized environments with Proxmox, handling provisioning, configuration and maintenance of hosts and virtual machines, as well as snapshots, updates and resource optimization.</li>
+          <li>I administer storage solutions with TrueNAS and Proxmox, structuring volumes, backup routines and redundancy strategies to ensure data integrity and service continuity.</li>
+          <li>I implement firewall policies on equipment and virtual machines, with segmentation and traffic control in virtualized environments.</li>
+          <li>I manage access with JumpServer, along with reverse proxy and load balancing services.</li>
+          <li>I build monitoring solutions with Zabbix, Grafana and Home Assistant, creating dashboards, indicators and alerts to track availability and performance and anticipate incidents.</li>
+          <li>I work on the physical IT infrastructure, including power systems, batteries, generators, structured cabling and rack organization, focused on operational reliability.</li>
+          <li>I maintain the asset inventory, network topologies and the documentation of infrastructure and power systems in NetBox.</li>
+          <li>I administer IP telephony solutions with Asterisk, PBX/PABX and VoIP, configuring extensions, integrations and services, and diagnosing failures.</li>
+          <li>I design and develop internal tools for the NOC, integrating NetBox, Zabbix, Akvorado and Grafana to centralize information, analyze traffic and metrics, and support incident identification and resolution.</li>
         </ul>
       `,
       "exp-totvs": `
@@ -330,15 +335,14 @@ function getModalsByLang() {
       "exp-flashnet-qualidade": `
         <h2>Quality Analyst - Flash Net Brasil</h2>
         <ul>
-          <li>Activation and configuration of client connections, ensuring quality and technical compliance.</li>
-          <li>Network configuration and maintenance with MikroTik, Ubiquiti, radios, PTPs, routing, and firewalls.</li>
-          <li>Monitoring and incident analysis using Grafana and Zabbix, with troubleshooting and collaboration with the NOC.</li>
-          <li>Training, mentoring, and leadership of the technical support team, including the creation of materials and videos.</li>
-          <li>In-person and remote customer service, focused on quick diagnosis and customer retention.</li>
-          <li>Testing, validation, and equipment updating prior to installations and technical assistance.</li>
-          <li>Creation and maintenance of SOPs for standardization and continuous process improvement.</li>
-          <li>Windows Server administration: creation of users, groups, and GPOs in Active Directory.</li>
-          <li>SOC operations focusing on GDPR (LGPD), information security, and operational compliance.</li>
+          <li>I worked on network infrastructure and ISP operations, activating, configuring and managing connections to ensure service stability and performance. I provided specialized support to field teams during installations, maintenance and incident resolution.</li>
+          <li>I configured and maintained MikroTik and Ubiquiti equipment, radios, PTP links, towers and transmission panels, working with routing, firewall, TCP/IP protocols and connectivity optimization.</li>
+          <li>I monitored the infrastructure with Zabbix and Grafana, analyzing alerts, troubleshooting, diagnosing failures and escalating incidents to the NOC, aiming at availability and operational continuity.</li>
+          <li>I administered Windows Server and Active Directory, managing users, groups, permissions and group policies (GPOs), contributing to the security and organization of corporate environments.</li>
+          <li>I led training, mentoring and performance reviews for the technical support team, producing learning materials, video tutorials and documentation to improve knowledge and operational efficiency.</li>
+          <li>I took part in writing Standard Operating Procedures (SOPs), structuring service flows and best practices to standardize processes, reduce failures and optimize operations.</li>
+          <li>I provided on-site and remote technical support, diagnosing and solving connectivity problems, focused on service quality and customer satisfaction.</li>
+          <li>I ran tests, updates and validations of network equipment before deployment, ensuring technical compliance and reducing operational failures.</li>
         </ul>
       `,
       "edu-puc": `
@@ -408,20 +412,20 @@ function getModalsByLang() {
 
   return {
     "exp-flashnet-atual": `
-      <h2>Analista de Infraestrutura - Flash Net Brasil</h2>
-      <ul>
-        <li>Responsável pela manutenção, operação e evolução da infraestrutura crítica do datacenter, garantindo alta disponibilidade e segurança.</li>
-        <li>Gerenciamento completo de energia: baterias, geradores e monitoramento.</li>
-        <li>Administração de servidores físicos e virtuais com Proxmox: criação de VMs, snapshots, atualizações e manutenção.</li>
-        <li>Gerenciamento de redes e firewalls (iptables), acessos via JumpServer e NGINX para proxy reverso e balanceamento.</li>
-        <li>Uso de TrueNAS para armazenamento em rede com foco em redundância e desempenho.</li>
-        <li>Responsável pela infraestrutura de telefonia (Issabel, PBX, PABX e VoIP): configuração, integração e suporte.</li>
-        <li>Monitoramento contínuo com Zabbix, Grafana e Home Assistant, incluindo criação de dashboards e análise de métricas.</li>
-        <li>Documentação detalhada da infraestrutura no NetBox: inventário, topologia e sistemas de energia.</li>
-        <li>Organização de cabeamento, montagem e padronização de racks.</li>
-      </ul>
-    `,
-    "exp-totvs": `
+        <h2>Analista de Infraestrutura - Flash Net Brasil</h2>
+        <ul>
+          <li>Gerencio servidores físicos e ambientes virtualizados com Proxmox, realizando provisionamento, configuração e manutenção de hosts e máquinas virtuais, além de snapshots, atualizações e otimização de recursos.</li>
+          <li>Administro soluções de armazenamento com TrueNAS e Proxmox, estruturando volumes, rotinas de backup e estratégias de redundância para garantir integridade dos dados e continuidade dos serviços.</li>
+          <li>Implemento políticas de firewall a equipamentos e máquinas virtuais, segmentação e controle de tráfego em ambientes virtualizados.</li>
+          <li>Gerencio acessos com JumpServer e serviços de reverse proxy e balanceamento de carga.</li>
+          <li>Desenvolvo soluções de monitoramento com Zabbix, Grafana e Home Assistant, criando dashboards, indicadores e alertas para acompanhar disponibilidade, desempenho e antecipar incidentes.</li>
+          <li>Atuo na infraestrutura física de TI, incluindo sistemas de energia, baterias, geradores, cabeamento estruturado e organização de racks, com foco em confiabilidade operacional.</li>
+          <li>Mantenho no NetBox o inventário de ativos, as topologias de rede e a documentação de infraestrutura e sistemas de energia.</li>
+          <li>Administro soluções de telefonia IP com Asterisk, PBX/PABX e VoIP, configurando ramais, integrações e serviços, além de diagnosticar falhas.</li>
+          <li>Projeto e desenvolvo ferramentas internas para o NOC, integrando NetBox, Zabbix, Akvorado e Grafana para centralizar informações, analisar tráfego e métricas e apoiar a identificação e resolução de incidentes.</li>
+        </ul>
+      `,
+      "exp-totvs": `
       <h2>Analista de Infraestrutura - TOTVS</h2>
       <ul>
         <li>Atuação no Data Center com manutenção de servidores Dell, substituição de blades Cisco UCS, troca de discos NetApp e gestão de fitas em robôs IBM.</li>
@@ -434,20 +438,19 @@ function getModalsByLang() {
       </ul>
     `,
     "exp-flashnet-qualidade": `
-      <h2>Analista de Qualidade - Flash Net Brasil</h2>
-      <ul>
-        <li>Ativação e configuração de conexões de clientes, garantindo qualidade e conformidade técnica.</li>
-        <li>Configuração e manutenção de redes com MikroTik, Ubiquiti, rádios, PTPs, roteamento e firewall.</li>
-        <li>Monitoramento e análise de incidentes usando Grafana e Zabbix, com troubleshooting e atuação junto ao NOC.</li>
-        <li>Treinamento, mentoria e liderança da equipe de suporte técnico, incluindo criação de materiais e vídeos.</li>
-        <li>Atendimento ao cliente presencial e remoto, com foco em diagnóstico rápido e fidelização.</li>
-        <li>Testes, validação e atualização de equipamentos antes de instalações e assistências técnicas.</li>
-        <li>Criação e manutenção de SOPs para padronização e melhoria contínua dos processos.</li>
-        <li>Administração de Windows Server: criação de usuários, grupos e GPOs em Active Directory.</li>
-        <li>Atuação no SOC com foco em LGPD, segurança da informação e conformidade operacional.</li>
-      </ul>
-    `,
-    "edu-puc": `
+        <h2>Analista de Qualidade - Flash Net Brasil</h2>
+        <ul>
+          <li>Atuei na infraestrutura de redes e operações ISP, realizando ativação, configuração e gerenciamento de conexões, garantindo estabilidade e desempenho dos serviços. Prestei suporte especializado às equipes de campo durante instalações, manutenções e resolução de incidentes.</li>
+          <li>Configurei e mantive equipamentos MikroTik, Ubiquiti, rádios, enlaces PTP, torres e painéis de transmissão, atuando com roteamento, firewall, protocolos TCP/IP e otimização da conectividade.</li>
+          <li>Monitorei a infraestrutura com Zabbix e Grafana, realizando análise de alertas, troubleshooting, diagnóstico de falhas e escalonamento de incidentes ao NOC, visando à disponibilidade e continuidade operacional.</li>
+          <li>Atuei na administração de Windows Server e Active Directory, gerenciando usuários, grupos, permissões e políticas de grupo (GPOs), contribuindo para a segurança e organização dos ambientes corporativos.</li>
+          <li>Conduzi treinamentos, mentorias e avaliações de desempenho da equipe de suporte técnico, desenvolvendo materiais didáticos, vídeos tutoriais e documentação para aprimorar o conhecimento e a eficiência operacional.</li>
+          <li>Participei da elaboração de Procedimentos Operacionais Padrão (SOPs), estruturando fluxos de atendimento e boas práticas para padronizar processos, reduzir falhas e otimizar operações.</li>
+          <li>Prestei suporte técnico presencial e remoto, realizando diagnósticos e resolução de problemas de conectividade, com foco na qualidade do atendimento e satisfação dos clientes.</li>
+          <li>Executei testes, atualizações e validações de equipamentos de rede antes da implantação, assegurando conformidade técnica e reduzindo falhas operacionais.</li>
+        </ul>
+      `,
+      "edu-puc": `
       <h2>Pós-Graduação em Engenharia de Dados - PUC Minas</h2>
       <ul>
         <li>Processamento de fluxos de dados discretos e contínuos</li>
@@ -751,6 +754,11 @@ function initModal() {
   const open = (html) => {
     lastActiveEl = document.activeElement;
     body.innerHTML = html || "";
+    // O título fica fora da área rolável: assim a barra de rolagem começa abaixo do botão de fechar
+    modal.querySelector(".modal-title")?.remove();
+    const heading = body.querySelector("h2");
+    if (heading) { heading.classList.add("modal-title"); body.before(heading); }
+    body.scrollTop = 0;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     closeBtn.focus();
@@ -762,6 +770,7 @@ function initModal() {
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
     body.innerHTML = "";
+    modal.querySelector(".modal-title")?.remove();
     document.body.style.overflow = "";
     if (lastActiveEl) lastActiveEl.focus();
   };
@@ -887,14 +896,29 @@ async function fetchRepos() {
 }
 
 function getInfraBaseItems() {
-  return INFRA_POSTS.map((p) => ({
-    kind: "infra", 
-    title: p.title, 
-    desc: currentLang === "en" ? p.descEN : p.descPT, 
-    updated_at: p.date, 
-    url: p.url,
-    tech: p.tech
-  }));
+  return INFRA_POSTS
+    .filter((p) => p && p.visible !== false && /^https:\/\//i.test(p.url || "") && p.title)
+    .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")))
+    .map((p) => ({
+      kind: "infra",
+      title: currentLang === "en" && p.titleEN ? p.titleEN : p.title,
+      desc: (currentLang === "en" ? p.descEN : p.descPT) || p.descPT || "",
+      updated_at: p.date,
+      url: p.url,
+      tech: p.tech
+    }));
+}
+
+// Publicações do LinkedIn escolhidas à mão: o arquivo é gerado por tools/posts.html
+async function loadInfraPosts() {
+  try {
+    const res = await fetch("./data/infra-posts.json", { cache: "no-cache" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    INFRA_POSTS = data;
+    if (currentSource === "infra") { infraFiltered = null; currentPage = 1; renderItems(); }
+  } catch { /* sem o arquivo, fica valendo a lista de reserva acima */ }
 }
 
 function getDashboardBaseItems() {
@@ -1102,7 +1126,7 @@ function initProjects() {
   if (btnDashboards) btnDashboards.addEventListener("click", () => setSource("dashboards"));
 
   syncSourceButtons();
-  if (counter) counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: INFRA_POSTS.length }) : currentSource === "dashboards" ? t("dyn.projectsCount", { n: DASHBOARD_POSTS.length }) : t("dyn.loadingRepos");
+  if (counter) counter.textContent = currentSource === "infra" ? t("dyn.projectsCount", { n: getInfraBaseItems().length }) : currentSource === "dashboards" ? t("dyn.projectsCount", { n: DASHBOARD_POSTS.length }) : t("dyn.loadingRepos");
 
   if (search) {
     search.addEventListener("input", () => {
@@ -1163,6 +1187,7 @@ function initProjects() {
   }
 
   fetchRepos();
+  loadInfraPosts();
 }
 
 function initScrollSpy() {
