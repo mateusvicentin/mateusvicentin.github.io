@@ -8,46 +8,75 @@
   <meta name="description" content="Portfólio de Mateus Vicentin, Engenheiro de Dados e Analista de Infraestrutura.">
   <meta name="author" content="Mateus Vicentin">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#000000">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mateusvicentin.github.io/">
   <meta property="og:title" content="Mateus Vicentin | Engenheiro de Dados & Infra">
   <meta property="og:description" content="Pós-graduado em Engenharia de Dados e Analista de Infraestrutura.">
-  <meta property="og:image" content="./assets/images/profile.png">
+  <meta property="og:image" content="https://mateusvicentin.github.io/assets/images/profile.png">
 
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Mateus Vicentin | Engenharia de Dados">
-  <meta property="twitter:description" content="Portfólio de Engenharia de Dados e Infraestrutura.">
-  <meta property="twitter:image" content="./assets/images/profile.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mateus Vicentin | Engenharia de Dados">
+  <meta name="twitter:description" content="Portfólio de Engenharia de Dados e Infraestrutura.">
+  <meta name="twitter:image" content="https://mateusvicentin.github.io/assets/images/profile.png">
 
   <link rel="icon" href="./assets/images/profile.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = !window.matchMedia || !window.matchMedia("(prefers-color-scheme: light)").matches;
+        root.setAttribute("data-theme", saved || (dark ? "dark" : "light"));
+      } catch (e) {}
+      root.classList.add("booting");
+      setTimeout(function () { root.classList.remove("booting"); root.classList.add("ready"); }, 6000);
+    })();
+  </script>
+
   <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
 
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
-  <div class="fx">
-    <div class="fx-grid"></div>
-    <div class="fx-blob fx-blob--a"></div>
-    <div class="fx-blob fx-blob--b"></div>
-    <div class="fx-noise"></div>
+  <div id="boot" class="boot" role="status" aria-label="Carregando">
+    <div class="boot-inner">
+      <div class="boot-rack" aria-hidden="true">
+        <div class="boot-unit"><span class="boot-led"></span><span class="boot-led"></span><span class="boot-bays"></span></div>
+        <div class="boot-unit"><span class="boot-led"></span><span class="boot-led"></span><span class="boot-bays"></span></div>
+        <div class="boot-unit"><span class="boot-led"></span><span class="boot-led"></span><span class="boot-bays"></span></div>
+        <div class="boot-unit"><span class="boot-led"></span><span class="boot-led"></span><span class="boot-bays"></span></div>
+      </div>
+      <p class="boot-name">Mateus Vicentin</p>
+      <ul class="boot-log" aria-hidden="true">
+        <li><b>[  OK  ]</b> link eth0 up</li>
+        <li><b>[  OK  ]</b> firewall rules loaded</li>
+        <li><b>[  OK  ]</b> zabbix-agent started</li>
+        <li><b>[  OK  ]</b> grafana dashboards ready</li>
+      </ul>
+      <div class="boot-progress" aria-hidden="true">
+        <div class="boot-bar"><span id="bootBar"></span></div>
+        <span class="boot-pct"><span id="bootPct">0</span>%</span>
+      </div>
+    </div>
   </div>
+  <noscript><style>.boot{display:none!important}</style></noscript>
 
   <div id="scrollProgress" aria-hidden="true"></div>
 
   <header class="header" role="banner">
     <div class="container header-inner">
       <a href="#hero" class="logo" aria-label="Ir para o topo">
+        <span class="logo-mark" aria-hidden="true">MV</span>
         <span class="logo-text">
           <span>Mateus Vicentin</span>
           <span class="logo-sub" data-i18n="logo.sub">Engenharia de Dados & Infra</span>
@@ -73,8 +102,8 @@
           <span class="material-symbols-outlined">dark_mode</span>
         </button>
 
-        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" type="button">
-          <i class="material-symbols-outlined">menu</i>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobile" type="button">
+          <span class="material-symbols-outlined">menu</span>
         </button>
       </div>
 
@@ -91,69 +120,63 @@
   </header>
 
   <main>
-    <section id="hero" class="section hero">
-      <div class="container hero-grid">
-        <div class="hero-left reveal">
-          
-          <span class="hero-greeting" data-i18n="hero.greeting">Oi, sou o Mateus 👋</span>
+    <section id="hero" class="hero">
+      <div class="container hero-inner">
+        <span class="hero-greeting" data-i18n="hero.greeting">Oi, sou o Mateus 👋</span>
 
-          <h1 class="hero-title">
-            <span class="title-line gradient-text" data-i18n="hero.title.line1">Engenheiro de Dados</span>
-            <span class="title-line title-stroke" data-i18n="hero.title.line2">& Analista de Infra</span>
-          </h1>
+        <h1 class="hero-title">
+          <span class="title-line" data-i18n="hero.title.line1">Engenheiro de Dados</span>
+          <span class="title-line title-accent" data-i18n="hero.title.line2">& Analista de Infra</span>
+        </h1>
 
-          <p class="hero-subtitle" data-i18n="hero.subtitle">
-            Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.
-          </p>
+        <div class="hero-bottom">
+          <div class="hero-copy">
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
+              Pós-graduado em Engenharia de Dados (PUC Minas) e formado em Análise e Desenvolvimento de Sistemas (IFSP). Atuo como Analista de Infraestrutura, com foco em servidores, telefonia e datacenter.
+            </p>
 
-          <div class="hero-actions desktop-only">
-            <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary btn-deploy-resume">
-              <span class="material-symbols-outlined icon-default">terminal</span>
-              <span class="btn-text" data-i18n="hero.cta.resume">Deploy Currículo</span>
-            </a>
-            <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
-              <i data-lucide="linkedin"></i>
-              <span data-i18n="hero.cta.linkedin">Ver LinkedIn</span>
-            </a>
+            <div class="hero-actions">
+              <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary btn-deploy-resume">
+                <span class="material-symbols-outlined icon-default">terminal</span>
+                <span class="btn-text" data-i18n="hero.cta.resume">Deploy Currículo</span>
+              </a>
+              <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
+                <i data-lucide="linkedin"></i>
+                <span data-i18n="hero.cta.linkedin">Ver LinkedIn</span>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div class="hero-right reveal">
-          <div class="avatar-shell">
-            <img
-              src="./assets/images/profile.png"
-              alt="Foto de Mateus Vicentin"
-              class="avatar"
-              loading="lazy"
-            />
-          </div>
+          <figure class="hero-photo">
+            <div class="avatar-shell">
+              <img
+                src="./assets/images/profile.png"
+                alt="Foto de Mateus Vicentin"
+                class="avatar"
+                width="560" height="558"
+              />
+            </div>
+            <ul class="hero-services" aria-hidden="true">
+              <li><span>Proxmox</span><b>UP</b></li>
+              <li><span>TrueNAS</span><b>UP</b></li>
+              <li><span>Zabbix</span><b>UP</b></li>
+              <li><span>Firewall</span><b>ON</b></li>
+            </ul>
+          </figure>
         </div>
-
-        <div class="hero-actions mobile-only reveal">
-          <a href="./assets/images/curriculo_mateusvicentin.pdf" target="_blank" rel="noopener noreferrer" class="btn primary btn-deploy-resume">
-            <span class="material-symbols-outlined icon-default">terminal</span>
-            <span class="btn-text" data-i18n="hero.cta.resume">Deploy Currículo</span>
-          </a>
-          <a href="https://linkedin.com/in/mateusvicentin" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin">
-            <i data-lucide="linkedin"></i>
-            <span data-i18n="hero.cta.linkedin">Ver LinkedIn</span>
-          </a>
-        </div>
-
       </div>
+
+      <canvas id="heroGraph" class="hero-graph" aria-hidden="true"></canvas>
     </section>
 
     <section id="about" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="about.title">Sobre mim</h2>
+          <h2 class="section-title" data-i18n="about.title">Sobre mim</h2>
         </header>
 
         <div class="about-wrapper reveal">
-          <div class="about-main glass">
-            <div class="about-icon-main">
-              <i data-lucide="terminal"></i>
-            </div>
+          <div class="about-main">
             <p data-i18n-html="about.p1">
               Pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Minha jornada profissional combina uma forte base operacional em infraestrutura de TI tradicional com arquiteturas modernas de dados, focando em soluções escaláveis.
             </p>
@@ -163,20 +186,24 @@
           </div>
 
           <div class="about-cards">
-            <div class="about-card glass">
+            <div class="about-card">
               <i data-lucide="workflow" class="about-icon"></i>
-              <h3 data-i18n="about.card1.title">Engenharia & Pipelines</h3>
-              <p data-i18n="about.card1.desc">
-                Construção de fluxos eficientes utilizando Python, Apache Spark, Databricks, Kafka, Airflow e dbt, do processamento distribuído à transformação de dados.
-              </p>
+              <div>
+                <h3 data-i18n="about.card1.title">Engenharia & Pipelines</h3>
+                <p data-i18n="about.card1.desc">
+                  Construção de fluxos eficientes utilizando Python, Apache Spark, Databricks, Kafka, Airflow e dbt, do processamento distribuído à transformação de dados.
+                </p>
+              </div>
             </div>
-            
-            <div class="about-card glass">
+
+            <div class="about-card">
               <i data-lucide="cloud-cog" class="about-icon"></i>
-              <h3 data-i18n="about.card2.title">Ecossistema Cloud</h3>
-              <p data-i18n="about.card2.desc">
-                Modelagem e governança de dados em plataformas como BigQuery, Snowflake, MongoDB e bancos SQL/NoSQL, operando sobre arquiteturas AWS e Azure.
-              </p>
+              <div>
+                <h3 data-i18n="about.card2.title">Ecossistema Cloud</h3>
+                <p data-i18n="about.card2.desc">
+                  Modelagem e governança de dados em plataformas como BigQuery, Snowflake, MongoDB e bancos SQL/NoSQL, operando sobre arquiteturas AWS e Azure.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -186,101 +213,60 @@
     <section id="skills" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="skills.title">Habilidades</h2>
+          <h2 class="section-title" data-i18n="skills.title">Habilidades</h2>
         </header>
 
         <div class="skills-legend reveal">
-          <button class="legend-btn active" data-filter="all" aria-pressed="true">
-            <span class="dot all"></span> <span data-i18n="skills.filter.all">Todos</span>
+          <button class="legend-btn active" data-filter="all" aria-pressed="true" type="button">
+            <span data-i18n="skills.filter.all">Todos</span>
           </button>
-          <button class="legend-btn" data-filter="data">
-            <span class="dot data"></span> Data Eng.
-          </button>
-          <button class="legend-btn" data-filter="infra">
-            <span class="dot infra"></span> Infra & Cloud
-          </button>
-          <button class="legend-btn" data-filter="tools">
-            <span class="dot tools"></span> Tools
-          </button>
+          <button class="legend-btn" data-filter="data" aria-pressed="false" type="button">Data Eng.</button>
+          <button class="legend-btn" data-filter="infra" aria-pressed="false" type="button">Infra & Cloud</button>
+          <button class="legend-btn" data-filter="tools" aria-pressed="false" type="button">Tools</button>
         </div>
 
-        <div class="skills-grid-organized reveal">
-          
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-python-plain"></i> <span>Python</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-postgresql-plain"></i> <span>SQL & Postgres</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-apachespark-plain"></i> <span>Spark</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-apachekafka-plain"></i> <span>Kafka</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-pandas-plain"></i> <span>Pandas</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-apacheairflow-plain"></i> <span>Airflow</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i data-lucide="boxes"></i> <span>dbt</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i class="devicon-mongodb-plain"></i> <span>MongoDB</span>
-          </div>
-          <div class="tech-node data" data-category="data">
-            <i data-lucide="table-2"></i> <span>Data Lakes</span>
+        <div class="rack reveal">
+          <div class="rack-unit">
+            <div class="rack-label"><span class="rack-name">Data Eng.</span><span class="rack-count" aria-hidden="true">09</span></div>
+            <div class="rack-ports">
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-python-plain"></i> <span>Python</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-postgresql-plain"></i> <span>SQL & Postgres</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachespark-plain"></i> <span>Spark</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachekafka-plain"></i> <span>Kafka</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-pandas-plain"></i> <span>Pandas</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apacheairflow-plain"></i> <span>Airflow</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i data-lucide="boxes"></i> <span>dbt</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-mongodb-plain"></i> <span>MongoDB</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i data-lucide="table-2"></i> <span>Data Lakes</span></button>
+            </div>
           </div>
 
-          <div class="tech-node infra" data-category="infra">
-            <i class="devicon-amazonwebservices-plain-wordmark"></i> <span>AWS</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i class="devicon-azure-plain"></i> <span>Azure</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i class="devicon-docker-plain"></i> <span>Docker</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i class="devicon-terraform-plain"></i> <span>Terraform</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i class="devicon-linux-plain"></i> <span>Linux/Bash</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i data-lucide="server"></i> <span>Proxmox</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i data-lucide="hard-drive"></i> <span>TrueNAS</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i data-lucide="activity"></i> <span>Zabbix</span>
-          </div>
-          <div class="tech-node infra" data-category="infra">
-            <i data-lucide="network"></i> <span>Redes & IP</span>
+          <div class="rack-unit">
+            <div class="rack-label"><span class="rack-name">Infra & Cloud</span><span class="rack-count" aria-hidden="true">09</span></div>
+            <div class="rack-ports">
+              <button class="tech-node infra" data-category="infra" type="button"><i class="devicon-amazonwebservices-plain-wordmark"></i> <span>AWS</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i class="devicon-azure-plain"></i> <span>Azure</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i class="devicon-docker-plain"></i> <span>Docker</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i class="devicon-terraform-plain"></i> <span>Terraform</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i class="devicon-linux-plain"></i> <span>Linux/Bash</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="server"></i> <span>Proxmox</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="hard-drive"></i> <span>TrueNAS</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="activity"></i> <span>Zabbix</span></button>
+              <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="network"></i> <span>Redes & IP</span></button>
+            </div>
           </div>
 
-          <div class="tech-node tools" data-category="tools">
-            <i class="devicon-git-plain"></i> <span>Git & GitHub</span>
+          <div class="rack-unit">
+            <div class="rack-label"><span class="rack-name">Tools</span><span class="rack-count" aria-hidden="true">06</span></div>
+            <div class="rack-ports">
+              <button class="tech-node tools" data-category="tools" type="button"><i class="devicon-git-plain"></i> <span>Git & GitHub</span></button>
+              <button class="tech-node tools" data-category="tools" type="button"><i data-lucide="git-merge"></i> <span>CI/CD</span></button>
+              <button class="tech-node tools" data-category="tools" type="button"><i data-lucide="bar-chart-3"></i> <span>Grafana</span></button>
+              <button class="tech-node tools" data-category="tools" type="button"><i class="devicon-nginx-original"></i> <span>NGINX</span></button>
+              <button class="tech-node tools" data-category="tools" type="button"><i data-lucide="layout-dashboard"></i> <span>Power BI</span></button>
+              <button class="tech-node tools" data-category="tools" type="button"><i class="devicon-vscode-plain"></i> <span>VS Code</span></button>
+            </div>
           </div>
-          <div class="tech-node tools" data-category="tools">
-            <i data-lucide="git-merge"></i> <span>CI/CD</span>
-          </div>
-          <div class="tech-node tools" data-category="tools">
-            <i data-lucide="bar-chart-3"></i> <span>Grafana</span>
-          </div>
-          <div class="tech-node tools" data-category="tools">
-            <i class="devicon-nginx-original"></i> <span>NGINX</span>
-          </div>
-          <div class="tech-node tools" data-category="tools">
-            <i data-lucide="layout-dashboard"></i> <span>Power BI</span>
-          </div>
-          <div class="tech-node tools" data-category="tools">
-            <i class="devicon-vscode-plain"></i> <span>VS Code</span>
-          </div>
-
         </div>
       </div>
     </section>
@@ -288,7 +274,7 @@
     <section id="projects" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="projects.title">Projetos</h2>
+          <h2 class="section-title" data-i18n="projects.title">Projetos</h2>
           <p class="section-subtitle">
             <span data-i18n="projects.subtitle.prefix">GitHub</span>
             <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer">@mateusvicentin</a>
@@ -296,23 +282,19 @@
         </header>
 
         <div class="projects-controls reveal">
-          <div class="controls-row">
-            <div class="segmented-control" role="tablist" aria-label="Fonte de projetos">
-              <button id="sourceGithub" class="segmented-btn active" type="button" role="tab" aria-selected="true">
-                <i data-lucide="database"></i>
-                <span data-i18n="projects.source.data">Dados</span>
-              </button>
-              <button id="sourceInfra" class="segmented-btn" type="button" role="tab" aria-selected="false">
-                <i data-lucide="server"></i>
-                <span data-i18n="projects.source.infra">Infra</span>
-              </button>
-              <button id="sourceDashboards" class="segmented-btn" type="button" role="tab" aria-selected="false">
-                <i data-lucide="layout-dashboard"></i>
-                <span data-i18n="projects.source.dashboards">Dashboards</span>
-              </button>
-            </div>
-
-            <span id="projectCount" class="project-count-badge">Carregando...</span>
+          <div class="segmented-control" role="tablist" aria-label="Fonte de projetos">
+            <button id="sourceGithub" class="segmented-btn active" type="button" role="tab" aria-selected="true">
+              <i data-lucide="database"></i>
+              <span data-i18n="projects.source.data">Dados</span>
+            </button>
+            <button id="sourceInfra" class="segmented-btn" type="button" role="tab" aria-selected="false">
+              <i data-lucide="server"></i>
+              <span data-i18n="projects.source.infra">Infra</span>
+            </button>
+            <button id="sourceDashboards" class="segmented-btn" type="button" role="tab" aria-selected="false">
+              <i data-lucide="layout-dashboard"></i>
+              <span data-i18n="projects.source.dashboards">Dashboards</span>
+            </button>
           </div>
 
           <div class="search-command-bar" role="search">
@@ -322,17 +304,20 @@
               id="projectSearch"
               data-i18n-placeholder="projects.search.placeholder"
               placeholder="Buscar projeto..."
+              aria-label="Buscar projeto"
               autocomplete="off"
             />
-            <div class="search-shortcut">/</div>
+            <div class="search-shortcut" aria-hidden="true">/</div>
           </div>
+
+          <span id="projectCount" class="project-count-badge">Carregando...</span>
         </div>
 
-        <div id="projectList" class="projects-grid reveal" aria-live="polite"></div>
+        <div id="projectList" class="projects-grid" aria-live="polite"></div>
 
-        <div class="pagination reveal" role="navigation" aria-label="Paginação de projetos">
+        <div class="pagination" role="navigation" aria-label="Paginação de projetos">
           <button id="prevPage" disabled type="button" class="btn-pagination" data-i18n="projects.pagination.prev">« Anterior</button>
-          <span id="pageInfo" class="page-info-text" data-i18n="projects.pagination.page">Página 1</span>
+          <span id="pageInfo" class="page-info-text">Página 1</span>
           <button id="nextPage" type="button" class="btn-pagination" data-i18n="projects.pagination.next">Próxima »</button>
         </div>
       </div>
@@ -341,7 +326,7 @@
     <section id="journey" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
+          <h2 class="section-title" data-i18n="journey.title">Trajetória profissional e acadêmica</h2>
         </header>
 
         <div class="journey-tabs-container reveal">
@@ -358,136 +343,98 @@
         </div>
 
         <div id="experience" class="tab-panel" role="tabpanel">
-          <div class="journey-timeline">
-            <div class="journey-line"></div>
-
-            <div class="journey-item reveal">
-              <div class="journey-marker current">
-                <i data-lucide="server"></i>
-                <div class="pulse-ring"></div>
-              </div>
-              <div class="journey-content left">
-                <article class="journey-card glass">
-                  <header class="journey-card-header">
-                    <div class="journey-meta">
-                      <span class="journey-company">Flash Net Brasil</span>
-                      <span class="journey-date-badge current" data-i18n="journey.exp1.date">2023 - Atual</span>
-                    </div>
-                    <h3 class="journey-role" data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
-                  </header>
-                  <p class="journey-desc" data-i18n="journey.exp1.desc">
-                    Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.
-                  </p>
-                  <button class="journey-link" data-modal-target="exp-flashnet-atual" type="button">
-                    <span data-i18n="journey.details">Ver detalhes</span>
-                    <i data-lucide="arrow-right"></i>
-                  </button>
-                </article>
-              </div>
-            </div>
-
-            <div class="journey-item reveal">
-              <div class="journey-marker">
-                <i data-lucide="hard-drive"></i>
-              </div>
-              <div class="journey-content right">
-                <article class="journey-card glass">
-                  <header class="journey-card-header">
-                    <div class="journey-meta">
-                      <span class="journey-company">TOTVS</span>
-                      <span class="journey-date-badge" data-i18n="journey.exp2.date">2023</span>
-                    </div>
-                    <h3 class="journey-role" data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
-                  </header>
-                  <p class="journey-desc" data-i18n="journey.exp2.desc">
-                    Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.
-                  </p>
-                  <button class="journey-link" data-modal-target="exp-totvs" type="button">
-                    <span data-i18n="journey.details">Ver detalhes</span>
-                    <i data-lucide="arrow-right"></i>
-                  </button>
-                </article>
-              </div>
-            </div>
-
-            <div class="journey-item reveal">
-              <div class="journey-marker">
-                <i data-lucide="shield-check"></i>
-              </div>
-              <div class="journey-content left">
-                <article class="journey-card glass">
-                  <header class="journey-card-header">
-                    <div class="journey-meta">
-                      <span class="journey-company">Flash Net Brasil</span>
-                      <span class="journey-date-badge" data-i18n="journey.exp3.date">2018 - 2023</span>
-                    </div>
-                    <h3 class="journey-role" data-i18n="journey.exp3.role">Analista de Qualidade</h3>
-                  </header>
-                  <p class="journey-desc" data-i18n="journey.exp3.desc">
-                    Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.
-                  </p>
-                  <button class="journey-link" data-modal-target="exp-flashnet-qualidade" type="button">
-                    <span data-i18n="journey.details">Ver detalhes</span>
-                    <i data-lucide="arrow-right"></i>
-                  </button>
-                </article>
-              </div>
-            </div>
+          <div class="span-bar" aria-hidden="true">
+            <span class="span-seg" data-seg="3" style="flex: 5"><i></i><b>2018</b></span>
+            <span class="span-seg" data-seg="2" style="flex: 0.6"><i></i></span>
+            <span class="span-seg is-current" data-seg="1" style="flex: 3.4"><i></i><b>2023</b></span>
           </div>
+
+          <ol class="journey-list">
+            <li class="journey-item is-current reveal" data-seg="1">
+              <span class="journey-date-badge current" data-i18n="journey.exp1.date">2023 - Atual</span>
+              <div class="journey-body">
+                <span class="journey-company">Flash Net Brasil</span>
+                <h3 class="journey-role" data-i18n="journey.exp1.role">Analista de Infraestrutura</h3>
+                <p class="journey-desc" data-i18n="journey.exp1.desc">
+                  Responsável pela infraestrutura crítica de datacenter, servidores, redes, telefonia e monitoramento.
+                </p>
+              </div>
+              <button class="journey-link" data-modal-target="exp-flashnet-atual" type="button">
+                <span data-i18n="journey.details">Ver detalhes</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </li>
+
+            <li class="journey-item reveal" data-seg="2">
+              <span class="journey-date-badge" data-i18n="journey.exp2.date">2023</span>
+              <div class="journey-body">
+                <span class="journey-company">TOTVS</span>
+                <h3 class="journey-role" data-i18n="journey.exp2.role">Analista de Infraestrutura</h3>
+                <p class="journey-desc" data-i18n="journey.exp2.desc">
+                  Atuação em Data Center, provisionamento de VMs, redes, firewalls e suporte corporativo.
+                </p>
+              </div>
+              <button class="journey-link" data-modal-target="exp-totvs" type="button">
+                <span data-i18n="journey.details">Ver detalhes</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </li>
+
+            <li class="journey-item reveal" data-seg="3">
+              <span class="journey-date-badge" data-i18n="journey.exp3.date">2018 - 2023</span>
+              <div class="journey-body">
+                <span class="journey-company">Flash Net Brasil</span>
+                <h3 class="journey-role" data-i18n="journey.exp3.role">Analista de Qualidade</h3>
+                <p class="journey-desc" data-i18n="journey.exp3.desc">
+                  Garantia de qualidade de conexão, monitoramento, documentação e atuação em SOC/LGPD.
+                </p>
+              </div>
+              <button class="journey-link" data-modal-target="exp-flashnet-qualidade" type="button">
+                <span data-i18n="journey.details">Ver detalhes</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </li>
+          </ol>
         </div>
 
         <div id="education" class="tab-panel hidden" role="tabpanel">
-          <div class="journey-timeline">
-            <div class="journey-line"></div>
-
-            <div class="journey-item reveal">
-              <div class="journey-marker education">
-                <i data-lucide="database"></i>
-              </div>
-              <div class="journey-content left">
-                <article class="journey-card glass">
-                  <header class="journey-card-header">
-                    <div class="journey-meta">
-                      <span class="journey-company">PUC Minas</span>
-                      <span class="journey-date-badge" data-i18n="journey.edu1.date">2024 - 2025</span>
-                    </div>
-                    <h3 class="journey-role" data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
-                  </header>
-                  <p class="journey-desc" data-i18n="journey.edu1.desc">
-                    Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.
-                  </p>
-                  <button class="journey-link" data-modal-target="edu-puc" type="button">
-                    <span data-i18n="journey.subjects">Ver disciplinas</span>
-                    <i data-lucide="arrow-right"></i>
-                  </button>
-                </article>
-              </div>
-            </div>
-
-            <div class="journey-item reveal">
-              <div class="journey-marker education">
-                <i data-lucide="code-2"></i>
-              </div>
-              <div class="journey-content right">
-                <article class="journey-card glass">
-                  <header class="journey-card-header">
-                    <div class="journey-meta">
-                      <span class="journey-company">IFSP</span>
-                      <span class="journey-date-badge" data-i18n="journey.edu2.date">2016 - 2020</span>
-                    </div>
-                    <h3 class="journey-role" data-i18n="journey.edu2.title">Análise e Desenv. de Sistemas</h3>
-                  </header>
-                  <p class="journey-desc" data-i18n="journey.edu2.desc">
-                    Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.
-                  </p>
-                  <button class="journey-link" data-modal-target="edu-ifsp" type="button">
-                    <span data-i18n="journey.subjects">Ver disciplinas</span>
-                    <i data-lucide="arrow-right"></i>
-                  </button>
-                </article>
-              </div>
-            </div>
+          <div class="span-bar" aria-hidden="true">
+            <span class="span-seg" data-seg="2" style="flex: 4"><i></i><b>2016</b></span>
+            <span class="span-seg is-gap" style="flex: 4"><i></i><b>2020</b></span>
+            <span class="span-seg" data-seg="1" style="flex: 1.6"><i></i><b>2024</b></span>
           </div>
+
+          <ol class="journey-list">
+            <li class="journey-item reveal" data-seg="1">
+              <span class="journey-date-badge" data-i18n="journey.edu1.date">2024 - 2025</span>
+              <div class="journey-body">
+                <span class="journey-company">PUC Minas</span>
+                <h3 class="journey-role" data-i18n="journey.edu1.title">Pós-Graduação em Engenharia de Dados</h3>
+                <p class="journey-desc" data-i18n="journey.edu1.desc">
+                  Foco em arquitetura de dados, big data, processamento distribuído e plataformas modernas.
+                </p>
+              </div>
+              <button class="journey-link" data-modal-target="edu-puc" type="button">
+                <span data-i18n="journey.subjects">Ver disciplinas</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </li>
+
+            <li class="journey-item reveal" data-seg="2">
+              <span class="journey-date-badge" data-i18n="journey.edu2.date">2016 - 2020</span>
+              <div class="journey-body">
+                <span class="journey-company">IFSP</span>
+                <h3 class="journey-role" data-i18n="journey.edu2.title">Análise e Desenv. de Sistemas</h3>
+                <p class="journey-desc" data-i18n="journey.edu2.desc">
+                  Base sólida em desenvolvimento, banco de dados, redes, segurança e engenharia de software.
+                </p>
+              </div>
+              <button class="journey-link" data-modal-target="edu-ifsp" type="button">
+                <span data-i18n="journey.subjects">Ver disciplinas</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
@@ -495,66 +442,52 @@
     <section id="talks" class="section talks-section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="talks.title">Palestras & Eventos</h2>
+          <h2 class="section-title" data-i18n="talks.title">Palestras & Eventos</h2>
         </header>
 
-        <div class="talks-grid reveal">
-          <article class="talk-card glass">
-            <div class="talk-icon">
-              <i data-lucide="presentation"></i>
+        <article class="talk-card reveal">
+          <div class="talk-stub">
+            <i data-lucide="presentation"></i>
+            <span class="talk-type" data-i18n="talks.card.type">Palestra técnica</span>
+          </div>
+
+          <div class="talk-content">
+            <span class="talk-event" data-i18n="talks.card.event">COTESI • IFSP Votuporanga</span>
+
+            <h3 class="talk-title" data-i18n="talks.card.title">Infraestrutura de Datacenter, Monitoramento, Documentação e Automação de Serviços</h3>
+
+            <p class="talk-desc" data-i18n="talks.card.desc">
+              Apresentação sobre operação de ambientes críticos, redundância, monitoramento, documentação de infraestrutura e uso de automação para reduzir falhas e acelerar respostas técnicas.
+            </p>
+
+            <div class="talk-tags" aria-label="Temas abordados">
+              <span>Datacenter</span>
+              <span>Monitoramento</span>
+              <span>NetBox</span>
+              <span>Automação</span>
             </div>
-
-            <div class="talk-content">
-              <div class="talk-meta">
-                <span class="talk-type" data-i18n="talks.card.type">Palestra técnica</span>
-                <span class="talk-event" data-i18n="talks.card.event">COTESI • IFSP Votuporanga</span>
-              </div>
-
-              <h3 class="talk-title" data-i18n="talks.card.title">Infraestrutura de Datacenter, Monitoramento, Documentação e Automação de Serviços</h3>
-
-              <p class="talk-desc" data-i18n="talks.card.desc">
-                Apresentação sobre operação de ambientes críticos, redundância, monitoramento, documentação de infraestrutura e uso de automação para reduzir falhas e acelerar respostas técnicas.
-              </p>
-
-              <div class="talk-tags" aria-label="Temas abordados">
-                <span>Datacenter</span>
-                <span>Monitoramento</span>
-                <span>NetBox</span>
-                <span>Automação</span>
-              </div>
-            </div>
-          </article>
-        </div>
+          </div>
+        </article>
       </div>
     </section>
 
     <section id="certifications" class="section">
       <div class="container">
         <header class="section-header reveal">
-          <h2 class="section-title gradient-text" data-i18n="certs.title">Qualificações</h2>
+          <h2 class="section-title" data-i18n="certs.title">Qualificações</h2>
         </header>
 
         <div class="qualifications-grid">
-          
           <div class="credential-group reveal">
-            <div class="group-header cert-header">
-              <div class="group-icon"><i data-lucide="award"></i></div>
-              <h3 class="group-title" data-i18n="certs.col.cert">Certificações Oficiais</h3>
-            </div>
+            <h3 class="group-title" data-i18n="certs.col.cert">Certificações Oficiais</h3>
 
             <div class="group-list">
-              <div class="cred-item-row cert-theme">
-                <div class="cred-item-left">
-                  <div class="cred-item-icon"><i data-lucide="shield-check"></i></div>
-                  <div class="cred-item-info">
-                    <h4 class="cred-item-title" data-i18n="certs.c1.name">ICC-A Telefonia IP</h4>
-                    <div class="cred-item-meta">
-                      <span class="cred-item-org">Intelbras Enterprise</span>
-                      <span class="cred-item-date" data-i18n="certs.c1.date">Concluída</span>
-                    </div>
-                  </div>
-                </div>
-                <a href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229" target="_blank" rel="noopener noreferrer" class="cred-btn" aria-label="Verificar credencial">
+              <div class="cred-item-row">
+                <div class="cred-item-icon"><i data-lucide="shield-check"></i></div>
+                <h4 class="cred-item-title" data-i18n="certs.c1.name">ICC-A Telefonia IP</h4>
+                <span class="cred-item-org">Intelbras Enterprise</span>
+                <span class="cred-item-date" data-i18n="certs.c1.date">Concluída</span>
+                <a href="https://cursos.intelbras.com.br/portal/layout/927/intelbras/certificado/certificado_inc.asp?id_turma=133511&id_curso=6580&id_usuario=1446229" target="_blank" rel="noopener noreferrer" class="cred-btn" data-i18n-aria="certs.verify" aria-label="Verificar credencial">
                   <i data-lucide="external-link"></i>
                 </a>
               </div>
@@ -562,66 +495,49 @@
           </div>
 
           <div class="credential-group reveal">
-            <div class="group-header course-header">
-              <div class="group-icon"><i data-lucide="book-open"></i></div>
-              <h3 class="group-title" data-i18n="certs.col.course">Cursos & Treinamentos</h3>
-            </div>
+            <h3 class="group-title" data-i18n="certs.col.course">Cursos & Treinamentos</h3>
 
-
-
-              <div class="group-list">
-                <div class="cred-item-row course-theme">
-                  <div class="cred-item-left">
-                    <div class="cred-item-icon"><i data-lucide="server-cog"></i></div>
-                    <div class="cred-item-info">
-                      <h4 class="cred-item-title" data-i18n="certs.c2.name">Virtualização Expert - Proxmox</h4>
-                      <div class="cred-item-meta">
-                        <span class="cred-item-org" data-i18n="certs.c2.org">Made4Study</span>
-                        <span class="cred-item-date" data-i18n="certs.c2.date">Concluído</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="cred-btn cred-btn-static" aria-label="Curso concluído" title="Curso concluído">
-                    <i data-lucide="check"></i>
-                  </div>
-                </div>
+            <div class="group-list">
+              <div class="cred-item-row">
+                <div class="cred-item-icon"><i data-lucide="server-cog"></i></div>
+                <h4 class="cred-item-title" data-i18n="certs.c2.name">Virtualização Expert - Proxmox</h4>
+                <span class="cred-item-org" data-i18n="certs.c2.org">Made4Study</span>
+                <span class="cred-item-date" data-i18n="certs.c2.date">Concluído</span>
+                <span class="cred-btn cred-btn-static" aria-hidden="true">
+                  <i data-lucide="check"></i>
+                </span>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section contact-section">
+    <section id="contact" class="contact-section">
       <div class="container contact-hub-container reveal">
-        <div class="contact-glow"></div>
-        
-        <div class="contact-card-hub">
-          <div class="hub-header">
-            <h2 class="hub-title" data-i18n="contact.title">Vamos conversar?</h2>
-            <p class="hub-sub" data-i18n="contact.sub">Minha caixa de entrada está aberta para propostas de projetos, colaborações ou discussões técnicas.</p>
-          </div>
+        <div class="hub-header">
+          <h2 class="hub-title" data-i18n="contact.title">Vamos conversar?</h2>
+          <p class="hub-sub" data-i18n="contact.sub">Minha caixa de entrada está aberta para propostas de projetos, colaborações ou discussões técnicas.</p>
+        </div>
 
-          <div class="hub-grid">
-            <button id="hubEmailBtn" class="hub-btn-email" type="button" aria-label="Copiar email">
-              <div class="hub-copy-feedback" id="hubFeedback">
-                <i data-lucide="check"></i> <span data-i18n="contact.copy.feedback">Copiado!</span>
-              </div>
-              <span id="hubEmailText" class="hub-email-text">mateusvicentin8@gmail.com</span>
-              <div class="hub-icon-box">
-                <i data-lucide="copy"></i>
-              </div>
-            </button>
+        <div class="hub-grid">
+          <button id="hubEmailBtn" class="hub-btn-email" type="button" data-i18n-aria="contact.copy.aria" aria-label="Copiar endereço de e-mail">
+            <span class="hub-copy-feedback" id="hubFeedback">
+              <i data-lucide="check"></i> <span data-i18n="contact.copy.feedback">Copiado!</span>
+            </span>
+            <span id="hubEmailText" class="hub-email-text">mateusvicentin8@gmail.com</span>
+            <span class="hub-icon-box">
+              <i data-lucide="copy"></i>
+            </span>
+          </button>
 
-            <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
-              <i data-lucide="github"></i> <span data-i18n="contact.btn.github">GitHub</span>
-            </a>
+          <a href="https://github.com/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
+            <i data-lucide="github"></i> <span data-i18n="contact.btn.github">GitHub</span>
+          </a>
 
-            <a href="https://t.me/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
-              <i data-lucide="send"></i> <span data-i18n="contact.btn.telegram">Telegram</span>
-            </a>
-          </div>
+          <a href="https://t.me/mateusvicentin" target="_blank" rel="noopener noreferrer" class="hub-btn-social">
+            <i data-lucide="send"></i> <span data-i18n="contact.btn.telegram">Telegram</span>
+          </a>
         </div>
       </div>
     </section>
@@ -632,7 +548,6 @@
     <div class="container footer-inner">
       <div class="footer-left">
         <span class="footer-logo-text">Mateus Vicentin</span>
-        <span class="footer-divider"></span>
         <span>© 2026</span>
       </div>
       <div class="footer-right">
@@ -654,10 +569,6 @@
     <i data-lucide="arrow-up"></i>
   </button>
 
-  <div class="cursor" id="cursor" aria-hidden="true"></div>
-
-  <script src="./js/script.js" defer></script>
-
   <div id="dashboardViewer" class="dashboard-viewer" aria-hidden="true">
     <div class="dashboard-viewer-backdrop" data-dashboard-close></div>
     <section class="dashboard-viewer-panel" role="dialog" aria-modal="true" aria-labelledby="dashboardViewerTitle">
@@ -669,9 +580,9 @@
         </div>
         <div class="dashboard-viewer-tools">
           <span id="dashboardApiStatus" class="demo-api-status"><i></i><span>API</span></span>
-          <button id="dashboardRefresh" type="button" title="Atualizar dados"><i data-lucide="refresh-cw"></i></button>
-          <button id="dashboardFullscreen" type="button" title="Tela cheia"><i data-lucide="maximize"></i></button>
-          <button type="button" data-dashboard-close title="Fechar"><i data-lucide="x"></i></button>
+          <button id="dashboardRefresh" type="button" title="Atualizar dados" aria-label="Atualizar dados"><i data-lucide="refresh-cw"></i></button>
+          <button id="dashboardFullscreen" type="button" title="Tela cheia" aria-label="Tela cheia"><i data-lucide="maximize"></i></button>
+          <button type="button" data-dashboard-close title="Fechar" aria-label="Fechar"><i data-lucide="x"></i></button>
         </div>
       </header>
       <div id="dashboardViewerStage" class="dashboard-viewer-stage">
@@ -680,5 +591,6 @@
     </section>
   </div>
 
+  <script src="./js/script.js" defer></script>
 </body>
 </html>
