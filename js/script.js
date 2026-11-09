@@ -1,5 +1,5 @@
 const GITHUB_USER = "mateusvicentin";
-const PER_PAGE = 3;
+const PER_PAGE = 5;
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
@@ -429,7 +429,7 @@ function getModalsByLang() {
         <li>Monitoramento da infraestrutura via T-Cloud Watch, Grafana e Zabbix, com atuação inicial em incidentes críticos e escalonamento para times especializados.</li>
         <li>Administração de rede e segurança: regras NAT, firewall Palo Alto, Big IP, VPNs, ajustes de rotas e manutenção da disponibilidade de serviços.</li>
         <li>Gestão de acessos IAM no T-Cloud, garantindo conformidade e controles de permissão corporativos.</li>
-        <li>Suporte técnico via Cherwell, Zendesk, and Slack, atuando também como “mão remota” em atividades presenciais no Data Center.</li>
+        <li>Suporte técnico via Cherwell, Zendesk e Slack, atuando também como “mão remota” em atividades presenciais no Data Center.</li>
         <li>Foco em confiabilidade, automação e segurança, garantindo continuidade operacional e melhoria contínua de processos.</li>
       </ul>
     `,
@@ -624,7 +624,10 @@ function initDeployResume() {
       await new Promise(r => setTimeout(r, 800));
 
       // Abrir PDF 
-      window.open(href, "_blank");
+      // Depois da animação o navegador pode bloquear a nova aba: nesse caso abre na própria aba
+      const win = window.open(href, "_blank");
+      if (win) win.opener = null;
+      else window.location.href = href;
 
       // Reset
       setTimeout(() => {
@@ -641,18 +644,24 @@ function initNav() {
   const toggle = $("#navToggle");
   const mobile = $("#navMobile");
   if (!toggle || !mobile) return;
+  const icon = toggle.querySelector(".material-symbols-outlined");
 
-  toggle.addEventListener("click", () => {
-    mobile.classList.toggle("open");
-    document.body.style.overflow = mobile.classList.contains("open") ? "hidden" : "";
+  const setOpen = (open) => {
+    mobile.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (icon) icon.textContent = open ? "close" : "menu";
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
+  toggle.addEventListener("click", () => setOpen(!mobile.classList.contains("open")));
+  $$("#navMobile a").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+
+  // Antes o menu só fechava clicando num link: Esc, clique fora e voltar para desktop deixavam a página travada
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && mobile.classList.contains("open")) setOpen(false); });
+  document.addEventListener("click", (e) => {
+    if (mobile.classList.contains("open") && !e.target.closest(".header")) setOpen(false);
   });
-
-  $$("#navMobile a").forEach((link) =>
-    link.addEventListener("click", () => {
-      mobile.classList.remove("open");
-      document.body.style.overflow = ""; 
-    })
-  );
+  window.addEventListener("resize", () => { if (window.innerWidth > 1000 && mobile.classList.contains("open")) setOpen(false); });
 }
 
 function initScrollHelpers() {
@@ -694,28 +703,6 @@ function initReveal() {
   elements.forEach((el, i) => {
     el.style.transitionDelay = `${Math.min(i * 40, 220)}ms`;
     observer.observe(el);
-  });
-}
-
-function initCursor() {
-  const cursor = $("#cursor");
-  if (!cursor) return;
-
-  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  if (isTouch) {
-    cursor.style.display = "none";
-    return;
-  }
-
-  window.addEventListener("mousemove", (e) => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-  }, { passive: true });
-
-  document.addEventListener("mouseover", (e) => {
-    cursor.classList.toggle(
-      "cursor--active",
-      !!e.target.closest("a, button, .btn, .project-link-external, .social-btn, .journey-link, .timeline-more-link, .cred-item-row, .tech-node, .cert-verify-btn, .hub-btn-email, .hub-btn-social")
-    );
   });
 }
 
@@ -788,7 +775,7 @@ function initModal() {
 
   closeBtn.addEventListener("click", close);
   modal.addEventListener("click", (e) => e.target === modal && close());
-  document.addEventListener("keydown", (e) => e.key === "Escape" && close());
+  document.addEventListener("keydown", (e) => e.key === "Escape" && modal.classList.contains("open") && close());
 }
 
 function formatRepoName(name) {
@@ -796,9 +783,15 @@ function formatRepoName(name) {
     .map((w) => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(" ");
 }
 
+function parseDate(value) {
+  // "2026-02-22" sozinho é lido como UTC e vira dia 21 no fuso do Brasil
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value)) ? new Date(`${value}T12:00:00`) : new Date(value);
+}
+
 function formatDate(dateStr) {
   try {
-    const d = new Date(dateStr);
+    const d = parseDate(dateStr);
+    if (isNaN(d)) return "";
     const locale = currentLang === "en" ? "en-US" : "pt-BR";
     const fmt = new Intl.DateTimeFormat(locale, { day: "2-digit", month: "short", year: "numeric" });
     
@@ -835,13 +828,9 @@ function renderProjectSkeleton() {
   if (!list || !counter) return;
 
   counter.textContent = t("dyn.loading");
+  list.classList.remove("dashboard-grid-active");
   list.innerHTML = Array.from({ length: PER_PAGE }).map(() => `
-    <article class="project-card" aria-hidden="true">
-      <div style="height:40px;width:40px;border-radius:12px;background:var(--border);margin-bottom:1rem"></div>
-      <div style="height:18px;width:60%;border-radius:10px;background:var(--border);margin-bottom:12px"></div>
-      <div style="height:14px;width:92%;border-radius:10px;background:var(--border);margin-bottom:10px;opacity:0.6"></div>
-      <div style="height:14px;width:78%;border-radius:10px;background:var(--border);opacity:0.6"></div>
-    </article>
+    <div class="project-row is-skeleton" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
   `).join("");
 }
 
@@ -853,12 +842,18 @@ async function fetchRepos() {
   if (currentSource === "github") renderProjectSkeleton();
 
   const cacheKey = `github_repos_${GITHUB_USER}`;
-  const cachedData = sessionStorage.getItem(cacheKey);
-  const cacheTime = sessionStorage.getItem(`${cacheKey}_time`);
+  let cachedData = null, cacheTime = null;
+  try {
+    cachedData = sessionStorage.getItem(cacheKey);
+    cacheTime = sessionStorage.getItem(`${cacheKey}_time`);
+  } catch { /* modo privado pode bloquear o storage */ }
   const now = new Date().getTime();
 
-  if (cachedData && cacheTime && (now - cacheTime < 3600000)) {
-    allRepos = JSON.parse(cachedData);
+  let cachedRepos = null;
+  try { cachedRepos = JSON.parse(cachedData); } catch { cachedRepos = null; }
+
+  if (Array.isArray(cachedRepos) && cacheTime && (now - Number(cacheTime) < 3600000)) {
+    allRepos = cachedRepos;
     filteredRepos = [...allRepos];
     currentPage = 1;
     if (currentSource === "github") renderItems();
@@ -874,8 +869,10 @@ async function fetchRepos() {
     const data = await res.json();
     allRepos = (Array.isArray(data) ? data : []).filter((r) => !r.fork);
     
-    sessionStorage.setItem(cacheKey, JSON.stringify(allRepos));
-    sessionStorage.setItem(`${cacheKey}_time`, now.toString());
+    try {
+      sessionStorage.setItem(cacheKey, JSON.stringify(allRepos));
+      sessionStorage.setItem(`${cacheKey}_time`, now.toString());
+    } catch { /* armazenamento cheio ou bloqueado: segue sem cache */ }
 
     filteredRepos = [...allRepos];
     currentPage = 1;
@@ -971,8 +968,8 @@ function renderItems() {
       const privacyText = "DEMO";
       return `
         <button class="project-card dashboard-project-card" type="button" data-dashboard-id="${escapeHTML(it.id)}">
-          <span class="dashboard-card-media">
-            <img src="${safeImage}" alt="${safeTitle}" loading="lazy">
+          <span class="dashboard-card-media" data-label="${safeTitle}">
+            <img src="${safeImage}" alt="${safeTitle}" loading="lazy" onerror="this.parentNode.classList.add('is-missing')">
             <span class="dashboard-card-badge"><i data-lucide="activity"></i> DEMO</span>
           </span>
           <span class="dashboard-card-body">
@@ -988,8 +985,8 @@ function renderItems() {
       `;
     }
     // Tratamento das datas
-    const createdDate = new Date(it.created_at || it.updated_at);
-    const updatedDate = new Date(it.updated_at);
+    const createdDate = parseDate(it.created_at || it.updated_at);
+    const updatedDate = parseDate(it.updated_at);
     
     // Cálculo de diferença em dias
     const diffCreated = Math.ceil(Math.abs(now - createdDate) / (1000 * 60 * 60 * 24));
@@ -1020,45 +1017,25 @@ const labelCreated = currentLang === "en" ? "Created" : "Criado";
     const ariaLabel = `${actionText}: ${it.title}`;
 
     return `
-      <a class="project-card project-card-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(ariaLabel)}">
-        <div class="project-card-top">
-          <div class="folder-icon">
-            <i data-lucide="${it.kind === "infra" ? "server" : "folder"}"></i>
+      <a class="project-row" href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(ariaLabel)}">
+        <span class="project-source" aria-hidden="true"><i data-lucide="${iconName}"></i></span>
+
+        <div class="project-main">
+          <div class="project-title-wrapper">
+            <h3 class="project-title">${safeTitle}</h3>
+            ${badgeHtml}
           </div>
-          <div class="project-links" aria-hidden="true">
-            <span>
-              <i data-lucide="${iconName}"></i>
-            </span>
-          </div>
+          <p class="project-desc">${safeDesc}</p>
         </div>
 
-        <div class="project-title-wrapper">
-          <h3 class="project-title">${safeTitle}</h3>
-          ${badgeHtml}
+        <span class="project-tech">${safeTech}</span>
+
+        <div class="project-dates">
+          <span class="date-badge" title="${labelCreated}"><i data-lucide="calendar-plus"></i>${formatDate(it.created_at)}</span>
+          <span class="date-badge" title="${labelUpdated}"><i data-lucide="clock"></i>${formatDate(it.updated_at)}</span>
         </div>
 
-        <p class="project-desc">${safeDesc}</p>
-
-        <div class="project-meta">
-          <div class="project-meta-dates">
-            <div class="date-badge" title="${labelCreated}">
-              <i data-lucide="calendar-plus"></i>
-              <span>${formatDate(it.created_at)}</span>
-            </div>
-            <div class="date-badge" title="${labelUpdated}">
-              <i data-lucide="clock"></i>
-              <span>${formatDate(it.updated_at)}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-footer">
-          <span class="project-tech">${safeTech}</span>
-          <span class="project-open">
-            ${actionText}
-            <i data-lucide="arrow-up-right"></i>
-          </span>
-        </div>
+        <span class="project-open"><span>${actionText}</span><i data-lucide="arrow-up-right"></i></span>
       </a>
     `;
   }).join("");
@@ -1148,7 +1125,10 @@ function initProjects() {
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "/" && document.activeElement !== search) {
+      const active = document.activeElement;
+      const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(active?.tagName || "") || active?.isContentEditable;
+      const overlayOpen = $("#modal")?.classList.contains("open") || $("#dashboardViewer")?.classList.contains("open");
+      if (e.key === "/" && !typing && !overlayOpen && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
         search.focus();
       }
@@ -1215,8 +1195,9 @@ function initSkillsFilter() {
 
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
-      btns.forEach(b => b.classList.remove('active'));
+      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
 
       const filter = btn.dataset.filter;
 
@@ -1248,7 +1229,17 @@ function initClipboard() {
   btn.addEventListener("click", async () => {
     const email = emailSpan.textContent.trim();
     try {
-      await navigator.clipboard.writeText(email);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        // Sem HTTPS a API de clipboard não existe: copia por um campo temporário
+        const tmp = document.createElement("textarea");
+        tmp.value = email; tmp.setAttribute("readonly", ""); tmp.style.position = "fixed"; tmp.style.opacity = "0";
+        document.body.appendChild(tmp); tmp.select();
+        const ok = document.execCommand("copy");
+        tmp.remove();
+        if (!ok) throw new Error("copy failed");
+      }
       
       // Animação de sucesso
       feedback.classList.add("active");
@@ -1264,9 +1255,144 @@ function initClipboard() {
   });
 }
 
+const prefersReducedMotion = () =>
+  window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Tela de boot: rack liga, log estilo systemd, depois libera a entrada do hero */
+function initBoot() {
+  const root = document.documentElement;
+  const boot = $("#boot");
+  const finish = () => {
+    root.classList.remove("booting");
+    root.classList.add("ready");
+    if (boot) {
+      boot.classList.add("boot-done");
+      setTimeout(() => boot.remove(), 700);
+    }
+  };
+
+  if (!boot) return finish();
+  if (prefersReducedMotion()) return setTimeout(finish, 200);
+
+  const pct = $("#bootPct");
+  const bar = $("#bootBar");
+  const DURATION = 1750;
+  const start = performance.now();
+
+  const tick = (now) => {
+    const p = Math.min(1, (now - start) / DURATION);
+    const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    if (pct) pct.textContent = Math.round(eased * 100);
+    if (bar) bar.style.transform = `scaleX(${eased})`;
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  // O fim não depende do rAF: em aba de fundo ele pausa e o site ficaria preso no boot
+  setTimeout(finish, DURATION + 260);
+}
+
+/* Fundo do hero: gráfico de tráfego ao vivo, no estilo de um painel do Grafana (decorativo) */
+function initHeroGraph() {
+  const canvas = $("#heroGraph");
+  const hero = $("#hero");
+  if (!canvas || !canvas.getContext || !hero) return;
+  const ctx = canvas.getContext("2d");
+  const reduce = prefersReducedMotion();
+  const STEP = 1200;
+  let points = 60, rx = [], tx = [], lastStep = 0, raf = 0, visible = true;
+  let vr = 0.55, vt = 0.3;
+
+  const walk = (v, lo, hi, amp) => {
+    let n = v + (Math.random() - 0.5) * amp;
+    if (Math.random() < 0.06) n += 0.22;
+    return Math.max(lo, Math.min(hi, n));
+  };
+  const push = () => { vr = walk(vr, 0.2, 0.92, 0.22); vt = walk(vt, 0.08, 0.5, 0.14); rx.push(vr); tx.push(vt); };
+
+  function seed() {
+    points = Math.max(24, Math.round(window.innerWidth / 26));
+    rx = []; tx = [];
+    for (let i = 0; i < points + 2; i++) push();
+  }
+
+  function trace(data, w, h, shift) {
+    const stepW = w / (points - 1);
+    const px = (i) => (i - shift) * stepW;
+    const py = (v) => h - v * (h - 12);
+    ctx.beginPath();
+    data.forEach((v, i) => {
+      if (i === 0) return ctx.moveTo(px(0), py(v));
+      const mx = (px(i - 1) + px(i)) / 2;
+      ctx.bezierCurveTo(mx, py(data[i - 1]), mx, py(v), px(i), py(v));
+    });
+    return [px(0), px(data.length - 1)];
+  }
+
+  function draw(now) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    const css = getComputedStyle(document.documentElement);
+    const red = css.getPropertyValue("--red").trim() || "#e60012";
+    const line = css.getPropertyValue("--border").trim() || "rgba(255,255,255,.13)";
+    const soft = css.getPropertyValue("--border2").trim() || "rgba(255,255,255,.3)";
+    const shift = reduce ? 0 : Math.min(1, (now - lastStep) / STEP);
+
+    ctx.strokeStyle = line; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 1; i <= 4; i++) { const y = Math.round((h / 4) * i) - 0.5; ctx.moveTo(0, y); ctx.lineTo(w, y); }
+    ctx.stroke();
+
+    trace(tx, w, h, shift);
+    ctx.strokeStyle = soft; ctx.lineWidth = 1; ctx.stroke();
+
+    const [startX, endX] = trace(rx, w, h, shift);
+    ctx.strokeStyle = red; ctx.lineWidth = 2; ctx.stroke();
+    ctx.lineTo(endX, h); ctx.lineTo(startX, h); ctx.closePath();
+    const fill = ctx.createLinearGradient(0, 0, 0, h);
+    fill.addColorStop(0, red); fill.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.globalAlpha = 0.3; ctx.fillStyle = fill; ctx.fill(); ctx.globalAlpha = 1;
+  }
+
+  function frame(now) {
+    if (now - lastStep >= STEP) { lastStep = now; rx.shift(); tx.shift(); push(); }
+    draw(now);
+    raf = requestAnimationFrame(frame);
+  }
+  const start = () => { if (!raf && !reduce && visible && !document.hidden) { lastStep = performance.now(); raf = requestAnimationFrame(frame); } };
+  const stop = () => { cancelAnimationFrame(raf); raf = 0; };
+
+  seed();
+  lastStep = performance.now();
+  draw(lastStep);
+  start();
+
+  let resizeTimer, lastW = window.innerWidth;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth !== lastW) { lastW = window.innerWidth; seed(); }
+      draw(performance.now());
+    }, 150);
+  });
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; visible ? start() : stop(); }).observe(hero);
+  }
+  new MutationObserver(() => draw(performance.now()))
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initBoot(); initHeroGraph();
   initI18n(); initTheme(); initNav();
-  initScrollHelpers(); initReveal(); initCursor(); initTabs();
+  initScrollHelpers(); initReveal(); initTabs();
   initModal(); initProjects();
   initDashboardViewer(); initScrollSpy();
   initDeployResume();
@@ -1311,12 +1437,19 @@ function initDashboardViewer() {
     if (!src) return;
     setStatus(currentLang === "en" ? "Loading demo" : "Carregando demo", "loading");
     canvas.innerHTML = "";
+    fetch(src, { method: "HEAD" }).then((res) => {
+      if (res.ok || currentId !== id) return;
+      frame = null;
+      canvas.innerHTML = `<div class="dashboard-demo-missing"><strong>${currentLang === "en" ? "Demo unavailable" : "Demo indisponível"}</strong><span>${escapeHTML(src)} (HTTP ${res.status})</span></div>`;
+      setStatus(currentLang === "en" ? "Unavailable" : "Indisponível", "error");
+    }).catch(() => {});
     frame = document.createElement("iframe");
     frame.className = "dashboard-real-frame";
     frame.src = src;
     frame.title = "Dashboard demo";
     frame.loading = "eager";
-    frame.addEventListener("load", () => setStatus("DEMO API", "ok"));
+    const mounted = frame;
+    frame.addEventListener("load", () => { if (frame === mounted) setStatus("DEMO API", "ok"); });
     canvas.appendChild(frame);
   }
 
@@ -1367,4 +1500,3 @@ function initDashboardViewer() {
     if (e.key === "Escape" && viewer.classList.contains("open")) closeViewer();
   });
 }
-
