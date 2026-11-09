@@ -792,3 +792,4 @@ body.dashboard-viewer-open { overflow: hidden; }
 .dashboard-viewer-tools button, .demo-api-status { border-radius: 0; }
 .dashboard-demo-missing { min-height: 100%; height: 100%; display: grid; place-content: center; gap: 0.6rem; padding: 2rem; text-align: center; color: #b6b6b2; }
 .dashboard-demo-missing strong { font-family: var(--font-title); font-size: 2rem; text-transform: uppercase; color: #fff; }
+
