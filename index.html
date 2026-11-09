@@ -76,7 +76,6 @@
   <header class="header" role="banner">
     <div class="container header-inner">
       <a href="#hero" class="logo" aria-label="Ir para o topo">
-        <span class="logo-mark" aria-hidden="true">MV</span>
         <span class="logo-text">
           <span>Mateus Vicentin</span>
           <span class="logo-sub" data-i18n="logo.sub">Engenharia de Dados & Infra</span>
@@ -164,6 +163,18 @@
             </ul>
           </figure>
         </div>
+
+        <ol class="cloud-path" aria-hidden="true">
+          <li class="cloud-node"><i data-lucide="server"></i><b>Datacenter</b></li>
+          <li class="cloud-link"></li>
+          <li class="cloud-node"><i data-lucide="brick-wall"></i><b>Firewall</b></li>
+          <li class="cloud-link"></li>
+          <li class="cloud-node"><i data-lucide="network"></i><b data-i18n="path.net">Rede</b></li>
+          <li class="cloud-link"></li>
+          <li class="cloud-node is-cloud"><i data-lucide="cloud"></i><b>Cloud</b></li>
+          <li class="cloud-link"></li>
+          <li class="cloud-node"><i data-lucide="activity"></i><b data-i18n="path.mon">Monitoramento</b></li>
+        </ol>
       </div>
 
       <canvas id="heroGraph" class="hero-graph" aria-hidden="true"></canvas>
@@ -178,10 +189,10 @@
         <div class="about-wrapper reveal">
           <div class="about-main">
             <p data-i18n-html="about.p1">
-              Pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e formado em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Minha jornada profissional combina uma forte base operacional em infraestrutura de TI tradicional com arquiteturas modernas de dados, focando em soluções escaláveis.
+              <strong>Analista de Infraestrutura</strong>, pós-graduado em <strong>Engenharia de Dados</strong> (PUC Minas) e tecnólogo em <strong>Análise e Desenvolvimento de Sistemas</strong> (IFSP). Sou responsável pela infraestrutura de datacenter: cuido dos servidores da configuração completa à manutenção contínua, da virtualização, do storage e dos backups, da telefonia IP e do monitoramento do ambiente. Quando a operação exige, também atuo diretamente nos equipamentos de rede, criando regras e rotas para aplicações e serviços.
             </p>
             <p data-i18n-html="about.p2">
-              Sou apaixonado por resolver problemas complexos na interseção entre <strong>Segurança da Informação</strong>, <strong>Redes</strong> e <strong>Computação em Nuvem</strong>. Atualmente, busco aplicar minha bagagem em operações de missão crítica na construção de ambientes analíticos que sejam robustos, governados e de alta disponibilidade.
+              Tenho experiência em operações de <strong>ISP</strong> e de <strong>cloud corporativa</strong>, sempre com foco em disponibilidade, segurança, documentação e automação. Com a base em engenharia de dados (Python, Spark, Kafka, Airflow e dbt), desenvolvo integrações e dashboards que transformam dados de monitoramento em visibilidade para a operação.
             </p>
           </div>
 
@@ -220,27 +231,12 @@
           <button class="legend-btn active" data-filter="all" aria-pressed="true" type="button">
             <span data-i18n="skills.filter.all">Todos</span>
           </button>
-          <button class="legend-btn" data-filter="data" aria-pressed="false" type="button">Data Eng.</button>
           <button class="legend-btn" data-filter="infra" aria-pressed="false" type="button">Infra & Cloud</button>
+          <button class="legend-btn" data-filter="data" aria-pressed="false" type="button">Data Eng.</button>
           <button class="legend-btn" data-filter="tools" aria-pressed="false" type="button">Tools</button>
         </div>
 
         <div class="rack reveal">
-          <div class="rack-unit">
-            <div class="rack-label"><span class="rack-name">Data Eng.</span><span class="rack-count" aria-hidden="true">09</span></div>
-            <div class="rack-ports">
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-python-plain"></i> <span>Python</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-postgresql-plain"></i> <span>SQL & Postgres</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachespark-plain"></i> <span>Spark</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachekafka-plain"></i> <span>Kafka</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-pandas-plain"></i> <span>Pandas</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apacheairflow-plain"></i> <span>Airflow</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i data-lucide="boxes"></i> <span>dbt</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i class="devicon-mongodb-plain"></i> <span>MongoDB</span></button>
-              <button class="tech-node data" data-category="data" type="button"><i data-lucide="table-2"></i> <span>Data Lakes</span></button>
-            </div>
-          </div>
-
           <div class="rack-unit">
             <div class="rack-label"><span class="rack-name">Infra & Cloud</span><span class="rack-count" aria-hidden="true">09</span></div>
             <div class="rack-ports">
@@ -253,6 +249,21 @@
               <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="hard-drive"></i> <span>TrueNAS</span></button>
               <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="activity"></i> <span>Zabbix</span></button>
               <button class="tech-node infra" data-category="infra" type="button"><i data-lucide="network"></i> <span>Redes & IP</span></button>
+            </div>
+          </div>
+
+          <div class="rack-unit">
+            <div class="rack-label"><span class="rack-name">Data Eng.</span><span class="rack-count" aria-hidden="true">09</span></div>
+            <div class="rack-ports">
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-python-plain"></i> <span>Python</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-postgresql-plain"></i> <span>SQL & Postgres</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachespark-plain"></i> <span>Spark</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apachekafka-plain"></i> <span>Kafka</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-pandas-plain"></i> <span>Pandas</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-apacheairflow-plain"></i> <span>Airflow</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i data-lucide="boxes"></i> <span>dbt</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i class="devicon-mongodb-plain"></i> <span>MongoDB</span></button>
+              <button class="tech-node data" data-category="data" type="button"><i data-lucide="table-2"></i> <span>Data Lakes</span></button>
             </div>
           </div>
 
