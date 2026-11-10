@@ -6,7 +6,7 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
 let currentLang = "pt";
 
-let currentSource = "github"; 
+let currentSource = "infra"; 
 let infraFiltered = null;
 let dashboardFiltered = null;
 
@@ -949,12 +949,13 @@ function getInfraBaseItems() {
 async function loadInfraPosts() {
   try {
     const res = await fetch("./data/infra-posts.json", { cache: "no-cache" });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (!Array.isArray(data)) return;
-    INFRA_POSTS = data;
-    if (currentSource === "infra") { infraFiltered = null; currentPage = 1; renderItems(); }
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) INFRA_POSTS = data;
+    }
   } catch { /* sem o arquivo, fica valendo a lista de reserva acima */ }
+  // Infra é a aba inicial: desenha aqui, com o arquivo ou com a reserva
+  if (currentSource === "infra") { infraFiltered = null; currentPage = 1; renderItems(); }
 }
 
 function getDashboardBaseItems() {
