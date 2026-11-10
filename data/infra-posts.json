@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Monitoramento de Backbone — Integração NetBox e Zabbix",
+    "titleEN": "Backbone Monitoring — NetBox and Zabbix Integration",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_netbox-zabbix-infraestrutura-share-7513972564449353728-80is",
+    "descPT": "Desenvolvimento de uma solução de monitoramento e visualização da infraestrutura de telecomunicações, integrando **NetBox e Zabbix** para centralizar informações de inventário, conectividade e desempenho da rede.\n\nO projeto permite construir um mapa de conectividade entre os roteadores CORE das cidades atendidas pelo provedor, proporcionando uma visão centralizada da topologia e dos enlaces que interligam diferentes localidades.\n\nA plataforma possibilita acompanhar o tráfego dos enlaces, identificar rotas indisponíveis (DOWN), localizar falhas de comunicação e visualizar os caminhos utilizados para o atendimento de cada cidade.\n\nA integração combina os dados de inventário e documentação do NetBox com as informações de monitoramento do Zabbix, facilitando a análise de problemas e o entendimento das dependências entre os equipamentos da infraestrutura.\n\nA solução contribui para uma operação de NOC mais eficiente, melhorando a visibilidade do backbone, agilizando a identificação de incidentes e apoiando a tomada de decisões durante falhas de conectividade.",
+    "descEN": "Development of a telecommunications infrastructure monitoring and visualization solution integrating **NetBox and Zabbix** to centralize network inventory, connectivity, and performance information.\n\nThe project provides an interactive connectivity map linking core routers across the cities served by the Internet Service Provider (ISP), offering a centralized view of the network topology and intercity links.\n\nThe platform enables network operators to monitor link traffic, identify unavailable routes (DOWN), locate communication failures, and visualize the paths used to deliver connectivity to each city.\n\nBy combining NetBox inventory and documentation data with Zabbix monitoring information, the solution simplifies troubleshooting and improves visibility into network infrastructure dependencies.\n\nThe project enhances Network Operations Center (NOC) efficiency through improved backbone visibility, faster incident identification, and better operational decision-making during connectivity disruptions.",
+    "date": "2026-10-08",
+    "tech": "Netbox, Zabbix, Infraestrutura",
+    "visible": true
+  },
+  {
+    "title": "Heimdall — NOC e Gestão Inteligente de Ativos de Rede",
+    "titleEN": "Heimdall — Intelligent Network Monitoring and Asset Management",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_boa-tarde-rede-quero-apresentar-mais-uma-ugcPost-7518716000930836480-yfvQ",
+    "descPT": "Desenvolvimento do módulo **NOC – Ativos de Rede**, integrado à plataforma Heimdall, com o objetivo de centralizar o monitoramento, o inventário e a automação da infraestrutura de telecomunicações.\n\nA solução integra **NetBox, Zabbix e SNMP**, reunindo informações operacionais em uma única interface, com representação visual dos equipamentos, portas físicas, utilização de interfaces, tráfego de rede e estado dos enlaces.\n\nO sistema permite monitorar transceptores ópticos (GBICs), incluindo fabricante, modelo, número de série e níveis de potência RX/TX, com identificação de sinais degradados. Para OLTs, apresenta informações por porta PON, quantidade de clientes conectados, perdas de sinal e integração com o FiberOps.\n\nTambém disponibiliza indicadores de saúde dos equipamentos, como CPU, memória, temperatura, ventoinhas, fontes de alimentação, histórico de métricas e alarmes ativos.\n\nEntre os recursos de automação, destaca-se a conciliação do inventário físico com o NetBox, permitindo identificar e cadastrar GBICs ausentes, além da sincronização automática diária das descrições das interfaces.\n\nO projeto proporciona maior visibilidade operacional, padronização do inventário, redução do tempo de diagnóstico e otimização das atividades do NOC.",
+    "descEN": "Development of the **Network Assets NOC** module within the Heimdall platform, designed to centralize monitoring, inventory management, and automation of telecommunications infrastructure.\n\nThe solution integrates **NetBox, Zabbix, and SNMP**, consolidating operational data into a unified interface featuring visual representations of network devices, physical ports, interface utilization, network traffic, and link status.\n\nThe system monitors optical transceivers (GBICs), including manufacturer, model, serial number, and RX/TX optical power levels, with alerts for degraded signals. For OLT devices, it provides PON-level visibility into connected subscribers, signal losses, and integration with FiberOps.\n\nIt also provides equipment health monitoring, including CPU, memory, temperature, fans, power supplies, historical performance metrics, and active alarms.\n\nAutomation features include reconciliation of physical transceiver inventory with NetBox, identification and registration of missing GBIC records, and automatic daily synchronization of network interface descriptions.\n\nThe project improves operational visibility, inventory accuracy, troubleshooting efficiency, and overall Network Operations Center (NOC) productivity.",
+    "date": "2026-10-21",
+    "tech": "NetBox, Zabbix, SNMP",
+    "visible": true
+  },
+  {
+    "title": "Monitoramento Unificado de Infraestrutura e Backups",
+    "titleEN": "Unified Infrastructure and Backup Monitoring",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_proxmox-truenas-backup-ugcPost-7520538020647858176-tCjc",
+    "descPT": "Desenvolvimento de um painel centralizado para monitoramento e gerenciamento de infraestrutura de TI, integrando informações do Proxmox, TrueNAS e Google Drive em uma única interface.\n\nA solução permite acompanhar um ambiente de virtualização composto por 6 servidores físicos e mais de 50 servidores virtuais, apresentando métricas de CPU, memória, armazenamento e I/O, além da utilização de recursos por máquina física.\n\nO sistema oferece acompanhamento dos backups dos últimos 7 dias, identificando execuções concluídas, falhas, agendamentos não realizados e servidores sem políticas de backup. Também permite rastrear o armazenamento e a sincronização dos arquivos entre TrueNAS e Google Drive.\n\nInclui monitoramento da integridade do storage, com informações de pools, discos, testes SMART, snapshots, replicações e sincronizações em nuvem.\n\nO projeto centraliza informações operacionais, facilita a identificação de problemas e otimiza a administração de ambientes virtualizados, reduzindo a necessidade de consultar múltiplas plataformas.",
+    "descEN": "Development of a centralized dashboard for IT infrastructure monitoring and management, integrating Proxmox, TrueNAS, and Google Drive into a single interface.\n\nThe solution provides comprehensive visibility into a virtualization environment consisting of 6 physical hosts and over 50 virtual servers, displaying CPU, memory, storage, and I/O metrics, along with resource utilization across physical hosts.\n\nThe system monitors backup operations over the last 7 days, identifying completed jobs, missed schedules, and virtual machines without configured backup policies. It also tracks backup storage and cloud synchronization between TrueNAS and Google Drive.\n\nAdditional features include storage health monitoring, covering storage pools, disk SMART tests, snapshots, replication tasks, and cloud synchronization status.\n\nBy consolidating operational information into a unified dashboard, the project improves infrastructure visibility, simplifies troubleshooting, and streamlines virtualized environment management.",
+    "date": "2026-10-26",
+    "tech": "Proxmox, Truenas, Backup",
+    "visible": true
+  },
+  {
+    "title": "Mapa Flash — Monitoramento Inteligente de Redes",
+    "titleEN": "Mapa Flash — Intelligent Network Monitoring",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_noc-isp-telecom-ugcPost-7521662602100338688-HX_d",
+    "descPT": "O Mapa Flash é uma plataforma de monitoramento geográfico desenvolvida para provedores de internet (ISPs), que transforma eventos e alarmes da infraestrutura de fibra óptica em informações visuais e acionáveis.\n\nO sistema possui dois módulos principais: **Mapa de Rompimentos**, que identifica PONs com falhas, destaca as CTOs e regiões afetadas, apresenta a quantidade de clientes desconectados e auxilia na identificação de bairros impactados e no envio de notificações; e **Mapa da Rede**, que exibe switches, enlaces e tráfego em tempo real, destacando links indisponíveis, suas rotas e a duração das interrupções.\n\nA solução também identifica concentrações de clientes offline mesmo sem alarmes específicos, permitindo ao NOC antecipar problemas, agilizar diagnósticos e melhorar a resposta a incidentes.",
+    "descEN": "Mapa Flash is a geographic network monitoring platform developed for Internet Service Providers (ISPs), transforming fiber-optic network events and alarms into actionable visual insights.\n\nThe solution features two main modules: **Outage Map**, which identifies affected PONs, highlights impacted fiber distribution points (CTOs), displays disconnected customer counts, and helps identify affected neighborhoods and notify customers; and **Network Map**, which visualizes switches, network links, and live traffic, highlighting unavailable connections, their routes, and outage durations.\n\nIt also detects clusters of offline customers even without specific alarms, helping NOC teams identify potential issues earlier, accelerate troubleshooting, and improve incident response.",
+    "date": "2026-10-29",
+    "tech": "Noc, Isp, Telecom",
+    "visible": true
+  },
+  {
+    "title": "Notificação de Backup TrueNAS no Telegram",
+    "titleEN": "",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_infraestrutura-backup-automacao-activity-7430983198022656002-uxRb",
+    "descPT": "Automatizado o envio de notificações sempre que uma Cloud Sync Task é realizada com sucesso, ou em casos de falhas.",
+    "descEN": "Automated notifications are sent whenever a Cloud Sync Task is completed successfully or in case of failures.",
+    "date": "2026-02-21",
+    "tech": "TrueNAS, Telegram, Automação",
+    "visible": true
+  },
+  {
+    "title": "Documentação de Datacenters com Netbox",
+    "titleEN": "",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_datacenter-infraestrutura-networkinfrastructure-activity-7430294981564624896-NvOP",
+    "descPT": "Implementei toda documentação de equipamentos, cabos de links, cabos de energia, IPs, blocos, VLANs e toda Infraestrutura de conexão.",
+    "descEN": "I implemented complete documentation for equipment, link cabling, power cabling, IPs, IP blocks/subnets, VLANs, and the entire connectivity infrastructure.",
+    "date": "2026-02-19",
+    "tech": "NetBox, Datacenter, Documentação",
+    "visible": true
+  },
+  {
+    "title": "Alertas de Backup do Proxmox no Telegram",
+    "titleEN": "",
+    "url": "https://www.linkedin.com/posts/mateusvicentin_proxmox-virtualizacao-backup-activity-7430005608407416833-9_1u",
+    "descPT": "Automatizei alertas de backup no Proxmox enviando notificações pelo Telegram com status de sucesso, falha, duração e tamanho do job.",
+    "descEN": "I automated Proxmox backup alerts by sending Telegram notifications with the job’s success/failure status, duration, and size.",
+    "date": "2026-02-18",
+    "tech": "Proxmox, Backup, Telegram",
+    "visible": true
+  }
+]

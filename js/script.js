@@ -902,7 +902,8 @@ function getInfraBaseItems() {
     .map((p) => ({
       kind: "infra",
       title: currentLang === "en" && p.titleEN ? p.titleEN : p.title,
-      desc: (currentLang === "en" ? p.descEN : p.descPT) || p.descPT || "",
+      // As descrições vêm do LinkedIn com **negrito** e quebras de linha: a lista mostra texto simples
+      desc: String((currentLang === "en" ? p.descEN : p.descPT) || p.descPT || "").replace(/\*\*/g, "").replace(/\s+/g, " ").trim(),
       updated_at: p.date,
       url: p.url,
       tech: p.tech
