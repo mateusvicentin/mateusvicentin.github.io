@@ -103,6 +103,23 @@ const I18N = {
     "nav.contact": "Contato",
     "path.net": "Rede",
     "path.mon": "Monitoramento",
+    "about.sheet.status": "Ativo",
+    "about.sheet.role": "Função",
+    "about.sheet.site": "Empresa",
+    "about.sheet.edu": "Formação",
+    "about.sheet.edu1": "Pós em Engenharia de Dados, PUC Minas",
+    "about.sheet.edu2": "Análise e Desenv. de Sistemas, IFSP",
+    "about.sheet.since": "Na área desde",
+    "proj.col.name": "Recurso",
+    "proj.col.created": "Criado",
+    "proj.col.updated": "Atualizado",
+    "journey.panel.timeline": "Linha do tempo",
+    "journey.col.period": "Período",
+    "journey.col.event": "Evento",
+    "journey.status.current": "Em andamento",
+    "journey.status.done": "Concluído",
+    "certs.issuedTo": "Emitido para",
+    "certs.issuedBy": "Emitido por",
     "hero.greeting": "Oi, sou o Mateus 👋",
     "hero.title.line1": "Engenheiro de Dados",
     "hero.title.line2": "& Analista de Infra",
@@ -207,6 +224,23 @@ const I18N = {
     "nav.contact": "Contact",
     "path.net": "Network",
     "path.mon": "Monitoring",
+    "about.sheet.status": "Active",
+    "about.sheet.role": "Role",
+    "about.sheet.site": "Company",
+    "about.sheet.edu": "Education",
+    "about.sheet.edu1": "Postgraduate in Data Engineering, PUC Minas",
+    "about.sheet.edu2": "Systems Analysis & Dev., IFSP",
+    "about.sheet.since": "In the field since",
+    "proj.col.name": "Resource",
+    "proj.col.created": "Created",
+    "proj.col.updated": "Updated",
+    "journey.panel.timeline": "Timeline",
+    "journey.col.period": "Period",
+    "journey.col.event": "Event",
+    "journey.status.current": "Ongoing",
+    "journey.status.done": "Completed",
+    "certs.issuedTo": "Issued to",
+    "certs.issuedBy": "Issued by",
     "hero.greeting": "Hi, I'm Mateus 👋",
     "hero.title.line1": "Data Engineer",
     "hero.title.line2": "& Infra Analyst",
@@ -906,7 +940,8 @@ function getInfraBaseItems() {
       desc: String((currentLang === "en" ? p.descEN : p.descPT) || p.descPT || "").replace(/\*\*/g, "").replace(/\s+/g, " ").trim(),
       updated_at: p.date,
       url: p.url,
-      tech: p.tech
+      tech: p.tech,
+      slug: `linkedin/${(String(p.url).match(/(\d{15,20})/) || [])[1] || "post"}`
     }));
 }
 
@@ -955,7 +990,8 @@ function getActiveItems() {
     created_at: repo.created_at, // <-- Adicionamos a captura da data de criação
     url: getProjectUrl(repo),
     repo_url: repo.html_url,
-    tech: repo.language || "Code"
+    tech: repo.language || "Code",
+    slug: `${GITHUB_USER}/${repo.name}`
   }));
 }
 
@@ -1041,26 +1077,26 @@ const labelCreated = currentLang === "en" ? "Created" : "Criado";
     const actionText = currentLang === "en" ? "Open project" : "Abrir projeto";
     const ariaLabel = `${actionText}: ${it.title}`;
 
+    // Verde = mexido nos últimos 90 dias
+    const liveClass = diffUpdated <= 90 ? " is-live" : "";
+
     return `
       <a class="project-row" href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(ariaLabel)}">
-        <span class="project-source" aria-hidden="true"><i data-lucide="${iconName}"></i></span>
-
         <div class="project-main">
           <div class="project-title-wrapper">
+            <span class="project-state${liveClass}" aria-hidden="true"></span>
             <h3 class="project-title">${safeTitle}</h3>
             ${badgeHtml}
           </div>
+          <span class="project-id">${escapeHTML(it.slug || "")}</span>
           <p class="project-desc">${safeDesc}</p>
         </div>
 
-        <span class="project-tech">${safeTech}</span>
+        <span class="project-cell" data-label="Stack">${safeTech}</span>
+        <span class="project-cell" data-label="${labelCreated}">${formatDate(it.created_at)}</span>
+        <span class="project-cell" data-label="${labelUpdated}">${formatDate(it.updated_at)}</span>
 
-        <div class="project-dates">
-          <span class="date-badge" title="${labelCreated}"><i data-lucide="calendar-plus"></i>${formatDate(it.created_at)}</span>
-          <span class="date-badge" title="${labelUpdated}"><i data-lucide="clock"></i>${formatDate(it.updated_at)}</span>
-        </div>
-
-        <span class="project-open"><span>${actionText}</span><i data-lucide="arrow-up-right"></i></span>
+        <span class="project-open" aria-hidden="true"><i data-lucide="arrow-up-right"></i></span>
       </a>
     `;
   }).join("");
